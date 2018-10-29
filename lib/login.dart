@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:vc_deca/user_info.dart';
+import 'user_info.dart';
 
 class LoginPage extends StatefulWidget {
   @override

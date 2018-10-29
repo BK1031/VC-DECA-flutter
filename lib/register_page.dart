@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:vc_deca/user_info.dart';
+import 'user_info.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -154,7 +154,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 splashColor: Colors.blue,
                 onPressed: () {
-                  router.navigateTo(context,'/toLogin', transition: TransitionType.native);
+                  router.navigateTo(context,'/toLogin', transition: TransitionType.inFromRight);
                 },
               )
             ],

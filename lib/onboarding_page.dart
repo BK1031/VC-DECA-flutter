@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vc_deca/user_info.dart';
+import 'user_info.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 import 'package:fluro/fluro.dart';
