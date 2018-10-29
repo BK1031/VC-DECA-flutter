@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "946014932243",
+    "firebase_url": "https://vc-deca.firebaseio.com",
+    "project_id": "vc-deca",
+    "storage_bucket": "vc-deca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946014932243:android:7ff8d9cacecec349",
+        "android_client_info": {
+          "package_name": "com.bk1031.vcdeca"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946014932243-qsp5nqsdq37ecu6srfudp2m3inmrmoig.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQo692NejDKQUZuiG4T9DFdWYv67hvfxg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
