@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "946014932243",
+    "firebase_url": "https://vc-deca.firebaseio.com",
+    "project_id": "vc-deca",
+    "storage_bucket": "vc-deca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946014932243:android:59a46f661669dba3",
+        "android_client_info": {
+          "package_name": "com.bk1031.vc_deca_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946014932243-qsp5nqsdq37ecu6srfudp2m3inmrmoig.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQo692NejDKQUZuiG4T9DFdWYv67hvfxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946014932243-qsp5nqsdq37ecu6srfudp2m3inmrmoig.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "946014932243-f1thu4rjcvc10vc5qkc7iqvhicnqdcch.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bk1031.vcdeca",
+                "app_store_id": "1437960428"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

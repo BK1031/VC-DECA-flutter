@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>946014932243-f1thu4rjcvc10vc5qkc7iqvhicnqdcch.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.946014932243-f1thu4rjcvc10vc5qkc7iqvhicnqdcch</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBK7HKydWUVzmhy2WF3hJLne-MSPTJTNC4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>946014932243</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.bk1031.vcdeca</string>
+	<key>PROJECT_ID</key>
+	<string>vc-deca</string>
+	<key>STORAGE_BUCKET</key>
+	<string>vc-deca.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:946014932243:ios:7ff8d9cacecec349</string>
+	<key>DATABASE_URL</key>
+	<string>https://vc-deca.firebaseio.com</string>
+</dict>
+</plist>
