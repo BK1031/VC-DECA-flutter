@@ -5,6 +5,11 @@ import 'package:vc_deca_flutter/screens/auth/auth_checker.dart';
 import 'package:vc_deca_flutter/screens/auth/login_page.dart';
 import 'package:vc_deca_flutter/screens/auth/register_page.dart';
 import 'package:vc_deca_flutter/screens/chat/global_chat_page.dart';
+import 'package:vc_deca_flutter/screens/events/event_cluster_page.dart';
+import 'package:vc_deca_flutter/screens/events/event_selection_page.dart';
+import 'package:vc_deca_flutter/screens/events/online_details_page.dart';
+import 'package:vc_deca_flutter/screens/events/roleplay_details_page.dart';
+import 'package:vc_deca_flutter/screens/events/written_details_page.dart';
 import 'package:vc_deca_flutter/screens/settings/about_page.dart';
 import 'package:vc_deca_flutter/screens/startup/network_cheker.dart';
 import 'package:vc_deca_flutter/screens/startup/onboarding_page.dart';
@@ -41,12 +46,29 @@ void main() {
 
   // CONFERENCE ROUTES
 
+
   // EVENT ROUTES
+  router.define('/event/cluster', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new EventClusterPage();
+  }));
+  router.define('/event/cluster/event', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new EventSelectionPage();
+  }));
+  router.define('/event/cluster/event/roleplay-details', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new RoleplayDetailsPage();
+  }));
+  router.define('/event/cluster/event/written-details', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new WrittenDetailsPage();
+  }));
+  router.define('/event/cluster/event/online-details', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new OnlineDetailsPage();
+  }));
 
   // CHAT ROUTES
   router.define('/chat/global', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new GlobalChatPage();
   }));
+
   // SETTINGS ROUTES
   router.define('/settings/about', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new AboutPage();

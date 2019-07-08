@@ -18,9 +18,7 @@ bool staticLocation = false;
 
 String selectedAlert = "";
 
-String selectedYear = "Please select a conference";
-
-String selectedCategory = "";
+String selectedCluster = "";
 String selectedEvent = "";
 String selectedType = "";
 

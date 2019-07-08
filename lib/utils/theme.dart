@@ -31,4 +31,13 @@ final mainTheme = new ThemeData(
   primaryColor: currAccentColor,
   accentColor: currAccentColor,
   fontFamily: "Product Sans",
+  appBarTheme: new AppBarTheme(
+    textTheme: TextTheme(
+      title: TextStyle(
+        fontSize: 20.0,
+        fontFamily: "Product Sans",
+        fontWeight: FontWeight.bold
+      )
+    )
+  )
 );

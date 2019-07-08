@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vc_deca_flutter/screens/chat/chat_page.dart';
 import 'package:vc_deca_flutter/screens/conferences/conferences_page.dart';
-import 'package:vc_deca_flutter/screens/events_page.dart';
+import 'package:vc_deca_flutter/screens/events/events_page.dart';
 import 'package:vc_deca_flutter/screens/home/home_page.dart';
 import 'package:vc_deca_flutter/screens/settings/settings_page.dart';
 import 'package:vc_deca_flutter/user_info.dart';
@@ -92,6 +92,25 @@ class _TabBarControllerState extends State<TabBarController> {
     super.initState();
     firebaseCloudMessaging_Listeners();
     _pageController = new PageController();
+    // Get Session Info
+    databaseRef.child("stableVersion").once().then((DataSnapshot snapshot) {
+      var stable = snapshot.value;
+      print("Current Version: $appVersion");
+      print("Stable Version: $stable");
+      if (appVersion < stable) {
+        print("OUTDATED APP!");
+        appStatus = " [OUTDATED]";
+      }
+      else if (appVersion > stable) {
+        print("BETA APP!");
+        appStatus = " Beta $appBuild";
+      }
+      databaseRef.child("users").child(userID).update({
+        "appVersion": "$appVersion$appStatus",
+        "deviceName": Platform.localHostname,
+        "platform": Platform.operatingSystem
+      });
+    });
     // Get PermsList from Firebase
     databaseRef.child("perms").onChildAdded.listen((Event event) {
       permsList.add(event.snapshot.value);
@@ -101,6 +120,25 @@ class _TabBarControllerState extends State<TabBarController> {
       setState(() {
         userPerms.add(event.snapshot.value);
       });
+      // Subscribe to Topics
+      FirebaseMessaging().subscribeToTopic("ALL_DEVICES");
+      print("Subscribed to ALL_DEVICES");
+      if (userPerms.contains("CHAT_VIEW")) {
+        FirebaseMessaging().subscribeToTopic("GLOBAL_CHAT");
+        print("Subscribed to GLOBAL_CHAT");
+      }
+      if (userPerms.contains("OFFICER_CHAT_VIEW")) {
+        FirebaseMessaging().subscribeToTopic("OFFICER_CHAT");
+        print("Subscribed to OFFICER_CHAT");
+      }
+      if (userPerms.contains("LEADER_CHAT_VIEW")) {
+        FirebaseMessaging().subscribeToTopic("LEADER_CHAT");
+        print("Subscribed to LEADER_CHAT");
+      }
+      if (userPerms.contains("DEV")) {
+        FirebaseMessaging().subscribeToTopic("DEV");
+        print("Subscribed to DEV");
+      }
     });
   }
 

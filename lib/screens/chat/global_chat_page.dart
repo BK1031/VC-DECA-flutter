@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -42,6 +44,9 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
   String type = "text";
   String message = "";
 
+  bool canSendMessage = true;
+  bool canDeleteMessage = false;
+
   _GlobalChatPageState() {
     databaseRef.child("chatColors").once().then((DataSnapshot snapshot) {
       setState(() {
@@ -53,11 +58,105 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
       });
     });
 
+    // Message Send Perms Check
+    if (selectedChat == "global" && !userPerms.contains("CHAT_SEND")) {
+      canSendMessage = false;
+    }
+    else if (selectedChat == "officer" && !userPerms.contains("OFFICER_CHAT_SEND")) {
+      canSendMessage = false;
+    }
+    else if (selectedChat == "leader" && !userPerms.contains("LEADER_CHAT_SEND")) {
+      canSendMessage = false;
+    }
+
+    if (userPerms.contains("ADMIN") || userPerms.contains("DEV")) {
+      canDeleteMessage = true;
+    }
+
     databaseRef.child("chat").child(selectedChat).onChildAdded.listen(onNewMessage);
 
     databaseRef.child("chatNoNoWords").onChildAdded.listen((Event event) {
       noNoWordList.add(event.snapshot.value.toString());
     });
+  }
+
+  void showMessageDetails(int index) async {
+    if (Platform.isIOS) {
+      showCupertinoModalPopup(context: context, builder: (BuildContext context) {
+        return new CupertinoActionSheet(
+          title: new Text("Message Options"),
+          message: new Text(messageList[index].message),
+          actions: <Widget>[
+            new Visibility(
+              visible: canDeleteMessage,
+              child: new CupertinoActionSheetAction(
+                child: new Text("Delete Message"),
+                isDestructiveAction: true,
+                onPressed: () {
+                  databaseRef.child("chat").child(selectedChat).child(messageList[index].key).set(null);
+                  setState(() {
+                    messageList.removeAt(index);
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+          cancelButton: new CupertinoActionSheetAction(
+            child: const Text("Cancel"),
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+        );
+      });
+    }
+    else if (Platform.isAndroid) {
+      showModalBottomSheet(context: context, builder: (BuildContext context) {
+        return new SafeArea(
+          child: new Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              new ListTile(
+                title: new Text('Message Options'),
+              ),
+              new ListTile(
+                title: new Text(messageList[index].message),
+              ),
+              new ListTile(
+                leading: new Icon(Icons.check),
+                title: new Text('Action'),
+                onTap: () {
+
+                }
+              ),
+              new ListTile(
+                  leading: new Icon(Icons.check),
+                  title: new Text('Action'),
+                  onTap: () {
+
+                  }
+              ),
+              new ListTile(
+                  leading: new Icon(Icons.check),
+                  title: new Text('Action'),
+                  onTap: () {
+
+                  }
+              ),
+              new ListTile(
+                leading: new Icon(Icons.clear),
+                title: new Text('Cancel'),
+                onTap: () {
+                  router.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      });
+    }
   }
 
   onNewMessage(Event event) async {
@@ -162,10 +261,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
   }
 
   bool getVisibility(String authorRole, String messageAuthor) {
-    if (messageAuthor == name && authorRole == role) {
-      return false;
-    }
-    else if (authorRole == "Member") {
+    if (authorRole == "Member") {
       return false;
     }
     else {
@@ -235,13 +331,6 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
       appBar: AppBar(
         backgroundColor: mainColor,
         title: new Text(chatTitle),
-        textTheme: TextTheme(
-            title: TextStyle(
-                fontSize: 25.0,
-                fontFamily: "Product Sans",
-                fontWeight: FontWeight.bold
-            )
-        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       backgroundColor: Colors.white,
@@ -255,111 +344,126 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
                   itemCount: messageList.length,
                   controller: _scrollController,
                   itemBuilder: (BuildContext context, int index) {
-                    return new Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10.0),
-                        padding: EdgeInsets.all(8.0),
-                        decoration: new BoxDecoration(
-                          border: new Border(
-                              left: new BorderSide(
-                                color: HexColor(messageList[index].messageColor),
-                                width: 3.0,
-                              )
-                          ),
-                        ),
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Row(
-                              children: <Widget>[
-                                new Text(
-                                  messageList[index].author,
-                                  style: TextStyle(
-                                      fontFamily: "Product Sans",
-                                      color: HexColor(messageList[index].messageColor),
-                                      fontSize: 16.0
-                                  ),
-                                ),
-                                new Padding(padding: EdgeInsets.all(4.0)),
-                                new Visibility(
-                                  visible: getVisibility(messageList[index].authorRole, messageList[index].author),
-                                  child: new Card(
-                                      color: HexColor(messageList[index].messageColor),
-                                      child: new Container(
-                                        padding: EdgeInsets.all(4.0),
-                                        child: new Text(
-                                          messageList[index].authorRole,
-                                          style: TextStyle(
-                                              fontFamily: "Product Sans",
-                                              color: Colors.white,
-                                              fontSize: 16.0
-                                          ),
-                                        ),
-                                      )
-                                  ),
+                    return new GestureDetector(
+                      onLongPress: () {
+                        showMessageDetails(index);
+                      },
+                      child: new Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10.0),
+                          padding: EdgeInsets.all(8.0),
+                          decoration: new BoxDecoration(
+                            border: new Border(
+                                left: new BorderSide(
+                                  color: HexColor(messageList[index].messageColor),
+                                  width: 3.0,
                                 )
-                              ],
                             ),
-                            getMessageBody(index)
-                          ],
-                        )
+                          ),
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Row(
+                                children: <Widget>[
+                                  new Text(
+                                    messageList[index].author,
+                                    style: TextStyle(
+                                        fontFamily: "Product Sans",
+                                        color: HexColor(messageList[index].messageColor),
+                                        fontSize: 16.0
+                                    ),
+                                  ),
+                                  new Padding(padding: EdgeInsets.all(4.0)),
+                                  new Visibility(
+                                    visible: getVisibility(messageList[index].authorRole, messageList[index].author),
+                                    child: new Card(
+                                        color: HexColor(messageList[index].messageColor),
+                                        child: new Container(
+                                          padding: EdgeInsets.all(4.0),
+                                          child: new Text(
+                                            messageList[index].authorRole,
+                                            style: TextStyle(
+                                                fontFamily: "Product Sans",
+                                                color: Colors.white,
+                                                fontSize: 16.0
+                                            ),
+                                          ),
+                                        )
+                                    ),
+                                  )
+                                ],
+                              ),
+                              getMessageBody(index)
+                            ],
+                          )
+                      ),
                     );
                   },
                 ),
               ),
             ),
-            new ListTile(
-                title: Container(
-                  child: Row(
-                    children: <Widget>[
-                      // Button send image
-                      Material(
-                        child: new Container(
-                          margin: new EdgeInsets.symmetric(horizontal: 1.0),
-                          child: new IconButton(
-                            icon: new Icon(Icons.image),
-                            color: Colors.grey,
-                            onPressed: () {
-                              // TODO: Implement Image Sending
-                            },
-                          ),
-                        ),
-                        color: Colors.white,
-                      ),
-                      // Edit text
-                      Flexible(
-                        child: Container(
-                          child: TextField(
-                            controller: myController,
-                            textInputAction: TextInputAction.done,
-                            textCapitalization: TextCapitalization.sentences,
-                            style: TextStyle(fontFamily: "Product Sans", color: Colors.black, fontSize: 16.0),
-                            decoration: InputDecoration.collapsed(
-                                hintText: 'Type your message...',
-                                hintStyle: TextStyle(fontFamily: "Product Sans")
+            new Visibility(
+              visible: !canSendMessage,
+              child: Container(
+                child: new Text("It looks like you don't have permission to send messages in the this chat!\n\nIf this is a mistake, please contact the admin."),
+                padding: EdgeInsets.all(16.0),
+              ),
+            ),
+            new Visibility(
+              visible: canSendMessage,
+              child: new ListTile(
+                  title: Container(
+                    child: Row(
+                      children: <Widget>[
+                        // Button send image
+                        Material(
+                          child: new Container(
+                            margin: new EdgeInsets.symmetric(horizontal: 1.0),
+                            child: new IconButton(
+                              icon: new Icon(Icons.image),
+                              color: Colors.grey,
+                              onPressed: () {
+                                // TODO: Implement Image Sending
+                              },
                             ),
-                            focusNode: myFocusNode,
-                            onChanged: textChanged,
+                          ),
+                          color: Colors.white,
+                        ),
+                        // Edit text
+                        Flexible(
+                          child: Container(
+                            child: TextField(
+                              controller: myController,
+                              textInputAction: TextInputAction.done,
+                              textCapitalization: TextCapitalization.sentences,
+                              style: TextStyle(fontFamily: "Product Sans", color: Colors.black, fontSize: 16.0),
+                              decoration: InputDecoration.collapsed(
+                                  hintText: 'Type your message...',
+                                  hintStyle: TextStyle(fontFamily: "Product Sans")
+                              ),
+                              focusNode: myFocusNode,
+                              onChanged: textChanged,
+                            ),
                           ),
                         ),
-                      ),
-                      new Material(
-                        child: new Container(
-                          margin: new EdgeInsets.symmetric(horizontal: 8.0),
-                          child: new IconButton(
-                              icon: new Icon(Icons.send),
-                              color: sendColor,
-                              onPressed: sendMessage
+                        new Material(
+                          child: new Container(
+                            margin: new EdgeInsets.symmetric(horizontal: 8.0),
+                            child: new IconButton(
+                                icon: new Icon(Icons.send),
+                                color: sendColor,
+                                onPressed: sendMessage
+                            ),
                           ),
-                        ),
-                        color: Colors.white,
-                      )
-                    ],
-                  ),
-                  width: double.infinity,
-                  height: 50.0,
-                  decoration: new BoxDecoration(
-                      border: new Border(top: new BorderSide(color: mainColor, width: 0.5)), color: Colors.white),
-                )
+                          color: Colors.white,
+                        )
+                      ],
+                    ),
+                    width: double.infinity,
+                    height: 50.0,
+                    decoration: new BoxDecoration(
+                        border: new Border(top: new BorderSide(color: mainColor, width: 0.5)), color: Colors.white),
+                  )
+              ),
             )
           ],
         ),

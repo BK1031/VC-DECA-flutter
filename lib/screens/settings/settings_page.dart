@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:vc_deca_flutter/screens/auth/auth_functions.dart';
@@ -18,6 +20,75 @@ class _SettingsPageState extends State<SettingsPage> {
   _SettingsPageState() {
     if (userPerms.contains("DEV")) {
       _devVisible = true;
+    }
+  }
+
+  void handleSignOut() async {
+    if (Platform.isIOS) {
+      showCupertinoModalPopup(context: context, builder: (BuildContext context) {
+        return new CupertinoActionSheet(
+//          title: new Text("Sign out"),
+          message: new Text("Are you sure you want to sign out?"),
+          actions: <Widget>[
+             new CupertinoActionSheetAction(
+               child: new Text("Sign out"),
+               isDestructiveAction: true,
+               onPressed: () async {
+                 await AuthFunctions.signOut().then((response) {
+                   if (response) {
+                     router.navigateTo(context, '/onboarding', replace: true, clearStack: true, transition: TransitionType.fadeIn);
+                   }
+                   else {
+                     // TODO: Add error alert
+                   }
+                 });
+               },
+             )
+          ],
+         cancelButton: new CupertinoActionSheetAction(
+           child: const Text("Cancel"),
+           isDefaultAction: true,
+           onPressed: () {
+             Navigator.pop(context);
+           },
+         )
+        );
+      });
+    }
+    else if (Platform.isAndroid) {
+      showModalBottomSheet(context: context, builder: (BuildContext context) {
+        return new SafeArea(
+          child: new Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              new ListTile(
+                title: new Text('Are you sure you want to sign out?'),
+              ),
+              new ListTile(
+                leading: new Icon(Icons.check),
+                title: new Text('Yes, sign me out!'),
+                onTap: () async {
+                  await AuthFunctions.signOut().then((response) {
+                    if (response) {
+                      router.navigateTo(context, '/onboarding', replace: true, clearStack: true, transition: TransitionType.fadeIn);
+                    }
+                    else {
+                      // TODO: Add error alert
+                    }
+                  });
+                },
+              ),
+              new ListTile(
+                leading: new Icon(Icons.clear),
+                title: new Text('Cancel'),
+                onTap: () {
+                  router.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      });
     }
   }
 
@@ -106,16 +177,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   new ListTile(
                     title: new Text("Sign Out", style: TextStyle(color: Colors.red, fontFamily: "Product Sans"),),
-                    onTap: () async {
-                      await AuthFunctions.signOut().then((response) {
-                        if (response) {
-                          router.navigateTo(context, '/onboarding', );
-                        }
-                        else {
-
-                        }
-                      });
-                    },
+                    onTap: handleSignOut,
                   ),
                   new ListTile(
                     title: new Text("\nDelete Account\n", style: TextStyle(color: Colors.red, fontFamily: "Product Sans"),),

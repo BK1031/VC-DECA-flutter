@@ -49,13 +49,6 @@ class _AboutPageState extends State<AboutPage> {
         appBar: AppBar(
           backgroundColor: mainColor,
           title: new Text("About"),
-          textTheme: TextTheme(
-              title: TextStyle(
-                  fontSize: 25.0,
-                  fontFamily: "Product Sans",
-                  fontWeight: FontWeight.bold
-              )
-          ),
         ),
         backgroundColor: currBackgroundColor,
         body: new SafeArea(
@@ -112,14 +105,6 @@ class _AboutPageState extends State<AboutPage> {
                         subtitle: new Text("App Design", style: TextStyle(fontFamily: "Product Sans",)),
                         onTap: () {
                           const url = 'https://www.instagram.com/myronchan_/';
-                          launch(url);
-                        },
-                      ),
-                      new ListTile(
-                        title: new Text("Ian Lau", style: TextStyle(fontFamily: "Product Sans",)),
-                        subtitle: new Text("Marketing", style: TextStyle(fontFamily: "Product Sans",)),
-                        onTap: () {
-                          const url = 'https://www.instagram.com/chickian03/?hl=en';
                           launch(url);
                         },
                       ),
