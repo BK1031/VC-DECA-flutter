@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vc_deca_flutter/models/event_entry.dart';
 
 String name = "";
 String email = "";
@@ -12,15 +13,16 @@ bool notifications = true;
 bool chatNotifications = true;
 
 String role = "Member";
+String title = "Member";
 List<String> userPerms = new List();
 
 bool staticLocation = false;
 
 String selectedAlert = "";
 
-String selectedCluster = "";
-String selectedEvent = "";
 String selectedType = "";
+String selectedCluster = "";
+EventEntry selectedEvent;
 
 String selectedAgenda = "";
 

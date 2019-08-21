@@ -8,6 +8,10 @@ int appBuild = 1;
 String appStatus = "";
 String appFull = "Version $appVersion";
 
+String getFirebaseUrl(String ref) {
+  return "https://vc-deca.firebaseio.com/$ref/.json";
+}
+
 List<String> permsList = new List();
 
 String appLegal = """

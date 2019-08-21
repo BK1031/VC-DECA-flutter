@@ -186,7 +186,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: e2fa4cb35ef5558c200f7f0ad8a53e212215f93e
   FirebaseMessaging: b412996f6a09337d232bb3a6676ce4d1f353d024
   FirebaseStorage: 3d22c041370593e639fba013d1eb698a8dae2881
-  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GoogleAppMeasurement: 98b71f5e04142793729a5ef23e5b96651ff4b70f
   GoogleUtilities: 111a012f4c3a29c9e7c954c082fafd6ee3c999c0

@@ -9,7 +9,9 @@ import 'package:vc_deca_flutter/screens/events/event_cluster_page.dart';
 import 'package:vc_deca_flutter/screens/events/event_selection_page.dart';
 import 'package:vc_deca_flutter/screens/events/online_details_page.dart';
 import 'package:vc_deca_flutter/screens/events/roleplay_details_page.dart';
+import 'package:vc_deca_flutter/screens/events/smg_details_page.dart';
 import 'package:vc_deca_flutter/screens/events/written_details_page.dart';
+import 'package:vc_deca_flutter/screens/home/announcement_page.dart';
 import 'package:vc_deca_flutter/screens/settings/about_page.dart';
 import 'package:vc_deca_flutter/screens/startup/network_cheker.dart';
 import 'package:vc_deca_flutter/screens/startup/onboarding_page.dart';
@@ -43,6 +45,9 @@ void main() {
   router.define('/home', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new TabBarController();
   }));
+  router.define('/home/announcements', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new AnnouncementPage();
+  }));
 
   // CONFERENCE ROUTES
 
@@ -62,6 +67,9 @@ void main() {
   }));
   router.define('/event/cluster/event/online-details', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new OnlineDetailsPage();
+  }));
+  router.define('/event/cluster/event/smg-details', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new StockDetailsPage();
   }));
 
   // CHAT ROUTES

@@ -297,6 +297,7 @@ class _EmailVerificationAlertState extends State<EmailVerificationAlert> {
                       "name": name,
                       "email": email,
                       "role": role,
+                      "title": title,
                       "userID": userID,
                       "chapGroup": "Not in a Group",
                       "mentorGroup": "Not in a Group",
@@ -306,7 +307,7 @@ class _EmailVerificationAlertState extends State<EmailVerificationAlert> {
                       "staticLocation": false
                     });
                     
-                    // Set User Perms
+                    // Set Default User Perms
                     databaseRef.child("users").child(userID).child("perms").push().set("CHAT_VIEW");
                     databaseRef.child("users").child(userID).child("perms").push().set("CHAT_SEND");
 
