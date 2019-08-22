@@ -2,6 +2,9 @@
 
 # VC DECA App
 
+[![Build Status](https://travis-ci.org/Equinox-Initiative/VC-DECA-flutter.svg?branch=master)](https://travis-ci.org/Equinox-Initiative/VC-DECA-flutter)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Welcome to the VC DECA App repository!
 
 The goal of this app is to make communication easier between officers, advisors, and members of the club. It also allows members to access all the information they need about competitive events and conferences.
@@ -10,7 +13,7 @@ Check out the [wiki](https://github.com/Equinox-Initiative/VC-DECA-flutter/wiki)
 
 ## Getting Started
 
-You will need to have [Flutter](https://flutter.io) and Dart installed in order to build the repository. You can check out the installation instructions below.
+You will need to have [Flutter](https://flutter.io) and Dart installed in order to build the repository.
 
 ## Building the App
 
@@ -30,17 +33,23 @@ Running the android version shouldn't require any additional setup as long as yo
 
 ## Contributing
 
-This project is open-source 
 If you would like to contribute to this repository or provide feedback, check out the guidelines [here](Contributing).
 
 #### Contributors
-- Bharat Kathi
+- [Bharat Kathi](http://github.com/bk1031)
     - App Development
-- Myron Chan
+- [Myron Chan](https://github.com/orgs/Equinox-Initiative/people/MC1217)
     - UI/UX Design
     - Icon Design
-- Andrew Zhang
+- [Andrew Zhang](https://github.com/orgs/Equinox-Initiative/people/azhang11)
     - Documentation
 
 #### Beta Testers
-- Kashyap Chaturvedula
+- [Kashyap Chaturvedula](https://github.com/orgs/Equinox-Initiative/people/Kashyap456)
+
+## License
+
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+
+**[MIT license](http://opensource.org/licenses/mit-license.php)**  
+Copyright 2015 © <a href="http://github.com/equinox-initiative" target="_blank">Equinox Initiative</a>
