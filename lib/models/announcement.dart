@@ -8,10 +8,16 @@ class Announcement {
 
   Announcement(this.title, this.date, this.body);
 
-  Announcement.fromSnapshot(DataSnapshot snapshot)
-      : key = snapshot.key,
-        title = snapshot.value["title"].toString(),
-        date = snapshot.value["date"].toString(),
-        body = snapshot.value["body"].toString();
+  Announcement.fromJson(Map<String, dynamic> json, String key)
+      : key = key,
+        title = json["title"].toString(),
+        date = json["date"].toString(),
+        body = json["body"].toString();
+
+  @override
+  String toString() {
+    return "$title - $date - $body";
+  }
+
 
 }

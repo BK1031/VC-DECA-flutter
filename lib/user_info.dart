@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/models/event_entry.dart';
 
+import 'models/announcement.dart';
+
 String name = "";
 String email = "";
 String userID = "";
@@ -18,7 +20,7 @@ List<String> userPerms = new List();
 
 bool staticLocation = false;
 
-String selectedAlert = "";
+Announcement selectedAnnouncement;
 
 String selectedType = "";
 String selectedCluster = "";

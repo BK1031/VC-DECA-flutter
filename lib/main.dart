@@ -48,6 +48,12 @@ void main() {
   router.define('/home/announcements', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new AnnouncementPage();
   }));
+  router.define('/home/announcements/new', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new Container();
+  }));
+  router.define('/home/announcements/details', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new Container();
+  }));
 
   // CONFERENCE ROUTES
 

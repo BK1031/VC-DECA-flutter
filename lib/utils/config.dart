@@ -8,7 +8,7 @@ int appBuild = 1;
 String appStatus = "";
 String appFull = "Version $appVersion";
 
-String getFirebaseUrl(String ref) {
+String getDbUrl(String ref) {
   return "https://vc-deca.firebaseio.com/$ref/.json";
 }
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -5,6 +7,7 @@ import 'package:vc_deca_flutter/models/announcement.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
+import 'package:http/http.dart' as http;
 
 class AnnouncementPage extends StatefulWidget {
   @override
@@ -19,37 +22,28 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
 
   bool _visible = false;
 
-  _AlertPageState() {
-    databaseRef.child("alerts").onChildAdded.listen(onAlertAdded);
-    databaseRef.child("alerts").onChildChanged.listen(onAlertEdited);
-    databaseRef.child("alerts").onChildRemoved.listen(onAlertRemoved);
-    if (userPerms.contains("ALERT_CREATE")) {
+  _AnnouncementPageState() {
+    if (userPerms.contains("ALERT_CREATE") || userPerms.contains('ADMIN')) {
       _visible = true;
     }
+    refreshannouncements();
   }
-
-  onAlertAdded(Event event) {
-    setState(() {
-      announcementList.add(new Announcement.fromSnapshot(event.snapshot));
-    });
-  }
-
-  onAlertEdited(Event event) {
-    var oldValue =
-    announcementList.singleWhere((entry) => entry.key == event.snapshot.key);
-    setState(() {
-      announcementList[announcementList.indexOf(oldValue)] =
-      new Announcement.fromSnapshot(event.snapshot);
-      announcementList.sort((we1, we2) => we1.body.compareTo(we2.body));
-    });
-  }
-
-  onAlertRemoved(Event event) {
-    var oldValue =
-    announcementList.singleWhere((entry) => entry.key == event.snapshot.key);
-    setState(() {
-      announcementList.removeAt(announcementList.indexOf(oldValue));
-    });
+  
+  refreshannouncements() async {
+    announcementList.clear();
+    try {
+      await http.get(getDbUrl("alerts")).then((response) {
+        Map responseJson = jsonDecode(response.body);
+        responseJson.keys.forEach((key) {
+          setState(() {
+            announcementList.add(new Announcement.fromJson(responseJson[key], key));
+          });
+        });
+      });
+    }
+    catch (error) {
+      print("Failed to pull the announcement list! - $error");
+    }
   }
 
   @override
@@ -59,13 +53,14 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
         backgroundColor: mainColor,
         title: new Text("Announcements"),
       ),
+      backgroundColor: currBackgroundColor,
       floatingActionButton: new Visibility(
         visible: _visible,
         child: new FloatingActionButton(
           child: new Icon(Icons.add),
           backgroundColor: mainColor,
           onPressed: () {
-            router.navigateTo(context, '/home/announcement/new', transition: TransitionType.nativeModal);
+            router.navigateTo(context, '/home/announcements/new', transition: TransitionType.nativeModal);
           },
         ),
       ),
@@ -77,13 +72,16 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
                 onTap: () {
-                  selectedAlert = announcementList[index].key;
-                  print(selectedAlert);
-                  router.navigateTo(context, '/home/announcement/view', transition: TransitionType.native);
+                  selectedAnnouncement = announcementList[index];
+                  print(selectedAnnouncement);
+                  router.navigateTo(context, '/home/announcements/details', transition: TransitionType.native);
                 },
                 child: new Column(
                   children: <Widget>[
                     new Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                      color: currCardColor,
+                      elevation: 6.0,
                       child: new Container(
                         padding: EdgeInsets.all(16.0),
                         child: new Row(
@@ -137,7 +135,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         ),
                       ),
                     ),
-                    new Padding(padding: EdgeInsets.all(5.0))
+                    new Padding(padding: EdgeInsets.all(4.0))
                   ],
                 )
             );

@@ -27,6 +27,7 @@ dependencies:
   flutter_linkify: 2.1.0
   fluro: 1.4.0
   progress_indicators: 0.1.2
+  http: ^0.12.0+2
 
 dev_dependencies:
   flutter_test:
