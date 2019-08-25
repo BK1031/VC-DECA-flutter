@@ -12,6 +12,8 @@ String getDbUrl(String ref) {
   return "https://vc-deca.firebaseio.com/$ref/.json";
 }
 
+bool refreshNeeded = false;
+
 List<String> permsList = new List();
 
 String appLegal = """

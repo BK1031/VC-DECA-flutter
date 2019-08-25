@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 import 'package:vc_deca_flutter/models/conference.dart';
 
 class ConferencesPage extends StatefulWidget {
@@ -45,11 +46,20 @@ class _ConferencesPageState extends State<ConferencesPage> {
                   children: <Widget>[
                     new ClipRRect(
                       child: new CachedNetworkImage(
-                        placeholder: (context, url) => new CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => new Icon(Icons.error),
+                        placeholder: (context, url) => new Container(
+                          child: new GlowingProgressIndicator(
+                            child: new Image.asset('images/logo_blue_trans.png', height: 75.0,),
+                          ),
+                        ),
+                        errorWidget: (error, context, url) => new Container(
+                          height: 120.0,
+                          child: new Center(
+                            child: new Image.asset('images/logo_blue_trans.png', color: Colors.red, height: 75.0,),
+                          ),
+                        ),
                         imageUrl: conferenceList[index].imageUrl,
                         height: 120.0,
-                        width: 1000.0,
+                        width: double.infinity,
                         fit: BoxFit.fitWidth,
                       ),
                       borderRadius: BorderRadius.all(Radius.circular(16.0)),

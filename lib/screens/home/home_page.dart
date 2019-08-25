@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:vc_deca_flutter/main.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -12,16 +12,28 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with RouteAware {
   
   final databaseRef = FirebaseDatabase.instance.reference();
   int announcementCount = 0;
   bool _notificationManagerVisible = false;
 
-  _HomePageState() {
+  @override
+  void initState() {
     refreshAnnouncementCount();
   }
-  
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void didPopNext() {
+    refreshAnnouncementCount();
+  }
+
   refreshAnnouncementCount() async {
     announcementCount = 0;
     try {
@@ -34,10 +46,10 @@ class _HomePageState extends State<HomePage> {
       });
     }
     catch (error) {
-      print("Failed to pull the announcement list! - $error");
+      print("Failed to pull announcement count! - $error");
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(

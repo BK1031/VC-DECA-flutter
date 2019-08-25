@@ -11,7 +11,9 @@ import 'package:vc_deca_flutter/screens/events/online_details_page.dart';
 import 'package:vc_deca_flutter/screens/events/roleplay_details_page.dart';
 import 'package:vc_deca_flutter/screens/events/smg_details_page.dart';
 import 'package:vc_deca_flutter/screens/events/written_details_page.dart';
+import 'package:vc_deca_flutter/screens/home/announcement_details_page.dart';
 import 'package:vc_deca_flutter/screens/home/announcement_page.dart';
+import 'package:vc_deca_flutter/screens/home/new_announcement_page.dart';
 import 'package:vc_deca_flutter/screens/settings/about_page.dart';
 import 'package:vc_deca_flutter/screens/startup/network_cheker.dart';
 import 'package:vc_deca_flutter/screens/startup/onboarding_page.dart';
@@ -20,6 +22,8 @@ import 'user_info.dart';
 import 'package:fluro/fluro.dart';
 import 'package:vc_deca_flutter/tab_bar_controller.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
+
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 void main() {
   // STARTUP ROUTES
@@ -49,10 +53,10 @@ void main() {
     return new AnnouncementPage();
   }));
   router.define('/home/announcements/new', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    return new Container();
+    return new NewAnnouncementPage();
   }));
   router.define('/home/announcements/details', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    return new Container();
+    return new AnnouncementDetailsPage();
   }));
 
   // CONFERENCE ROUTES
@@ -92,6 +96,7 @@ void main() {
     title: "VC DECA",
     home: NetworkChecker(),
     onGenerateRoute: router.generator,
+    navigatorObservers: [routeObserver],
     debugShowCheckedModeBanner: false,
     theme: mainTheme,
   ));

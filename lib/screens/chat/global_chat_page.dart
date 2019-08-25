@@ -260,7 +260,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
     }
   }
 
-  bool getVisibility(String authorRole, String messageAuthor) {
+  bool getRoleVisibility(String authorRole, String messageAuthor) {
     if (authorRole == "Member") {
       return false;
     }
@@ -283,12 +283,12 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
         linkStyle: TextStyle(
             fontFamily: "Product Sans",
             color: HexColor(messageList[index].messageColor),
-            fontSize: 16.0
+            fontSize: 15.0
         ),
         style: TextStyle(
             fontFamily: "Product Sans",
             color: Colors.black,
-            fontSize: 16.0
+            fontSize: 15.0
         ),
       );
     }
@@ -296,7 +296,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
       return new Container(
         padding: EdgeInsets.all(8.0),
         child: new ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(16.0)),
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
           child: new CachedNetworkImage(
             imageUrl: messageList[index].message,
             height: 300.0,
@@ -369,12 +369,12 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
                                     style: TextStyle(
                                         fontFamily: "Product Sans",
                                         color: HexColor(messageList[index].messageColor),
-                                        fontSize: 16.0
+                                        fontSize: 15.0
                                     ),
                                   ),
                                   new Padding(padding: EdgeInsets.all(4.0)),
                                   new Visibility(
-                                    visible: getVisibility(messageList[index].authorRole, messageList[index].author),
+                                    visible: getRoleVisibility(messageList[index].authorRole, messageList[index].author),
                                     child: new Card(
                                         color: HexColor(messageList[index].messageColor),
                                         child: new Container(
@@ -384,7 +384,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
                                             style: TextStyle(
                                                 fontFamily: "Product Sans",
                                                 color: Colors.white,
-                                                fontSize: 16.0
+                                                fontSize: 15.0
                                             ),
                                           ),
                                         )
@@ -405,7 +405,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
               visible: !canSendMessage,
               child: Container(
                 child: new Text("It looks like you don't have permission to send messages in the this chat!\n\nIf this is a mistake, please contact the admin."),
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(15.0),
               ),
             ),
             new Visibility(
@@ -433,9 +433,9 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
                           child: Container(
                             child: TextField(
                               controller: myController,
-                              textInputAction: TextInputAction.done,
+                              textInputAction: TextInputAction.newline,
                               textCapitalization: TextCapitalization.sentences,
-                              style: TextStyle(fontFamily: "Product Sans", color: Colors.black, fontSize: 16.0),
+                              style: TextStyle(fontFamily: "Product Sans", color: Colors.black, fontSize: 15.0),
                               decoration: InputDecoration.collapsed(
                                   hintText: 'Type your message...',
                                   hintStyle: TextStyle(fontFamily: "Product Sans")
