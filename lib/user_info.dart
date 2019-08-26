@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/models/event_entry.dart';
-
 import 'models/announcement.dart';
+import 'models/conference.dart';
+import 'models/conference_agenda_item.dart';
 
 String name = "";
 String email = "";
@@ -22,11 +23,13 @@ bool staticLocation = false;
 
 Announcement selectedAnnouncement;
 
+Conference selectedConference;
+
 String selectedType = "";
 String selectedCluster = "";
 EventEntry selectedEvent;
 
-String selectedAgenda = "";
+ConferenceAgendaItem selectedAgenda;
 
 String selectedMessage = "";
 String selectedChat = "";

@@ -14,15 +14,15 @@ class Conference {
   Conference(this.shortName, this.fullName, this.body, this.imageUrl,
       this.mapUrl, this.location, this.address, this.lat, this.long);
 
-  Conference.fromSnapshot(DataSnapshot snapshot)
-  : shortName = snapshot.key,
-    fullName = snapshot.value["full"],
-    body = snapshot.value["body"],
-    imageUrl = snapshot.value["imageUrl"],
-    mapUrl = snapshot.value["mapUrl"],
-    location = snapshot.value["location"],
-    address = snapshot.value["address"],
-    lat = snapshot.value["lat"],
-    long = snapshot.value["long"];
+  Conference.fromJson(Map<String, dynamic> json, String key)
+  : shortName = key,
+    fullName = json["full"],
+    body = json["body"],
+    imageUrl = json["imageUrl"],
+    mapUrl = json["mapUrl"],
+    location = json["location"],
+    address = json["address"],
+    lat = json["lat"],
+    long = json["long"];
 
 }

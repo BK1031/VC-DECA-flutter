@@ -66,22 +66,6 @@ class _StockDetailsPageState extends State<StockDetailsPage> {
                                       ],
                                     ),
                                   ),
-                                  new Expanded(
-                                    flex: 3,
-                                    child: new Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        new Text(
-                                          "1-3",
-                                          style: TextStyle(fontSize: 35.0),
-                                        ),
-                                        new Text(
-                                          "Participants",
-                                          style: TextStyle(fontSize: 15.0),
-                                        )
-                                      ],
-                                    ),
-                                  )
                                 ],
                               ),
                             ),

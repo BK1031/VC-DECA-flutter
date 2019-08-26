@@ -5,6 +5,7 @@ import 'package:vc_deca_flutter/screens/auth/auth_checker.dart';
 import 'package:vc_deca_flutter/screens/auth/login_page.dart';
 import 'package:vc_deca_flutter/screens/auth/register_page.dart';
 import 'package:vc_deca_flutter/screens/chat/global_chat_page.dart';
+import 'package:vc_deca_flutter/screens/conferences/conference_view_page.dart';
 import 'package:vc_deca_flutter/screens/events/event_cluster_page.dart';
 import 'package:vc_deca_flutter/screens/events/event_selection_page.dart';
 import 'package:vc_deca_flutter/screens/events/online_details_page.dart';
@@ -64,7 +65,9 @@ void main() {
   }));
 
   // CONFERENCE ROUTES
-
+  router.define('/conference/details', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new ConferenceViewPage();
+  }));
 
   // EVENT ROUTES
   router.define('/event/cluster', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
