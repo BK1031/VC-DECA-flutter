@@ -123,6 +123,8 @@ class _TabBarControllerState extends State<TabBarController> {
       // Subscribe to Topics
       FirebaseMessaging().subscribeToTopic("ALL_DEVICES");
       print("Subscribed to ALL_DEVICES");
+      FirebaseMessaging().subscribeToTopic(role.toUpperCase());
+      print("Subscribed to ${role.toUpperCase()}");
       if (userPerms.contains("CHAT_VIEW")) {
         FirebaseMessaging().subscribeToTopic("GLOBAL_CHAT");
         print("Subscribed to GLOBAL_CHAT");

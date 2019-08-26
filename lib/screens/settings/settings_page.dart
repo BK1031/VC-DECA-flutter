@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vc_deca_flutter/screens/auth/auth_functions.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
@@ -156,7 +157,13 @@ class _SettingsPageState extends State<SettingsPage> {
                   new ListTile(
                     title: new Text("Help", style: TextStyle(fontFamily: "Product Sans",)),
                     trailing: new Icon(Icons.arrow_forward_ios, color: mainColor),
-                    onTap: () {
+                    onTap: () async {
+                      const url = 'https://github.com/BK1031/VC-DECA-flutter/wiki/Help';
+                      if (await canLaunch(url)) {
+                      await launch(url);
+                      } else {
+                      throw 'Could not launch $url';
+                      }
                     },
                   ),
                   new ListTile(
@@ -219,17 +226,20 @@ class _SettingsPageState extends State<SettingsPage> {
                       });
                     },
                   ),
-                  new SwitchListTile.adaptive(
-                    activeColor: mainColor,
-                    activeTrackColor: mainColor,
-                    title: new Text("Dark Mode", style: TextStyle(fontFamily: "Product Sans",)),
-                    value: darkMode,
-                    onChanged: (bool value) {
-                      setState(() {
-                        darkMode = value;
-                        FirebaseDatabase.instance.reference().child("users").child(userID).update({"darkMode": darkMode});
-                      });
-                    },
+                  new Visibility(
+                    visible: _devVisible,
+                    child: new SwitchListTile.adaptive(
+                      activeColor: mainColor,
+                      activeTrackColor: mainColor,
+                      title: new Text("Dark Mode", style: TextStyle(fontFamily: "Product Sans",)),
+                      value: darkMode,
+                      onChanged: (bool value) {
+                        setState(() {
+                          darkMode = value;
+                          FirebaseDatabase.instance.reference().child("users").child(userID).update({"darkMode": darkMode});
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -248,13 +258,25 @@ class _SettingsPageState extends State<SettingsPage> {
                   new ListTile(
                     title: new Text("Provide Feedback", style: TextStyle(fontFamily: "Product Sans",)),
                     trailing: new Icon(Icons.arrow_forward_ios, color: mainColor),
-                    onTap: () {
+                    onTap: () async {
+                      const url = 'https://github.com/BK1031/VC-DECA-flutter/issues';
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
                     },
                   ),
                   new ListTile(
                     title: new Text("Report a Bug", style: TextStyle(fontFamily: "Product Sans",)),
                     trailing: new Icon(Icons.arrow_forward_ios, color: mainColor),
-                    onTap: () {
+                    onTap: () async {
+                      const url = 'https://github.com/BK1031/VC-DECA-flutter/issues';
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
                     },
                   ),
                 ],

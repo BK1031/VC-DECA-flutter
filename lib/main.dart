@@ -14,6 +14,7 @@ import 'package:vc_deca_flutter/screens/events/written_details_page.dart';
 import 'package:vc_deca_flutter/screens/home/announcement_details_page.dart';
 import 'package:vc_deca_flutter/screens/home/announcement_page.dart';
 import 'package:vc_deca_flutter/screens/home/new_announcement_page.dart';
+import 'package:vc_deca_flutter/screens/home/notification_manager_page.dart';
 import 'package:vc_deca_flutter/screens/settings/about_page.dart';
 import 'package:vc_deca_flutter/screens/startup/network_cheker.dart';
 import 'package:vc_deca_flutter/screens/startup/onboarding_page.dart';
@@ -57,6 +58,9 @@ void main() {
   }));
   router.define('/home/announcements/details', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new AnnouncementDetailsPage();
+  }));
+  router.define('/home/notification-manager', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new NotificationManagerPage();
   }));
 
   // CONFERENCE ROUTES

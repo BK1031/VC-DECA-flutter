@@ -1,9 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:vc_deca_flutter/models/conference.dart';
+import 'package:vc_deca_flutter/utils/config.dart';
 
 class ConferencesPage extends StatefulWidget {
   @override
@@ -23,6 +25,24 @@ class _ConferencesPageState extends State<ConferencesPage> {
       });
     });
   }
+
+  void missingDataDialog() {
+    showCupertinoDialog(context: context, builder: (BuildContext context) {
+      return new CupertinoAlertDialog(
+        title: new Text("Missing Information"),
+        content: new Text(
+            '\nIt looks like this conference listing is missing some information. Please check again later.'),
+        actions: <Widget>[
+          new CupertinoDialogAction(
+            child: new Text("OK"),
+            onPressed: () async {
+              router.pop(context);
+            },
+          ),
+        ],
+      );
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -33,7 +53,8 @@ class _ConferencesPageState extends State<ConferencesPage> {
         itemBuilder: (BuildContext context, int index) {
           return new GestureDetector(
             onTap: () {
-              // TODO: Implement onTap callback here
+              // TODO: Implement the actual callback
+              missingDataDialog();
             },
             child: new Padding(
               padding: new EdgeInsets.only(bottom: 4.0),
