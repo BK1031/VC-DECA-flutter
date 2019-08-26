@@ -79,7 +79,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> with RouteAware {
       ),
       body: new Container(
         padding: EdgeInsets.all(16.0),
-        color: Colors.white,
         child: new Column(
           children: <Widget>[
             new Visibility(
