@@ -24,6 +24,7 @@ bool staticLocation = false;
 Announcement selectedAnnouncement;
 
 Conference selectedConference;
+String selectedImage = "";
 
 String selectedType = "";
 String selectedCluster = "";

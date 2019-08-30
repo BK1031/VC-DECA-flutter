@@ -48,7 +48,7 @@ class _ConferenceWinnersPageState extends State<ConferenceWinnersPage> {
           new Visibility(
             visible: (winnerList.length == 0),
             child: new Text(
-              "Nothing to see here!\nCheck back later for conference schedule listings.",
+              "Nothing to see here!\nCheck back later for conference winners.",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: mainColor,
