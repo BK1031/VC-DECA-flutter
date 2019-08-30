@@ -68,6 +68,21 @@ void main() {
   router.define('/conference/details', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new ConferenceViewPage();
   }));
+  router.define('/conference/details/location-map', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new MapLocationView();
+  }));
+  router.define('/conference/details/hotel-map', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new HotelMapView();
+  }));
+  router.define('/conference/details/announcements', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new ConferenceAnnouncementsPage();
+  }));
+  router.define('/conference/details/competitive-events', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new CompetitiveEventsPage();
+  }));
+  router.define('/conference/details/site', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new ConferenceSitePage();
+  }));
 
   // EVENT ROUTES
   router.define('/event/cluster', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {

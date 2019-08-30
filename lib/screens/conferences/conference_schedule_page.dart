@@ -17,7 +17,6 @@ class _ConferenceSchedulePageState extends State<ConferenceSchedulePage> {
 
   List<ConferenceAgendaItem> agendaList = new List();
 
-
   @override
   void initState() {
     refreshAgenda();
@@ -64,57 +63,64 @@ class _ConferenceSchedulePageState extends State<ConferenceSchedulePage> {
                 return GestureDetector(
                   onTap: () {
                     selectedAgenda = agendaList[index];
-                    router.navigateTo(context, '/conferenceScheduleView', transition: TransitionType.native);
+                    router.navigateTo(context, '/conference/details/agenda', transition: TransitionType.native);
                   },
-                  child: new Card(
-                    child: new Container(
-                      padding: EdgeInsets.all(16.0),
-                      child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new Container(
-                              child: new Text(
-                                agendaList[index].time,
-                                style: TextStyle(color: mainColor, fontSize: 17.0, fontWeight: FontWeight.bold, fontFamily: "Product Sans"),
-                              )
-                          ),
-                          new Padding(padding: EdgeInsets.all(5.0)),
-                          new Column(
-                            children: <Widget>[
-                              new Container(
-                                width: MediaQuery.of(context).size.width - 185,
+                  child: new Container(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: new Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                      color: currCardColor,
+                      elevation: 6.0,
+                      child: new Container(
+                        padding: EdgeInsets.all(16.0),
+                        child: new Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            new Container(
                                 child: new Text(
-                                  agendaList[index].title,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontFamily: "Product Sans",
-                                    fontSize: 17.0,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ),
-                              new Container(
-                                width: MediaQuery.of(context).size.width - 185,
-                                child: new Text(
-                                  agendaList[index].location,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      fontFamily: "Product Sans",
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.grey
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          new Container(
-                            child: new Icon(
-                              Icons.arrow_forward_ios,
-                              color: mainColor,
+                                  agendaList[index].time,
+                                  style: TextStyle(color: mainColor, fontSize: 17.0, fontWeight: FontWeight.bold, fontFamily: "Product Sans"),
+                                )
                             ),
-                          ),
-                        ],
+                            new Padding(padding: EdgeInsets.all(4.0)),
+                            new Column(
+                              children: <Widget>[
+                                new Container(
+                                  width: MediaQuery.of(context).size.width - 185,
+                                  child: new Text(
+                                    agendaList[index].title,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontFamily: "Product Sans",
+                                      fontSize: 17.0,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                                new Padding(padding: EdgeInsets.all(2.0)),
+                                new Container(
+                                  width: MediaQuery.of(context).size.width - 185,
+                                  child: new Text(
+                                    agendaList[index].location,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontFamily: "Product Sans",
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.grey
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            new Container(
+                              child: new Icon(
+                                Icons.arrow_forward_ios,
+                                color: mainColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

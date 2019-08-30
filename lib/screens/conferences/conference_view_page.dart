@@ -1,6 +1,6 @@
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vc_deca_flutter/screens/conferences/conference_winners_page.dart';
@@ -8,7 +8,6 @@ import 'package:vc_deca_flutter/user_info.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
-
 import 'conference_media_page.dart';
 import 'conference_schedule_page.dart';
 
@@ -65,55 +64,47 @@ class ConferenceOverview extends StatefulWidget {
 
 class _ConferenceOverviewState extends State<ConferenceOverview> {
 
-  final databaseRef = FirebaseDatabase.instance.reference();
-  final storageRef = FirebaseStorage.instance.ref();
-
-  String full = "";
-  String desc = "";
-  String date = "";
-  String location = "";
-  String address = "";
-  double lat = 0.0;
-  double long = 0.0;
-
-  _ConferenceOverviewState() {
-    databaseRef.child("conferences").child(selectedConference.shortName).once().then((DataSnapshot snapshot) {
-      var conferenceDetails = snapshot.value;
-      setState(() {
-        full = conferenceDetails["full"];
-        desc = conferenceDetails["desc"];
-        location = conferenceDetails["location"];
-        date = conferenceDetails["date"];
-        address = conferenceDetails["address"];
-        lat = conferenceDetails["lat"];
-        long = conferenceDetails["long"];
-      });
-    });
-  }
-
   void missingDataDialog() {
     // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Bruh moment"),
+    if (Platform.isIOS) {
+      showCupertinoDialog(context: context, builder: (context) {
+        return CupertinoAlertDialog(
+          title: new Text("Bruh Moment"),
           content: new Text(
-            "It looks like there was an error retrieving this file. Please check back later.",
-            style: TextStyle(fontFamily: "Product Sans", fontSize: 14.0),
-          ),
+              '\nIt looks like this file may not have been added yet. Please check back later.'),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text("GOT IT"),
-              onPressed: () {
-                Navigator.of(context).pop();
+            new CupertinoDialogAction(
+              child: new Text("OK"),
+              onPressed: () async {
+                router.pop(context);
               },
             ),
           ],
         );
-      },
-    );
+      });
+    }
+    else if (Platform.isAndroid) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          // return object of type Dialog
+          return AlertDialog(
+            title: new Text("Bruh moment"),
+            content: new Text(
+              "It looks like this file may not have been added yet. Please check back later.",
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text("GOT IT"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -126,7 +117,7 @@ class _ConferenceOverviewState extends State<ConferenceOverview> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               new Text(
-                full,
+                selectedConference.fullName,
                 style: TextStyle(
                   fontFamily: "Product Sans",
                   fontWeight: FontWeight.bold,
@@ -136,7 +127,7 @@ class _ConferenceOverviewState extends State<ConferenceOverview> {
               ),
               new Padding(padding: EdgeInsets.all(4.0)),
               new Text(
-                date,
+                selectedConference.date,
                 style: TextStyle(
                   fontFamily: "Product Sans",
                   fontWeight: FontWeight.normal,
@@ -147,7 +138,7 @@ class _ConferenceOverviewState extends State<ConferenceOverview> {
               ),
               new Padding(padding: EdgeInsets.all(4.0)),
               new Text(
-                desc,
+                selectedConference.desc,
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 18.0,
@@ -167,17 +158,15 @@ class _ConferenceOverviewState extends State<ConferenceOverview> {
                 ),
               ),
               new ListTile(
-                title: Text(location, style: TextStyle(fontFamily: "Product Sans"),),
-                subtitle: Text(address, style: TextStyle(fontFamily: "Product Sans"),),
+                title: Text(selectedConference.location, style: TextStyle(fontFamily: "Product Sans"),),
+                subtitle: Text(selectedConference.address, style: TextStyle(fontFamily: "Product Sans"),),
                 onTap: () {
-                  databaseRef.child("conferences").child(selectedConference.shortName).child("mapUrl").once().then((DataSnapshot snapshot) {
-                    if (snapshot.value != null) {
-                      router.navigateTo(context, '/mapUrl', transition: TransitionType.native);
-                    }
-                    else {
-                      missingDataDialog();
-                    }
-                  });
+                  if (selectedConference.mapUrl != "") {
+                    router.navigateTo(context, '/conference/details/location-map', transition: TransitionType.native);
+                  }
+                  else {
+                    missingDataDialog();
+                  }
                 },
               ),
               new Divider(height: 20.0, color: mainColor),
@@ -192,14 +181,12 @@ class _ConferenceOverviewState extends State<ConferenceOverview> {
               new ListTile(
                 title: new Text("Hotel Map", style: TextStyle(fontFamily: "Product Sans"),),
                 onTap: () {
-                  databaseRef.child("conferences").child(selectedConference.shortName).child("hotelMap").once().then((DataSnapshot snapshot) {
-                    if (snapshot.value != null) {
-                      router.navigateTo(context, '/hotelMap', transition: TransitionType.native);
-                    }
-                    else {
-                      missingDataDialog();
-                    }
-                  });
+                  if (selectedConference.hotelMapUrl != "") {
+                    router.navigateTo(context, '/conference/details/hotel-map', transition: TransitionType.native);
+                  }
+                  else {
+                    missingDataDialog();
+                  }
                 },
                 trailing: new Icon(
                   Icons.arrow_forward_ios,
@@ -210,14 +197,12 @@ class _ConferenceOverviewState extends State<ConferenceOverview> {
               new ListTile(
                 title: new Text("Announcements", style: TextStyle(fontFamily: "Product Sans"),),
                 onTap: () {
-                  databaseRef.child("conferences").child(selectedConference.shortName).child("alerts").once().then((DataSnapshot snapshot) {
-                    if (snapshot.value != null) {
-                      router.navigateTo(context, '/conferenceAnnouncements', transition: TransitionType.native);
-                    }
-                    else {
-                      missingDataDialog();
-                    }
-                  });
+                  if (selectedConference.alertsUrl != "") {
+                    router.navigateTo(context, '/conference/details/announcements', transition: TransitionType.native);
+                  }
+                  else {
+                    missingDataDialog();
+                  }
                 },
                 trailing: new Icon(
                   Icons.arrow_forward_ios,
@@ -227,16 +212,12 @@ class _ConferenceOverviewState extends State<ConferenceOverview> {
               new ListTile(
                 title: new Text("Competitive Event Schedule", style: TextStyle(fontFamily: "Product Sans"),),
                 onTap: () {
-                  databaseRef.child("conferences").child(selectedConference.shortName).child("eventsUrl").once().then((DataSnapshot snapshot) {
-                    if (snapshot.value != null) {
-                      var url = snapshot.value;
-                      launch(url);
-                    }
-                    else {
-                      missingDataDialog();
-                    }
-                  });
-//                router.navigateTo(context, '/compEventSite', transition: TransitionType.native);
+                  if (selectedConference.eventsUrl != "") {
+                    router.navigateTo(context, '/conference/details/competitive-events', transition: TransitionType.native);
+                  }
+                  else {
+                    missingDataDialog();
+                  }
                 },
                 trailing: new Icon(
                   Icons.arrow_forward_ios,
@@ -246,7 +227,12 @@ class _ConferenceOverviewState extends State<ConferenceOverview> {
               new ListTile(
                 title: new Text("Check out the official ${selectedConference.shortName.split(" ")[1]} website", style: TextStyle(fontFamily: "Product Sans", color: mainColor), textAlign: TextAlign.center,),
                 onTap: () {
-                  router.navigateTo(context, '/conferenceSite', transition: TransitionType.native);
+                  if (selectedConference.siteUrl != "") {
+                    router.navigateTo(context, '/conference/details/site', transition: TransitionType.native);
+                  }
+                  else {
+                    missingDataDialog();
+                  }
                 },
               )
             ],
@@ -262,18 +248,6 @@ class HotelMapView extends StatefulWidget {
 }
 
 class _HotelMapViewState extends State<HotelMapView> {
-  final databaseRef = FirebaseDatabase.instance.reference();
-  final storageRef = FirebaseStorage.instance.ref();
-
-  String url;
-
-  _HotelMapViewState() {
-    databaseRef.child("conferences").child(selectedConference.shortName).child("hotelMap").once().then((DataSnapshot snapshot) {
-      setState(() {
-        url = snapshot.value;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -282,14 +256,8 @@ class _HotelMapViewState extends State<HotelMapView> {
         backgroundColor: mainColor,
         title: new Text("Hotel Map"),
         centerTitle: true,
-        textTheme: TextTheme(
-            title: TextStyle(
-                fontFamily: "Product Sans",
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold)
-        ),
       ),
-      url: url,
+      url: selectedConference.hotelMapUrl,
       withZoom: true,
     );
   }
@@ -302,34 +270,15 @@ class ConferenceAnnouncementsPage extends StatefulWidget {
 
 class _ConferenceAnnouncementsPageState extends State<ConferenceAnnouncementsPage> {
 
-  final databaseRef = FirebaseDatabase.instance.reference();
-  final storageRef = FirebaseStorage.instance.ref();
-
-  String url;
-
-  _ConferenceAnnouncementsPageState() {
-    databaseRef.child("conferences").child(selectedConference.shortName).child("alerts").once().then((DataSnapshot snapshot) {
-      setState(() {
-        url = snapshot.value;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return new WebviewScaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
-        title: new Text("Announcements"),
+        title: new Text("${selectedConference.shortName.split(" ")[1]} Announcements"),
         centerTitle: true,
-        textTheme: TextTheme(
-            title: TextStyle(
-                fontFamily: "Product Sans",
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold)
-        ),
       ),
-      url: url,
+      url: selectedConference.alertsUrl,
       withZoom: true,
     );
   }
@@ -342,19 +291,6 @@ class MapLocationView extends StatefulWidget {
 
 class _MapLocationViewState extends State<MapLocationView> {
 
-  final databaseRef = FirebaseDatabase.instance.reference();
-  final storageRef = FirebaseStorage.instance.ref();
-
-  String url;
-
-  _MapLocationViewState() {
-    databaseRef.child("conferences").child(selectedConference.shortName).child("mapUrl").once().then((DataSnapshot snapshot) {
-      setState(() {
-        url = snapshot.value;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return WebviewScaffold(
@@ -362,15 +298,11 @@ class _MapLocationViewState extends State<MapLocationView> {
         backgroundColor: mainColor,
         title: new Text("Map View"),
         centerTitle: true,
-        textTheme: TextTheme(
-            title: TextStyle(
-                fontFamily: "Product Sans",
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold)
-        ),
       ),
-      url: url,
+      url: selectedConference.mapUrl,
       withZoom: true,
+      supportMultipleWindows: true,
+      geolocationEnabled: true,
     );
   }
 }
@@ -382,19 +314,6 @@ class ConferenceSitePage extends StatefulWidget {
 
 class _ConferenceSitePageState extends State<ConferenceSitePage> {
 
-  final databaseRef = FirebaseDatabase.instance.reference();
-  final storageRef = FirebaseStorage.instance.ref();
-
-  String url;
-
-  _ConferenceSitePageState() {
-    databaseRef.child("conferences").child(selectedConference.shortName).child("site").once().then((DataSnapshot snapshot) {
-      setState(() {
-        url = snapshot.value;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return WebviewScaffold(
@@ -402,14 +321,8 @@ class _ConferenceSitePageState extends State<ConferenceSitePage> {
         backgroundColor: mainColor,
         title: new Text("${selectedConference.shortName.split(" ")[1]} Site"),
         centerTitle: true,
-        textTheme: TextTheme(
-            title: TextStyle(
-                fontFamily: "Product Sans",
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold)
-        ),
       ),
-      url: url,
+      url: selectedConference.siteUrl,
       withZoom: true,
     );
   }
@@ -422,19 +335,6 @@ class CompetitiveEventsPage extends StatefulWidget {
 
 class _CompetitiveEventsPageState extends State<CompetitiveEventsPage> {
 
-  final databaseRef = FirebaseDatabase.instance.reference();
-  final storageRef = FirebaseStorage.instance.ref();
-
-  String url;
-
-  _CompetitiveEventsPageState() {
-    databaseRef.child("conferences").child(selectedConference.shortName).child("eventsUrl").once().then((DataSnapshot snapshot) {
-      setState(() {
-        url = snapshot.value;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return WebviewScaffold(
@@ -442,14 +342,8 @@ class _CompetitiveEventsPageState extends State<CompetitiveEventsPage> {
         backgroundColor: mainColor,
         title: new Text("Events Schedule"),
         centerTitle: true,
-        textTheme: TextTheme(
-            title: TextStyle(
-                fontFamily: "Product Sans",
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold)
-        ),
       ),
-      url: url,
+      url: selectedConference.eventsUrl,
       withZoom: true,
       supportMultipleWindows: true,
     );
