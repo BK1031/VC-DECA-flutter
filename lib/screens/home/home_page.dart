@@ -41,11 +41,14 @@ class _HomePageState extends State<HomePage> with RouteAware {
     announcementCount = 0;
     try {
       await http.get(getDbUrl("alerts")).then((response) {
-        var responseJson = jsonDecode(response.body);
-        setState(() {
-          announcementCount = responseJson.length;
+        Map responseJson = jsonDecode(response.body);
+        responseJson.keys.forEach((key) {
+          setState(() {
+            if (responseJson[key]["topic"].toString().contains(role.toUpperCase()) || responseJson[key]["topic"].toString().contains("ALL_DEVICES") || userPerms.contains('ADMIN')) {
+              announcementCount++;
+            }
+          });
         });
-        print("Found $announcementCount Announcements!");
       });
     }
     catch (error) {

@@ -48,7 +48,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> with RouteAware {
         Map responseJson = jsonDecode(response.body);
         responseJson.keys.forEach((key) {
           setState(() {
-            announcementList.add(new Announcement.fromJson(responseJson[key], key));
+            if (responseJson[key]["topic"].toString().contains(role.toUpperCase()) || responseJson[key]["topic"].toString().contains("ALL_DEVICES") || userPerms.contains('ADMIN')) {
+              announcementList.add(new Announcement.fromJson(responseJson[key], key));
+            }
           });
         });
       });

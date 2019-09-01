@@ -15,7 +15,6 @@ bool notifications = true;
 bool chatNotifications = true;
 
 String role = "Member";
-String title = "Member";
 List<String> userPerms = new List();
 
 bool staticLocation = false;

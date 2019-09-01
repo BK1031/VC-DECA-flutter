@@ -45,12 +45,6 @@ class _NotificationManagerPageState extends State<NotificationManagerPage> {
     return returnWidget;
   }
 
-  String truncateWithEllipsis(int cutoff, String myString) {
-    return (myString.length <= cutoff)
-        ? myString
-        : '${myString.substring(0, cutoff)}...';
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

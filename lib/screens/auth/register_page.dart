@@ -296,7 +296,6 @@ class _EmailVerificationAlertState extends State<EmailVerificationAlert> {
                       "name": name,
                       "email": email,
                       "role": role,
-                      "title": title,
                       "userID": userID,
                       "chapGroup": "Not in a Group",
                       "mentorGroup": "Not in a Group",

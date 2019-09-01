@@ -112,6 +112,7 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
   String alertBody = "";
 
   bool sendNotif = false;
+  List<String> topic = ["","ALL_DEVICES"];
 
   double visibiltiyBoxHeight = 0.0;
 
@@ -123,13 +124,15 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
         "title": title,
         "body": alert,
         "date": new DateFormat('MM/dd/yyyy hh:mm aaa').format(new DateTime.now()),
-        "author": name
+        "author": name,
+        "topic": topic
       });
       if (sendNotif) {
-        print("Notify");
+        print("Notification added to queue");
         FirebaseDatabase.instance.reference().child("notifications").push().update({
           "title": "New Announcement",
           "body": title,
+          "topic": topic
         });
       }
       router.pop(context);
@@ -137,6 +140,16 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
     else {
       print("Missing Data");
     }
+  }
+
+  Widget getTrailingCheck(String val) {
+    Widget returnWidget = Container(child: new Text(""),);
+    if (topic.contains(val)) {
+      setState(() {
+        returnWidget = Icon(Icons.check, color: mainColor);
+      });
+    }
+    return returnWidget;
   }
 
   @override
@@ -161,50 +174,131 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
               trailing: new Text("All Members"),
               onTap: () {
                 setState(() {
-                  visibiltiyBoxHeight = 150;
+                  if (visibiltiyBoxHeight == 0.0) {
+                    visibiltiyBoxHeight = 195;
+                  }
+                  else {
+                    visibiltiyBoxHeight = 0.0;
+                  }
                 });
               },
             ),
             new AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              height: visibiltiyBoxHeight,
-              child: new Scrollbar(
-                child: new ListView(
-                  padding: EdgeInsets.only(right: 16.0, left: 16.0),
-                  children: <Widget>[
-                    new ListTile(
-                      title: new Text("All Members"),
-                      trailing: new Icon(Icons.check, color: mainColor,),
-                      onTap: () {
-                        setState(() {
-                          visibiltiyBoxHeight = 0.0;
-                        });
-                      },
-                    ),
-                    new ListTile(
-                      title: new Text("Advisors"),
-                      onTap: () {},
-                    ),
-                    new ListTile(
-                      title: new Text("Officers"),
-                      onTap: () {},
-                    ),
-                    new ListTile(
-                      title: new Text("Committee Members"),
-                      onTap: () {},
-                    ),
-                    new ListTile(
-                      title: new Text("Cluster Mentors"),
-                      onTap: () {},
-                    ),
-                    new ListTile(
-                      title: new Text("Members"),
-                      onTap: () {},
-                    ),
-                  ],
-                ),
-              )
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                height: visibiltiyBoxHeight,
+                child: new Scrollbar(
+                  child: new ListView(
+                    padding: EdgeInsets.only(right: 16.0, left: 16.0),
+                    children: <Widget>[
+                      new ListTile(
+                        title: new Text("All Members"),
+                        trailing: getTrailingCheck('ALL_DEVICES'),
+                        onTap: () {
+                          setState(() {
+                            if (!topic.contains('ALL_DEVICES')) {
+                              topic = ["","ALL_DEVICES"];
+                            }
+                            else {
+                              topic.remove('ALL_DEVICES');
+                            }
+                          });
+                          print(topic);
+                        },
+                      ),
+                      new ListTile(
+                        title: new Text("Advisors"),
+                        trailing: getTrailingCheck('ADVISOR'),
+                        onTap: () {
+                          setState(() {
+                            if (!topic.contains('ADVISOR')) {
+                              topic.add('ADVISOR');
+                              if (topic.contains('ALL_DEVICES')) {
+                                topic.remove('ALL_DEVICES');
+                              }
+                            }
+                            else {
+                              topic.remove('ADVISOR');
+                            }
+                          });
+                          print(topic);
+                        },
+                      ),
+                      new ListTile(
+                        title: new Text("Officers"),
+                        trailing: getTrailingCheck('OFFICER'),
+                        onTap: () {
+                          setState(() {
+                            if (!topic.contains('OFFICER')) {
+                              topic.add('OFFICER');
+                              if (topic.contains('ALL_DEVICES')) {
+                                topic.remove('ALL_DEVICES');
+                              }
+                            }
+                            else {
+                              topic.remove('OFFICER');
+                            }
+                          });
+                          print(topic);
+                        },
+                      ),
+                      new ListTile(
+                        title: new Text("Committee Members"),
+                        trailing: getTrailingCheck('COMMITTEE MEMBER'),
+                        onTap: () {
+                          setState(() {
+                            if (!topic.contains('COMMITTEE MEMBER')) {
+                              topic.add('COMMITTEE MEMBER');
+                              if (topic.contains('ALL_DEVICES')) {
+                                topic.remove('ALL_DEVICES');
+                              }
+                            }
+                            else {
+                              topic.remove('COMMITTEE MEMBER');
+                            }
+                          });
+                          print(topic);
+                        },
+                      ),
+                      new ListTile(
+                        title: new Text("Cluster Mentors"),
+                        trailing: getTrailingCheck('CLUSTER MENTOR'),
+                        onTap: () {
+                          setState(() {
+                            if (!topic.contains('CLUSTER MENTOR')) {
+                              topic.add('CLUSTER MENTOR');
+                              if (topic.contains('ALL_DEVICES')) {
+                                topic.remove('ALL_DEVICES');
+                              }
+                            }
+                            else {
+                              topic.remove('CLUSTER MENTOR');
+                            }
+                          });
+                          print(topic);
+                        },
+                      ),
+                      new ListTile(
+                        title: new Text("Members"),
+                        trailing: getTrailingCheck('MEMBER'),
+                        onTap: () {
+                          setState(() {
+                            if (!topic.contains('MEMBER')) {
+                              topic.add('MEMBER');
+                              if (topic.contains('ALL_DEVICES')) {
+                                topic.remove('ALL_DEVICES');
+                              }
+                            }
+                            else {
+                              topic.remove('MEMBER');
+                            }
+                          });
+                          print(topic);
+                        },
+                      ),
+                    ],
+                  ),
+                )
             ),
             new ListTile(
               leading: sendNotif ? new Icon(Icons.notifications_active) : new Icon(Icons.notifications_off),

@@ -12,7 +12,6 @@ class AuthFunctions {
         var userInfo = snapshot.value;
         email = userInfo["email"];
         role = userInfo["role"];
-        title = userInfo["title"];
         name = userInfo["name"];
         chapGroupID = userInfo["chapGroup"];
         mentorGroupID = userInfo["mentorGroup"];
@@ -51,7 +50,6 @@ class AuthFunctions {
       userID = "";
       chapGroupID = "Not in a Group";
       role = "Member";
-      title = "Member";
       appStatus = "";
       selectedCluster = "";
       profilePic = "https://firebasestorage.googleapis.com/v0/b/vc-deca.appspot.com/o/default.png?alt=media&token=a38584fb-c774-4f75-99ab-71b120c87df1";
