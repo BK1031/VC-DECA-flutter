@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:vc_deca_flutter/user_info.dart';
-import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
 

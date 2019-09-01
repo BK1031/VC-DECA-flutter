@@ -6,7 +6,6 @@ import 'package:progress_indicators/progress_indicators.dart';
 import 'package:vc_deca_flutter/screens/auth/auth_functions.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
-import 'package:vc_deca_flutter/utils/theme.dart';
 
 class AuthChecker extends StatefulWidget {
   @override

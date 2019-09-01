@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:fluro/fluro.dart';
-import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
 

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/models/conference_winner.dart';
 import 'package:vc_deca_flutter/user_info.dart';
@@ -18,6 +17,7 @@ class _ConferenceWinnersPageState extends State<ConferenceWinnersPage> {
 
   @override
   void initState() {
+    super.initState();
     refreshAgenda();
   }
 

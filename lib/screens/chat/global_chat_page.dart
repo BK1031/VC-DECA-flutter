@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluro/fluro.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -30,7 +29,6 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
   ScrollController _scrollController = new ScrollController();
   List<ChatMessage> messageList = new List();
   List<String> noNoWordList = new List();
-  bool _visible = false;
   bool _nsfw = false;
 
   Color sendColor = Colors.grey;

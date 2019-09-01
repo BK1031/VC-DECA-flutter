@@ -1,6 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
-import 'package:vc_deca_flutter/utils/hex_color.dart';
 
 class ChatMessage {
   String key;

@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/screens/auth/auth_checker.dart';
 import 'package:vc_deca_flutter/screens/auth/login_page.dart';
@@ -21,7 +19,6 @@ import 'package:vc_deca_flutter/screens/settings/about_page.dart';
 import 'package:vc_deca_flutter/screens/startup/network_cheker.dart';
 import 'package:vc_deca_flutter/screens/startup/onboarding_page.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
-import 'user_info.dart';
 import 'package:fluro/fluro.dart';
 import 'package:vc_deca_flutter/tab_bar_controller.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';

@@ -4,8 +4,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:progress_indicators/progress_indicators.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
@@ -29,26 +27,12 @@ class _ConferenceMediaPageState extends State<ConferenceMediaPage> {
         _tiles.add(event.snapshot.value);
       });
     });
-    databaseRef.child("allowConferenceImageUpload").once().then((DataSnapshot snapshot) {
+    if (userPerms.contains('CONFERENCE_MEDIA_UPLOAD') || userPerms.contains('ADMIN')) {
       setState(() {
-        _visible = snapshot.value;
+        _visible = true;
       });
-    });
+    }
   }
-
-  List<StaggeredTile> _staggeredTiles = <StaggeredTile>[
-    const StaggeredTile.count(2, 2),
-    const StaggeredTile.count(2, 1),
-    const StaggeredTile.count(1, 2),
-    const StaggeredTile.count(1, 1),
-    const StaggeredTile.count(2, 2),
-    const StaggeredTile.count(1, 2),
-    const StaggeredTile.count(1, 1),
-    const StaggeredTile.count(3, 1),
-    const StaggeredTile.count(1, 1),
-    const StaggeredTile.count(4, 1),
-  ];
-
 
   List<String> _tiles = <String>[];
 
@@ -71,7 +55,7 @@ class _ConferenceMediaPageState extends State<ConferenceMediaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: new Visibility(
-        visible: true,
+        visible: _visible,
         child: new FloatingActionButton(
           child: new Icon(Icons.add),
           onPressed: () {},

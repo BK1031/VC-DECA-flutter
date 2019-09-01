@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/models/event_entry.dart';
 import 'models/announcement.dart';
 import 'models/conference.dart';

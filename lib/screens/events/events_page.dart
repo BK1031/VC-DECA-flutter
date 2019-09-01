@@ -1,5 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
@@ -52,7 +51,6 @@ class _EventsPageState extends State<EventsPage> {
       child: new Column(
         children: <Widget>[
           new Text("Select an event type below."),
-          new Padding(padding: EdgeInsets.only(bottom: 8.0)),
           new Expanded(
             child: new GridView.count(
               crossAxisCount: 2,

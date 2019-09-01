@@ -2,12 +2,12 @@ import 'dart:io';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:vc_deca_flutter/screens/conferences/conference_winners_page.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'conference_media_page.dart';
 import 'conference_schedule_page.dart';
 
@@ -272,14 +272,16 @@ class _ConferenceAnnouncementsPageState extends State<ConferenceAnnouncementsPag
 
   @override
   Widget build(BuildContext context) {
-    return new WebviewScaffold(
+    return new Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
         title: new Text("${selectedConference.shortName.split(" ")[1]} Announcements"),
-        centerTitle: true,
       ),
-      url: selectedConference.alertsUrl,
-      withZoom: true,
+      backgroundColor: currBackgroundColor,
+      body: new WebView(
+        initialUrl: selectedConference.alertsUrl,
+        javascriptMode: JavascriptMode.unrestricted,
+      ),
     );
   }
 }
@@ -293,16 +295,16 @@ class _MapLocationViewState extends State<MapLocationView> {
 
   @override
   Widget build(BuildContext context) {
-    return WebviewScaffold(
+    return new Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
         title: new Text("Map View"),
-        centerTitle: true,
       ),
-      url: selectedConference.mapUrl,
-      withZoom: true,
-      supportMultipleWindows: true,
-      geolocationEnabled: true,
+      backgroundColor: currBackgroundColor,
+      body: new WebView(
+        initialUrl: selectedConference.mapUrl,
+        javascriptMode: JavascriptMode.unrestricted,
+      ),
     );
   }
 }

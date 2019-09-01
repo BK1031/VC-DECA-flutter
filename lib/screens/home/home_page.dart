@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:http/http.dart' as http;
-import 'package:vc_deca_flutter/utils/theme.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,6 +22,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
 
   @override
   void initState() {
+    super.initState();
     refreshAnnouncementCount();
   }
 

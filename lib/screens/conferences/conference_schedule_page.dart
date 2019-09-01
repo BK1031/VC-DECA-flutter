@@ -19,6 +19,7 @@ class _ConferenceSchedulePageState extends State<ConferenceSchedulePage> {
 
   @override
   void initState() {
+    super.initState();
     refreshAgenda();
   }
 

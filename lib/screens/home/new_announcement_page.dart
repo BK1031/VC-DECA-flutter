@@ -1,7 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:vc_deca_flutter/main.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
 
@@ -93,6 +92,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
   }
 }
 
+// ignore: must_be_immutable
 class ConfirmSheet extends StatefulWidget {
 
   String alertTitle = "";

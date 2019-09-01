@@ -57,7 +57,7 @@ class _TabBarControllerState extends State<TabBarController> {
     });
   }
 
-  void firebaseCloudMessaging_Listeners() {
+  void firebaseCloudMessagingListeners() {
     if (Platform.isIOS) iOS_Permission();
     _firebaseMessaging.getToken().then((token){
       print("FCM Token: " + token);
@@ -76,6 +76,7 @@ class _TabBarControllerState extends State<TabBarController> {
     );
   }
 
+//   ignore: non_constant_identifier_names
   void iOS_Permission() {
     _firebaseMessaging.requestNotificationPermissions(
         IosNotificationSettings(sound: true, badge: true, alert: true)
@@ -90,7 +91,7 @@ class _TabBarControllerState extends State<TabBarController> {
   @override
   void initState() {
     super.initState();
-    firebaseCloudMessaging_Listeners();
+    firebaseCloudMessagingListeners();
     _pageController = new PageController();
     // Get Session Info
     databaseRef.child("stableVersion").once().then((DataSnapshot snapshot) {

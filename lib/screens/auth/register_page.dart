@@ -5,7 +5,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:progress_indicators/progress_indicators.dart';
-import 'package:vc_deca_flutter/user_info.dart' as prefix0;
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
 

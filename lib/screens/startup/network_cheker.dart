@@ -1,10 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:progress_indicators/progress_indicators.dart';
-import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
-import 'package:vc_deca_flutter/utils/theme.dart';
 
 class NetworkChecker extends StatefulWidget {
   @override
