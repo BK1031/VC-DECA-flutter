@@ -1,10 +1,12 @@
 import 'dart:convert';
-
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
 import 'package:http/http.dart' as http;
+import 'package:webview_flutter/webview_flutter.dart';
 
 class WrittenDetailsPage extends StatefulWidget {
   @override
@@ -154,7 +156,107 @@ class _WrittenDetailsPageState extends State<WrittenDetailsPage> {
                         padding: EdgeInsets.all(16.0),
                         child: new Column(
                           children: <Widget>[
-
+                            new Container(
+                              width: double.infinity,
+                              height: 100.0,
+                              child: new Row(
+                                children: <Widget>[
+                                  new Expanded(
+                                    flex: 3,
+                                    child: new GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => new Scaffold(
+                                            appBar: AppBar(
+                                              backgroundColor: eventColor,
+                                              title: new Text("${selectedEvent.eventShort} Guidelines"),
+                                            ),
+                                            backgroundColor: currBackgroundColor,
+                                            body: new WebView(
+                                              initialUrl: guidelinesUrl,
+                                              javascriptMode: JavascriptMode.unrestricted,
+                                            ),
+                                          )),
+                                        );
+                                      },
+                                      child: new Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          new Icon(Icons.format_list_bulleted, size: 50.0,),
+                                          new Text(
+                                            "Guidelines",
+                                            style: TextStyle(fontSize: 15.0),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  new Expanded(
+                                    flex: 3,
+                                    child: new GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => new Scaffold(
+                                            appBar: AppBar(
+                                              backgroundColor: eventColor,
+                                              title: new Text("${selectedEvent.eventShort} Sample Event"),
+                                            ),
+                                            backgroundColor: currBackgroundColor,
+                                            body: new WebView(
+                                              initialUrl: sampleUrl,
+                                              javascriptMode: JavascriptMode.unrestricted,
+                                            ),
+                                          )),
+                                        );
+                                      },
+                                      child: new Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          new Icon(Icons.library_books, size: 50.0,),
+                                          new Text(
+                                            "Sample Event",
+                                            style: TextStyle(fontSize: 15.0),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  new Expanded(
+                                    flex: 3,
+                                    child: new GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => new Scaffold(
+                                            appBar: AppBar(
+                                              backgroundColor: eventColor,
+                                              title: new Text("${selectedEvent.eventShort} Penalty Points"),
+                                            ),
+                                            backgroundColor: currBackgroundColor,
+                                            body: new WebView(
+                                              initialUrl: penaltyUrl,
+                                              javascriptMode: JavascriptMode.unrestricted,
+                                            ),
+                                          )),
+                                        );
+                                      },
+                                      child: new Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          new Icon(Icons.close, size: 50.0,),
+                                          new Text(
+                                            "Penalty Points",
+                                            style: TextStyle(fontSize: 15.0),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
