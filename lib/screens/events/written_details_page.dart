@@ -261,6 +261,31 @@ class _WrittenDetailsPageState extends State<WrittenDetailsPage> {
                         ),
                       ),
                     ),
+                    new Padding(padding: EdgeInsets.all(4.0)),
+                    new Card(
+                      elevation: 6.0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                      color: currCardColor,
+                      child: new Container(
+                        width: double.infinity,
+                        child: new FlatButton(
+                          child: new Text("COMPETITIVE EVENTS SITE"),
+                          textColor: eventColor,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => new Scaffold(
+                                backgroundColor: currBackgroundColor,
+                                body: new WebView(
+                                  initialUrl: "https://www.deca.org/high-school-programs/high-school-competitive-events/",
+                                  javascriptMode: JavascriptMode.unrestricted,
+                                ),
+                              )),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

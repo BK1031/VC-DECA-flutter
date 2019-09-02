@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/user_info.dart';
+import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import '../../user_info.dart';
 
 class OnlineDetailsPage extends StatefulWidget {
@@ -11,16 +15,28 @@ class OnlineDetailsPage extends StatefulWidget {
 
 class _OnlineDetailsPageState extends State<OnlineDetailsPage> {
 
-  final databaseRef = FirebaseDatabase.instance.reference();
-
   String participants = "";
+  String guidelinesUrl = "";
 
-  _OnlineDetailsPageState() {
-    databaseRef.child("events").child(selectedType).child(selectedCluster).child(selectedEvent.eventShort).once().then((DataSnapshot snapshot) {
-      setState(() {
-        participants = snapshot.value["participants"];
+  @override
+  void initState() {
+    super.initState();
+    refreshAnnouncementCount();
+  }
+
+  void refreshAnnouncementCount() async {
+    try {
+      await http.get(getDbUrl("events/$selectedType/$selectedCluster/${selectedEvent.eventShort}")).then((response) {
+        var responseJson = jsonDecode(response.body);
+        setState(() {
+          participants = responseJson['participants'].toString();
+          guidelinesUrl = responseJson['guidelines'].toString();
+        });
       });
-    });
+    }
+    catch (error) {
+      print("Failed to pull announcement count! - $error");
+    }
   }
 
   @override
@@ -51,10 +67,9 @@ class _OnlineDetailsPageState extends State<OnlineDetailsPage> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
                         color: currCardColor,
                         child: new Container(
-                          padding: EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0, bottom: 16.0),
+                          padding: EdgeInsets.all(16.0),
                           child: new Column(
                             children: <Widget>[
-                              new Padding(padding: EdgeInsets.all(4.0),),
                               new Text(
                                   selectedEvent.eventName,
                                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0)
@@ -91,7 +106,84 @@ class _OnlineDetailsPageState extends State<OnlineDetailsPage> {
                           ),
                         ),
                       ),
-                    )
+                    ),
+                    new Padding(padding: EdgeInsets.all(4.0)),
+                    new Card(
+                      elevation: 6.0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                      color: currCardColor,
+                      child: new Container(
+                        padding: EdgeInsets.all(16.0),
+                        child: new Column(
+                          children: <Widget>[
+                            new Container(
+                              width: double.infinity,
+                              height: 100.0,
+                              child: new Row(
+                                children: <Widget>[
+                                  new Expanded(
+                                    flex: 3,
+                                    child: new GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => new Scaffold(
+                                            appBar: AppBar(
+                                              backgroundColor: eventColor,
+                                              title: new Text("${selectedEvent.eventShort} Guidelines"),
+                                            ),
+                                            backgroundColor: currBackgroundColor,
+                                            body: new WebView(
+                                              initialUrl: guidelinesUrl,
+                                              javascriptMode: JavascriptMode.unrestricted,
+                                            ),
+                                          )),
+                                        );
+                                      },
+                                      child: new Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          new Icon(Icons.format_list_bulleted, size: 50.0,),
+                                          new Text(
+                                            "Guidelines",
+                                            style: TextStyle(fontSize: 15.0),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    new Padding(padding: EdgeInsets.all(4.0)),
+                    new Card(
+                      elevation: 6.0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                      color: currCardColor,
+                      child: new Container(
+                        width: double.infinity,
+                        child: new FlatButton(
+                          child: new Text("COMPETITIVE EVENTS SITE"),
+                          textColor: eventColor,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => new Scaffold(
+                                backgroundColor: currBackgroundColor,
+                                body: new WebView(
+                                  initialUrl: "https://www.deca.org/high-school-programs/high-school-competitive-events/",
+                                  javascriptMode: JavascriptMode.unrestricted,
+                                ),
+                              )),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
