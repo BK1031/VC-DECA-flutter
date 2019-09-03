@@ -1,5 +1,7 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:vc_deca_flutter/main.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
@@ -48,6 +50,150 @@ class _ChatPageState extends State<ChatPage> {
     router.navigateTo(context, '/chat/global', transition: TransitionType.native);
   }
 
+  void toMentorChat() {
+    String groupCode = "";
+    if (mentorGroupID != "Not in a Group") {
+      selectedChat = mentorGroupID;
+      chatTitle = "Mentor Group";
+      router.navigateTo(context, '/chat/global', transition: TransitionType.native);
+    }
+    else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: new Text("Join Mentor Group", style: TextStyle(color: currTextColor),),
+              backgroundColor: currBackgroundColor,
+              content: new Container(
+                height: 75.0,
+                child: new Column(
+                  children: <Widget>[
+                    new TextField(
+                      onChanged: (String input) {
+                        groupCode = input;
+                      },
+                      textCapitalization: TextCapitalization.characters,
+                      decoration: InputDecoration(
+                        labelText: "Group Code",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text("CANCEL"),
+                  textColor: mainColor,
+                  onPressed: () {
+                    router.pop(context);
+                  },
+                ),
+                new FlatButton(
+                  child: new Text("JOIN"),
+                  textColor: mainColor,
+                  onPressed: () {
+                    if (groupCode != "") {
+                      FirebaseDatabase.instance.reference().child("chat").child(groupCode).once().then((DataSnapshot snapshot) {
+                        if (snapshot.value != null) {
+                          print("Group exists");
+                          setState(() {
+                            mentorGroupID = groupCode;
+                          });
+                          FirebaseDatabase.instance.reference().child("users").child(userID).update({
+                            "mentorGroup": mentorGroupID
+                          });
+                          groupCode = "";
+                          Navigator.of(context).pop();
+                        }
+                        else {
+                          print("Failed to find chaperone group");
+                        }
+                      });
+                    }
+                    else {
+                      print("Failed to find chaperone group");
+                    }
+                  },
+                )
+              ],
+            );
+          }
+      );
+    }
+  }
+
+  void toChapChat() {
+    String groupCode = "";
+    if (chapGroupID != "Not in a Group") {
+      selectedChat = chapGroupID;
+      chatTitle = "Chaperone Group";
+      router.navigateTo(context, '/chat/global', transition: TransitionType.native);
+    }
+    else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: new Text("Join Chaperone Group", style: TextStyle(color: currTextColor),),
+              backgroundColor: currBackgroundColor,
+              content: new Container(
+                height: 75.0,
+                child: new Column(
+                  children: <Widget>[
+                    new TextField(
+                      onChanged: (String input) {
+                        groupCode = input;
+                      },
+                      textCapitalization: TextCapitalization.characters,
+                      decoration: InputDecoration(
+                        labelText: "Group Code",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text("CANCEL"),
+                  textColor: mainColor,
+                  onPressed: () {
+                    router.pop(context);
+                  },
+                ),
+                new FlatButton(
+                  child: new Text("JOIN"),
+                  textColor: mainColor,
+                  onPressed: () {
+                    if (groupCode != "") {
+                      FirebaseDatabase.instance.reference().child("chat").child(groupCode).once().then((DataSnapshot snapshot) {
+                        if (snapshot.value != null) {
+                          print("Group exists");
+                          setState(() {
+                            chapGroupID = groupCode;
+                          });
+                          FirebaseDatabase.instance.reference().child("users").child(userID).update({
+                            "chapGroup": chapGroupID
+                          });
+                          groupCode = "";
+                          Navigator.of(context).pop();
+                        }
+                        else {
+                          print("Failed to find chaperone group");
+                        }
+                      });
+                    }
+                    else {
+                      print("Failed to find chaperone group");
+                    }
+                  },
+                )
+              ],
+            );
+          }
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,7 +220,7 @@ class _ChatPageState extends State<ChatPage> {
           new Padding(padding: EdgeInsets.all(4.0)),
           new GestureDetector(
             onTap: () {
-              // TODO: Implement Mentor Group Handler
+              toMentorChat();
             },
             child: new Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
@@ -82,6 +228,7 @@ class _ChatPageState extends State<ChatPage> {
               elevation: 6.0,
               child: ListTile(
                 title: new Text("Mentor Group", style: TextStyle(fontSize: 15.0),),
+                subtitle: new Text(mentorGroupID),
                 trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
               ),
             ),
@@ -89,7 +236,7 @@ class _ChatPageState extends State<ChatPage> {
           new Padding(padding: EdgeInsets.all(4.0)),
           new GestureDetector(
             onTap: () {
-              // TODO: Implement Chaperone Group Handler
+              toChapChat();
             },
             child: new Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
@@ -97,6 +244,7 @@ class _ChatPageState extends State<ChatPage> {
               elevation: 6.0,
               child: ListTile(
                 title: new Text("Chaperone Group", style: TextStyle(fontSize: 15.0),),
+                subtitle: new Text(chapGroupID),
                 trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
               ),
             ),

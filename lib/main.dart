@@ -16,6 +16,7 @@ import 'package:vc_deca_flutter/screens/home/announcement_page.dart';
 import 'package:vc_deca_flutter/screens/home/new_announcement_page.dart';
 import 'package:vc_deca_flutter/screens/home/notification_manager_page.dart';
 import 'package:vc_deca_flutter/screens/settings/about_page.dart';
+import 'package:vc_deca_flutter/screens/settings/update_profile_page.dart';
 import 'package:vc_deca_flutter/screens/startup/network_cheker.dart';
 import 'package:vc_deca_flutter/screens/startup/onboarding_page.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
@@ -113,6 +114,9 @@ void main() {
   // SETTINGS ROUTES
   router.define('/settings/about', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new AboutPage();
+  }));
+  router.define('/settings/update-profile', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new UpdateProfilePage();
   }));
 
   runApp(new MaterialApp(

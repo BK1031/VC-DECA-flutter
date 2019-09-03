@@ -12,7 +12,6 @@ import 'package:vc_deca_flutter/utils/hex_color.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
 import 'package:intl/intl.dart';
-
 import '../../user_info.dart';
 
 class GlobalChatPage extends StatefulWidget {

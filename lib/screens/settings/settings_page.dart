@@ -130,7 +130,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   new ListTile(
                     title: new Text("Update Profile", style: TextStyle(fontFamily: "Product Sans", color: mainColor), textAlign: TextAlign.center,),
                     onTap: () {
-                      router.navigateTo(context, '/profilePic', transition: TransitionType.nativeModal);
+                      router.navigateTo(context, '/settings/update-profile', transition: TransitionType.nativeModal);
                     },
                   )
                 ],

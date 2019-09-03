@@ -142,6 +142,12 @@ class _TabBarControllerState extends State<TabBarController> {
         FirebaseMessaging().subscribeToTopic("DEV");
         print("Subscribed to DEV");
       }
+      if (chapGroupID != "Not in a Group") {
+        FirebaseMessaging().subscribeToTopic(chapGroupID);
+      }
+      if (mentorGroupID != "Not in a Group") {
+        FirebaseMessaging().subscribeToTopic(mentorGroupID);
+      }
     });
   }
 
