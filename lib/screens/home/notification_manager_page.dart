@@ -50,7 +50,7 @@ class _NotificationManagerPageState extends State<NotificationManagerPage> {
     return Scaffold(
       appBar: new AppBar(
         backgroundColor: mainColor,
-        title: new Text("New Announcement"),
+        title: new Text("Send Notification"),
       ),
       backgroundColor: currBackgroundColor,
       body: new SafeArea(

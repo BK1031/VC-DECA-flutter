@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -53,9 +54,33 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
           _visible = true;
           uploadStatus = "Done!";
         });
-
       }
     }
+  }
+
+  List<Widget> getPermissionCard() {
+    List<Widget> returnList = [
+      new Container(
+        padding: EdgeInsets.only(top: 16.0),
+        child: new Text("permissions".toUpperCase(), style: TextStyle(color: mainColor, fontSize: 18, fontFamily: "Product Sans", fontWeight: FontWeight.bold),),
+      )
+    ];
+    userPerms.forEach((perm) {
+      returnList.add(
+        new ListTile(
+          title: new Text(perm),
+        )
+      );
+    });
+    returnList.add(
+      new ListTile(
+        title: new Text("Update Permissions", style: TextStyle(fontFamily: "Product Sans", color: mainColor), textAlign: TextAlign.center,),
+        onTap: () {
+          router.navigateTo(context, '/settings/update-profile/manage-perms', transition: TransitionType.native);
+        },
+      )
+    );
+    return returnList;
   }
 
   @override
@@ -77,45 +102,74 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               ),
             )
         ),
-        body: new Container(
-          width: 1000.0,
+        backgroundColor: currBackgroundColor,
+        body: new SingleChildScrollView(
           padding: EdgeInsets.all(16.0),
           child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              new GestureDetector(
-                child: new ClipOval(
-                  child: new CachedNetworkImage(
-                    imageUrl: profilePic,
-                    width: 200.0,
-                    height: 200.0,
-                    fit: BoxFit.fill,
+              new Card(
+                elevation: 6.0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                color: currCardColor,
+                child: new Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    children: <Widget>[
+                      new Container(
+                        child: new Text("profile picture".toUpperCase(), style: TextStyle(color: mainColor, fontSize: 18, fontFamily: "Product Sans", fontWeight: FontWeight.bold),),
+                      ),
+                      new Padding(padding: EdgeInsets.all(8.0)),
+                      new GestureDetector(
+                        child: new ClipOval(
+                          child: new CachedNetworkImage(
+                            imageUrl: profilePic,
+                            width: 200.0,
+                            height: 200.0,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        onTap: updateProfile,
+                      ),
+                      new Padding(padding: EdgeInsets.all(4.0)),
+                      new Text(
+                        "(Click to edit)",
+                        style: TextStyle(fontFamily: "Product Sans", fontSize: 15.0),
+                      ),
+                    ],
                   ),
                 ),
-                onTap: updateProfile,
               ),
               new Padding(padding: EdgeInsets.all(4.0)),
-              new Text(
-                "(Click to edit)",
-                style: TextStyle(fontFamily: "Product Sans", fontSize: 15.0),
+              new Card(
+                elevation: 6.0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                color: currCardColor,
+                child: Column(
+                  children: getPermissionCard()
+                ),
               ),
+              new Padding(padding: EdgeInsets.all(16.0)),
             ],
           ),
         ),
-        bottomNavigationBar: new Container(
-          padding: EdgeInsets.all(16.0),
-          height: 150.0,
-          child: new Column(
-            children: <Widget>[
-              new Text(
-                uploadStatus,
-                style: TextStyle(fontFamily: "Product Sans", fontSize: 25.0),
-              ),
-              new Padding(padding: EdgeInsets.all(8.0)),
-              new LinearProgressIndicator(
-                value: _progress,
-              )
-            ],
+        bottomNavigationBar: new Visibility(
+          visible: !_visible,
+          child: new Container(
+            padding: EdgeInsets.all(16.0),
+            height: 150.0,
+            child: new Column(
+              children: <Widget>[
+                new Text(
+                  uploadStatus,
+                  style: TextStyle(fontFamily: "Product Sans", fontSize: 25.0),
+                ),
+                new Padding(padding: EdgeInsets.all(8.0)),
+                new LinearProgressIndicator(
+                  value: _progress,
+                )
+              ],
+            ),
           ),
         )
     );

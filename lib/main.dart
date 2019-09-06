@@ -1,3 +1,4 @@
+import 'package:fast_qr_reader_view/fast_qr_reader_view.dart';
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/screens/auth/auth_checker.dart';
 import 'package:vc_deca_flutter/screens/auth/login_page.dart';
@@ -16,6 +17,7 @@ import 'package:vc_deca_flutter/screens/home/announcement_page.dart';
 import 'package:vc_deca_flutter/screens/home/new_announcement_page.dart';
 import 'package:vc_deca_flutter/screens/home/notification_manager_page.dart';
 import 'package:vc_deca_flutter/screens/settings/about_page.dart';
+import 'package:vc_deca_flutter/screens/settings/manage_perms_page.dart';
 import 'package:vc_deca_flutter/screens/settings/update_profile_page.dart';
 import 'package:vc_deca_flutter/screens/startup/network_cheker.dart';
 import 'package:vc_deca_flutter/screens/startup/onboarding_page.dart';
@@ -26,7 +28,15 @@ import 'package:vc_deca_flutter/utils/theme.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
-void main() {
+List<CameraDescription> cameras;
+
+Future<Null> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    cameras = await availableCameras();
+  } on QRReaderException catch (e) {
+    print('Error: ${e.code}\nError Message: ${e.description}');
+  }
   // STARTUP ROUTES
   router.define('/check-connection', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new NetworkChecker();
@@ -117,6 +127,9 @@ void main() {
   }));
   router.define('/settings/update-profile', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new UpdateProfilePage();
+  }));
+  router.define('/settings/update-profile/manage-perms', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new ManagePermsPage();
   }));
 
   runApp(new MaterialApp(

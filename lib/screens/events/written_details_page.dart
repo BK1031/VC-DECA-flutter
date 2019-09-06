@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';

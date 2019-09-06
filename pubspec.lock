@@ -78,41 +78,48 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  fast_qr_reader_view:
+    dependency: "direct main"
+    description:
+      name: fast_qr_reader_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.5"
   firebase_auth:
     dependency: "direct main"
     description:
       name: firebase_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.0"
+    version: "0.14.0+5"
   firebase_core:
     dependency: "direct main"
     description:
       name: firebase_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.5+1"
+    version: "0.4.0+9"
   firebase_database:
     dependency: "direct main"
     description:
       name: firebase_database
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.5"
+    version: "3.0.7"
   firebase_messaging:
     dependency: "direct main"
     description:
       name: firebase_messaging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "5.1.5"
   firebase_storage:
     dependency: "direct main"
     description:
       name: firebase_storage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.4"
+    version: "3.0.6"
   fluro:
     dependency: "direct main"
     description:
@@ -277,6 +284,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  qr:
+    dependency: "direct main"
+    description:
+      name: qr
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
+  qr_flutter:
+    dependency: "direct main"
+    description:
+      name: qr_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
   quiver:
     dependency: transitive
     description:
