@@ -3,6 +3,7 @@ import 'package:fast_qr_reader_view/fast_qr_reader_view.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
@@ -40,11 +41,46 @@ class _ManagePermsPageState extends State<ManagePermsPage> {
   }
 
   void getPermsFromQr(String value) {
-    json = jsonDecode(value);
-    print(json);
-    showModalBottomSheet(context: context, builder: (BuildContext context) {
-      return new AddPermsDialog();
-    });
+    try {
+      json = jsonDecode(value);
+      print(json);
+      if (json["token"] != null && json["role"] != null && json["perms"] != null) {
+        showModalBottomSheet(context: context, builder: (BuildContext context) {
+          return new AddPermsDialog();
+        });
+      }
+      else {
+        print("Invalid QR Code");
+        showModalBottomSheet(context: context, builder: (BuildContext context) {
+          return new SafeArea(
+            child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new ListTile(),
+                new Center(child: new Text("QR Code Not Valid", style: TextStyle(fontSize: 20.0, color: Colors.red),)),
+                new ListTile(),
+              ],
+            ),
+          );
+        });
+      }
+    } catch (error) {
+      print("Invalid QR Code");
+      showModalBottomSheet(context: context, builder: (BuildContext context) {
+        return new SafeArea(
+          child: new Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              new ListTile(),
+              new Center(child: new Text("QR Code Not Valid", style: TextStyle(fontSize: 20.0, color: Colors.red),)),
+              new ListTile(),
+            ],
+          ),
+        );
+      });
+    }
   }
 
   @override
@@ -59,21 +95,39 @@ class _ManagePermsPageState extends State<ManagePermsPage> {
       appBar: new AppBar(
         title: new Text("Update Permissions"),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: new Visibility(
+        visible: (userPerms.contains('ADMIN')),
+        child: new FloatingActionButton.extended(
+          label: new Text("CREATE CODE"),
+          icon: Icon(Icons.add),
+          onPressed: () {
+            // TODO: Create QR Code Handler
+          },
+        ),
+      ),
       backgroundColor: currBackgroundColor,
       body: new Container(
-        child: new Column(
+        child: new Stack(
+          fit: StackFit.expand,
           children: <Widget>[
-            new Expanded(
-              child: new AspectRatio(
-                aspectRatio: controller.value.aspectRatio*5,
+            new AspectRatio(
+                aspectRatio: controller.value.aspectRatio,
                 child: new QRReaderPreview(controller)
-              )
             ),
-            new Container(
-              height: 200.0,
+            new Positioned(
+              top: MediaQuery.of(context).size.height / 5,
+              right: MediaQuery.of(context).size.width / 2 - 75,
+              child: new Container(
+                height: 150.0,
+                width: 150.0,
+                decoration: BoxDecoration(
+                  border: Border.all(color: mainColor, width: 4.0),
+                ),
+              ),
             )
-          ],
-        ),
+          ]
+        )
       ),
     );
   }
@@ -91,6 +145,7 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
   final databaseRef = FirebaseDatabase.instance.reference();
 
   bool _validToken = false;
+  bool _invalidVisible = false;
 
   _AddPermsDialogState() {
     refreshTokens().then((val) {
@@ -99,7 +154,8 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
         _validToken = true;
       }
       else {
-
+      print("Invalid Token");
+        _invalidVisible = true;
       }
     });
   }
@@ -119,7 +175,22 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
     }
     catch (error) {
       print("Failed to pull qrTokens! - $error");
+      router.pop(context);
     }
+  }
+
+  List<Widget> getJsonPerms() {
+    List<Widget> returnList = [];
+    List permList = json["perms"];
+    permList.forEach((perm) {
+      returnList.add(
+        new ListTile(
+          title: new Text(perm, style: TextStyle(color: (!userPerms.contains(perm)) ? Colors.green : Colors.black),
+          ),
+        )
+      );
+    });
+    return returnList;
   }
 
   @override
@@ -129,13 +200,21 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          new Text(
-            role,
-            style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+          new Padding(padding: EdgeInsets.all(8.0)),
+          new Visibility(visible: _invalidVisible, child: new Center(child: new Text("QR Code Not Valid", style: TextStyle(fontSize: 20.0, color: Colors.red),))),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: new Text(
+              json["role"],
+              style: TextStyle(
+                fontSize: 25.0,
+                fontWeight: FontWeight.bold,
+                color: (role != json["role"]) ? Colors.green : Colors.black
+              ),
+            ),
           ),
-          new Text(
-            json["perms"].toString(),
-            style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal),
+          new Column(
+            children: getJsonPerms(),
           ),
           new ListTile(
             leading: new FlatButton(
@@ -145,16 +224,27 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
               },
               child: new Text("Cancel", style: TextStyle(fontFamily: "Product Sans", color: mainColor, fontSize: 18.0),),
             ),
-            trailing: new RaisedButton(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-              onPressed: () {
-                if (_validToken) {
-//                  databaseRef.child("qrTokens").
-                  router.pop(context);
-                }
-              },
-              color: mainColor,
-              child: new Text("Confirm", style: TextStyle(fontFamily: "Product Sans", color: Colors.white, fontSize: 18.0),),
+            trailing: new Visibility(
+              visible: !_invalidVisible,
+              child: new RaisedButton(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                onPressed: () {
+                  if (_validToken) {
+                    for (int i = 0; i < json["perms"].length; i++) {
+                      if (!userPerms.contains(json["perms"][i])) {
+                        userPerms.add(json["perms"][i]);
+                        databaseRef.child("users").child(userID).child("perms").push().set(json["perms"][i]);
+                      }
+                    }
+                    print("Updated Role: $role");
+                    print("Updated User Perms: ${userPerms.toString()}");
+                    databaseRef.child("qrTokens").child(json["token"]).set(null);
+                    router.pop(context);
+                  }
+                },
+                color: mainColor,
+                child: new Text("Confirm", style: TextStyle(fontFamily: "Product Sans", color: Colors.white, fontSize: 18.0),),
+              ),
             ),
           ),
         ],

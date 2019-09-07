@@ -19,7 +19,7 @@ PODS:
     - Firebase/CoreOnly
     - FirebaseStorage (~> 3.4.0)
   - firebase_auth (0.0.1):
-    - Firebase/Auth
+    - Firebase/Auth (~> 6.0)
     - Firebase/Core
     - Flutter
   - firebase_core (0.0.1):
@@ -216,11 +216,11 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   fast_qr_reader_view: 53b38a544886e650381ca579e0cdd5ae142fffa6
   Firebase: c35912a5c160193dc423f260dac3f167a1a795ab
-  firebase_auth: 6023fc2e28feabd6571d9a105b678cce7978be90
-  firebase_core: ce5006bb48508ee4e71e0f429a3f519bb8ee2961
-  firebase_database: b78d1e592c4f3cf826497dae722116a937aa99e0
-  firebase_messaging: b25b2fa94e685146bcf9d706ed87b4e95cd2a17d
-  firebase_storage: 6dbb71176c8a85e171184f8775606c566433026d
+  firebase_auth: 1e3b7bdd37b9fbd4ef75ba1d985b00be09e02d3d
+  firebase_core: ae55ea92448ec8675d325da4db22cf3b4d58a54d
+  firebase_database: d4f066a1b01f309676d0d2678ec600d6af18ad97
+  firebase_messaging: acdcd2edbe7270bae6c3a93cf6c60e86538b3064
+  firebase_storage: 52b0c06e27af628b627be28d32b4b540f6b67cf7
   FirebaseAnalytics: 843c7f64a8f9c79f0d03281197ebe7bb1d58d477
   FirebaseAnalyticsInterop: d48b6ab67bcf016a05e55b71fc39c61c0cb6b7f3
   FirebaseAuth: e7f86c2dfc57281cd01f7da5e4b40e01e4510a4a

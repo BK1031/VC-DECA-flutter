@@ -92,15 +92,15 @@ class _RegisterPageState extends State<RegisterPage> {
     else {
       try {
         tempPassword = _password;
-        FirebaseUser user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
-        print("Signed in! ${user.uid}");
+        AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+        print("Signed in! ${user.user.uid}");
 
         name = _firstName.replaceAll(new RegExp(r"\s+\b|\b\s"), "") + " " + _lastName.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
         email = _email;
-        userID = user.uid;
+        userID = user.user.uid;
         role = "Member";
 
-        await user.sendEmailVerification();
+        await user.user.sendEmailVerification();
 
         emailVerificationDialog();
       }

@@ -58,9 +58,9 @@ class _LoginPageState extends State<LoginPage> {
       );
     });
     try {
-      FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
-      print("Signed in! ${user.uid}");
-      userID = user.uid;
+      AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+      print("Signed in! ${user.user.uid}");
+      userID = user.user.uid;
       await AuthFunctions.getUserData().then((bool retrievedData) {
         if (retrievedData) {
           print("Retrieved User Data");
