@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
                 new Expanded(
                   flex: 3,
                   child: new Visibility(
-                    visible: _notificationManagerVisible,
+                    visible: (userPerms.contains('NOTIFICATION_SEND') || userPerms.contains('ADMIN')),
                     child: new GestureDetector(
                       onTap: () {
                         router.navigateTo(context, '/home/notification-manager', transition: TransitionType.native);
@@ -182,10 +182,10 @@ class _HomePageState extends State<HomePage> with RouteAware {
                 new Expanded(
                   flex: 5,
                   child: new Visibility(
-                    visible: _roleManagerVisible,
+                    visible: (userPerms.contains('ADMIN')),
                     child: new GestureDetector(
                       onTap: () {
-                        // TODO
+                        // TODO: Implement Role Manager
                       },
                       child: new Card(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),

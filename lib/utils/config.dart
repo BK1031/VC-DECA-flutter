@@ -3,7 +3,7 @@ import 'package:fluro/fluro.dart';
 final router = new Router();
 
 double appVersion = 2.0;
-int appBuild = 1;
+int appBuild = 3;
 String appStatus = "";
 String appFull = "Version $appVersion";
 

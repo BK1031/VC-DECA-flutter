@@ -8,18 +8,22 @@ class ChatMessage {
   String authorRole;
   String mediaType;
   String messageColor;
+  String profileUrl;
   bool nsfw;
+  bool repeatAuthor;
 
   ChatMessage(this.message, this.author, this.authorRole);
 
-  ChatMessage.fromSnapshot(DataSnapshot snapshot)
+  ChatMessage.fromSnapshot(DataSnapshot snapshot, bool repeatAuthor)
       : key = snapshot.key,
         message = snapshot.value["message"].toString(),
         authorRole = snapshot.value["role"].toString(),
         authorID = snapshot.value["userID"].toString(),
         mediaType = snapshot.value["type"].toString(),
         messageColor = snapshot.value["color"].toString(),
+        profileUrl = snapshot.value["profileUrl"].toString(),
         nsfw = snapshot.value["nsfw"],
+        this.repeatAuthor = repeatAuthor,
         author = snapshot.value["author"].toString();
 
   toJson() {

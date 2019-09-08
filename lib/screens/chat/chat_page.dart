@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
@@ -57,67 +60,121 @@ class _ChatPageState extends State<ChatPage> {
       router.navigateTo(context, '/chat/global', transition: TransitionType.native);
     }
     else {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: new Text("Join Mentor Group", style: TextStyle(color: currTextColor),),
-              backgroundColor: currBackgroundColor,
-              content: new Container(
-                height: 75.0,
-                child: new Column(
-                  children: <Widget>[
-                    new TextField(
-                      onChanged: (String input) {
-                        groupCode = input;
-                      },
-                      textCapitalization: TextCapitalization.characters,
-                      decoration: InputDecoration(
-                        labelText: "Group Code",
-                      ),
-                    ),
-                  ],
-                ),
+      if (Platform.isIOS) {
+        showCupertinoDialog(context: context, builder: (context) {
+          return CupertinoAlertDialog(
+            title: new Text("Join Mentor Group\n"),
+            content: new CupertinoTextField(
+              autocorrect: false,
+              autofocus: true,
+              onChanged: (String input) {
+                groupCode = input;
+              },
+              textCapitalization: TextCapitalization.characters,
+              placeholder: "Group Code",
+            ),
+            actions: <Widget>[
+              new CupertinoDialogAction(
+                child: new Text("Cancel"),
+                onPressed: () {
+                  router.pop(context);
+                },
               ),
-              actions: <Widget>[
-                new FlatButton(
-                  child: new Text("CANCEL"),
-                  textColor: mainColor,
-                  onPressed: () {
-                    router.pop(context);
-                  },
+              new CupertinoDialogAction(
+                child: new Text("Join"),
+                onPressed: () {
+                  if (groupCode != "") {
+                    FirebaseDatabase.instance.reference().child("chat").child(groupCode).once().then((DataSnapshot snapshot) {
+                      if (snapshot.value != null) {
+                        print("Group exists");
+                        setState(() {
+                          mentorGroupID = groupCode;
+                        });
+                        FirebaseDatabase.instance.reference().child("users").child(userID).update({
+                          "mentorGroup": mentorGroupID
+                        });
+                        groupCode = "";
+                        Navigator.of(context).pop();
+                      }
+                      else {
+                        print("Failed to find mentor group");
+                      }
+                    });
+                  }
+                  else {
+                    print("Failed to find mentor group");
+                  }
+                },
+              ),
+            ],
+          );
+        });
+      }
+      else if (Platform.isAndroid) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: new Text("Join Mentor Group", style: TextStyle(color: currTextColor),),
+                backgroundColor: currBackgroundColor,
+                content: new Container(
+                  height: 75.0,
+                  child: new Column(
+                    children: <Widget>[
+                      new TextField(
+                        onChanged: (String input) {
+                          groupCode = input;
+                        },
+                        textCapitalization: TextCapitalization.characters,
+                        autocorrect: false,
+                        autofocus: true,
+                        decoration: InputDecoration(
+                          labelText: "Group Code",
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                new FlatButton(
-                  child: new Text("JOIN"),
-                  textColor: mainColor,
-                  onPressed: () {
-                    if (groupCode != "") {
-                      FirebaseDatabase.instance.reference().child("chat").child(groupCode).once().then((DataSnapshot snapshot) {
-                        if (snapshot.value != null) {
-                          print("Group exists");
-                          setState(() {
-                            mentorGroupID = groupCode;
-                          });
-                          FirebaseDatabase.instance.reference().child("users").child(userID).update({
-                            "mentorGroup": mentorGroupID
-                          });
-                          groupCode = "";
-                          Navigator.of(context).pop();
-                        }
-                        else {
-                          print("Failed to find chaperone group");
-                        }
-                      });
-                    }
-                    else {
-                      print("Failed to find chaperone group");
-                    }
-                  },
-                )
-              ],
-            );
-          }
-      );
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Text("CANCEL"),
+                    textColor: mainColor,
+                    onPressed: () {
+                      router.pop(context);
+                    },
+                  ),
+                  new FlatButton(
+                    child: new Text("JOIN"),
+                    textColor: mainColor,
+                    onPressed: () {
+                      if (groupCode != "") {
+                        FirebaseDatabase.instance.reference().child("chat").child(groupCode).once().then((DataSnapshot snapshot) {
+                          if (snapshot.value != null) {
+                            print("Group exists");
+                            setState(() {
+                              mentorGroupID = groupCode;
+                            });
+                            FirebaseDatabase.instance.reference().child("users").child(userID).update({
+                              "mentorGroup": mentorGroupID
+                            });
+                            groupCode = "";
+                            Navigator.of(context).pop();
+                          }
+                          else {
+                            print("Failed to find mentor group");
+                          }
+                        });
+                      }
+                      else {
+                        print("Failed to find mentor group");
+                      }
+                    },
+                  )
+                ],
+              );
+            }
+        );
+      }
     }
   }
 
@@ -129,67 +186,121 @@ class _ChatPageState extends State<ChatPage> {
       router.navigateTo(context, '/chat/global', transition: TransitionType.native);
     }
     else {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: new Text("Join Chaperone Group", style: TextStyle(color: currTextColor),),
-              backgroundColor: currBackgroundColor,
-              content: new Container(
-                height: 75.0,
-                child: new Column(
-                  children: <Widget>[
-                    new TextField(
-                      onChanged: (String input) {
-                        groupCode = input;
-                      },
-                      textCapitalization: TextCapitalization.characters,
-                      decoration: InputDecoration(
-                        labelText: "Group Code",
-                      ),
-                    ),
-                  ],
-                ),
+      if (Platform.isIOS) {
+        showCupertinoDialog(context: context, builder: (context) {
+          return CupertinoAlertDialog(
+            title: new Text("Join Chaperone Group\n"),
+            content: new CupertinoTextField(
+              autocorrect: false,
+              autofocus: true,
+              onChanged: (String input) {
+                groupCode = input;
+              },
+              textCapitalization: TextCapitalization.characters,
+              placeholder: "Group Code",
+            ),
+            actions: <Widget>[
+              new CupertinoDialogAction(
+                child: new Text("Cancel"),
+                onPressed: () {
+                  router.pop(context);
+                },
               ),
-              actions: <Widget>[
-                new FlatButton(
-                  child: new Text("CANCEL"),
-                  textColor: mainColor,
-                  onPressed: () {
-                    router.pop(context);
-                  },
+              new CupertinoDialogAction(
+                child: new Text("Join"),
+                onPressed: () {
+                  if (groupCode != "") {
+                    FirebaseDatabase.instance.reference().child("chat").child(groupCode).once().then((DataSnapshot snapshot) {
+                      if (snapshot.value != null) {
+                        print("Group exists");
+                        setState(() {
+                          chapGroupID = groupCode;
+                        });
+                        FirebaseDatabase.instance.reference().child("users").child(userID).update({
+                          "chapGroup": chapGroupID
+                        });
+                        groupCode = "";
+                        Navigator.of(context).pop();
+                      }
+                      else {
+                        print("Failed to find chaperone group");
+                      }
+                    });
+                  }
+                  else {
+                    print("Failed to find chaperone group");
+                  }
+                },
+              ),
+            ],
+          );
+        });
+      }
+      else if (Platform.isAndroid) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: new Text("Join Chaperone Group", style: TextStyle(color: currTextColor),),
+                backgroundColor: currBackgroundColor,
+                content: new Container(
+                  height: 75.0,
+                  child: new Column(
+                    children: <Widget>[
+                      new TextField(
+                        autocorrect: false,
+                        autofocus: true,
+                        onChanged: (String input) {
+                          groupCode = input;
+                        },
+                        textCapitalization: TextCapitalization.characters,
+                        decoration: InputDecoration(
+                          labelText: "Group Code",
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                new FlatButton(
-                  child: new Text("JOIN"),
-                  textColor: mainColor,
-                  onPressed: () {
-                    if (groupCode != "") {
-                      FirebaseDatabase.instance.reference().child("chat").child(groupCode).once().then((DataSnapshot snapshot) {
-                        if (snapshot.value != null) {
-                          print("Group exists");
-                          setState(() {
-                            chapGroupID = groupCode;
-                          });
-                          FirebaseDatabase.instance.reference().child("users").child(userID).update({
-                            "chapGroup": chapGroupID
-                          });
-                          groupCode = "";
-                          Navigator.of(context).pop();
-                        }
-                        else {
-                          print("Failed to find chaperone group");
-                        }
-                      });
-                    }
-                    else {
-                      print("Failed to find chaperone group");
-                    }
-                  },
-                )
-              ],
-            );
-          }
-      );
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Text("CANCEL"),
+                    textColor: mainColor,
+                    onPressed: () {
+                      router.pop(context);
+                    },
+                  ),
+                  new FlatButton(
+                    child: new Text("JOIN"),
+                    textColor: mainColor,
+                    onPressed: () {
+                      if (groupCode != "") {
+                        FirebaseDatabase.instance.reference().child("chat").child(groupCode).once().then((DataSnapshot snapshot) {
+                          if (snapshot.value != null) {
+                            print("Group exists");
+                            setState(() {
+                              chapGroupID = groupCode;
+                            });
+                            FirebaseDatabase.instance.reference().child("users").child(userID).update({
+                              "chapGroup": chapGroupID
+                            });
+                            groupCode = "";
+                            Navigator.of(context).pop();
+                          }
+                          else {
+                            print("Failed to find chaperone group");
+                          }
+                        });
+                      }
+                      else {
+                        print("Failed to find chaperone group");
+                      }
+                    },
+                  )
+                ],
+              );
+            }
+        );
+      }
     }
   }
 

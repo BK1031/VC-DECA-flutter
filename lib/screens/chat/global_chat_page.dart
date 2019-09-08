@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:vc_deca_flutter/models/chat_message.dart';
+import 'package:vc_deca_flutter/models/user.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/hex_color.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
@@ -84,6 +86,13 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
           title: new Text("Message Options"),
           message: new Text(messageList[index].message),
           actions: <Widget>[
+            new CupertinoActionSheetAction(
+              child: new Text("Report"),
+              onPressed: () {
+                databaseRef.child("chat").child("reports").child(selectedChat).child(messageList[index].key).set(messageList[index].message);
+                Navigator.pop(context);
+              },
+            ),
             new Visibility(
               visible: canDeleteMessage,
               child: new CupertinoActionSheetAction(
@@ -116,30 +125,28 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               new ListTile(
-                title: new Text('Message Options'),
+                title: new Text('Message Options', style: TextStyle(fontWeight: FontWeight.bold),),
               ),
               new ListTile(
                 title: new Text(messageList[index].message),
               ),
               new ListTile(
-                leading: new Icon(Icons.check),
-                title: new Text('Action'),
+                leading: new Icon(Icons.report),
+                title: new Text('Report'),
                 onTap: () {
-
+                  databaseRef.child("chat").child("reports").child(selectedChat).child(messageList[index].key).set(messageList[index].message);
+                  Navigator.pop(context);
                 }
               ),
               new ListTile(
-                  leading: new Icon(Icons.check),
-                  title: new Text('Action'),
+                  leading: new Icon(Icons.delete),
+                  title: new Text('Delete Message'),
                   onTap: () {
-
-                  }
-              ),
-              new ListTile(
-                  leading: new Icon(Icons.check),
-                  title: new Text('Action'),
-                  onTap: () {
-
+                    databaseRef.child("chat").child(selectedChat).child(messageList[index].key).set(null);
+                    setState(() {
+                      messageList.removeAt(index);
+                    });
+                    Navigator.pop(context);
                   }
               ),
               new ListTile(
@@ -161,34 +168,28 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
       // This message contains a No No Word
       if (role != "Advisor" && role != "Chaperone") {
         setState(() {
-          messageList.add(new ChatMessage.fromSnapshot(event.snapshot));
+          messageList.add(new ChatMessage.fromSnapshot(event.snapshot, false));
         });
-        await new Future.delayed(const Duration(milliseconds: 300));
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent + 10.0,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
       }
     }
     else {
-      if (messageList.length > 1 && messageList.last.authorID == event.snapshot.value["userID"]) {
+      if (messageList.length >= 1 && messageList.last.authorID == event.snapshot.value["userID"]) {
         setState(() {
-          messageList.last.message += "\n\n${event.snapshot.value["message"]}";
+          messageList.add(new ChatMessage.fromSnapshot(event.snapshot, true));
         });
       }
       else {
         setState(() {
-          messageList.add(new ChatMessage.fromSnapshot(event.snapshot));
+          messageList.add(new ChatMessage.fromSnapshot(event.snapshot, false));
         });
       }
-      await new Future.delayed(const Duration(milliseconds: 300));
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent + 10.0,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
     }
+    await new Future.delayed(const Duration(milliseconds: 300));
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent + 10.0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
   }
 
   void sendMessage() {
@@ -229,6 +230,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
         "role": role,
         "type": type,
         "color": messageColor,
+        "profileUrl": profilePic,
         "nsfw": _nsfw
       });
       myController.clear();
@@ -257,49 +259,86 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
     }
   }
 
-  bool getRoleVisibility(String authorRole, String messageAuthor) {
-    if (authorRole == "Member") {
-      return false;
-    }
-    else {
-      return true;
-    }
+  void showUserSheet(String userID, String roleColor) {
+    showModalBottomSheet(context: context, builder: (context) {
+      return new UserInfoSheet(userID, roleColor);
+    });
   }
 
   Widget getMessageBody(int index) {
     if (messageList[index].mediaType == "text") {
-      return new Linkify(
-        onOpen: (url) async {
-          if (await canLaunch(url.url)) {
-            await launch(url.url);
-          } else {
-            throw 'Could not launch $url';
-          }
-        },
-        text: messageList[index].message,
-        linkStyle: TextStyle(
-            fontFamily: "Product Sans",
-            color: HexColor(messageList[index].messageColor),
-            fontSize: 15.0
-        ),
-        style: TextStyle(
-            fontFamily: "Product Sans",
-            color: Colors.black,
-            fontSize: 15.0
-        ),
-      );
-    }
-    else {
       return new Container(
-        padding: EdgeInsets.all(8.0),
-        child: new ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-          child: new CachedNetworkImage(
-            imageUrl: messageList[index].message,
-            height: 300.0,
-            width: 300.0,
-            fit: BoxFit.cover,
-          ),
+        padding: (messageList[index].repeatAuthor) ? EdgeInsets.only(top: 8.0) : EdgeInsets.only(top: 8.0, bottom: 8.0),
+        child: new Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            new Container(
+              padding: EdgeInsets.only(right: 8.0, left: 8.0),
+              child: new GestureDetector(
+                onTap: () {
+//              showUserSheet(messageList[index].authorID, messageList[index].messageColor);
+                },
+                child: new ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  child: new CachedNetworkImage(
+                    imageUrl: messageList[index].profileUrl,
+                    height: (messageList[index].repeatAuthor) ? 0.0 : 50.0,
+                    width: 50.0,
+                  ),
+                ),
+              ),
+            ),
+            new Expanded(
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Container(
+                    child: new GestureDetector(
+                      onLongPress: () {
+                        showMessageDetails(index);
+                      },
+                      onTap: () {
+//                    showUserSheet(messageList[index].authorID, messageList[index].messageColor);
+                      },
+                      child: new Visibility(
+                        visible: !messageList[index].repeatAuthor,
+                        child: new Text(
+                          messageList[index].author,
+                          style: TextStyle(fontSize: 15.0, color: HexColor(messageList[index].messageColor)),
+                        ),
+                      ),
+                    ),
+                  ),
+                  new Visibility(visible: !messageList[index].repeatAuthor, child: new Padding(padding: EdgeInsets.all(2.0)),),
+                  new Container(
+                    child: new GestureDetector(
+                      onLongPress: () {
+                        showMessageDetails(index);
+                      },
+                      child: new Linkify(
+                        onOpen: (url) async {
+                          if (await canLaunch(url.url)) {
+                            await launch(url.url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                        text: messageList[index].message,
+                        style: TextStyle(fontSize: 15.0, color: currTextColor),
+                        linkStyle: TextStyle(
+                            fontFamily: "Product Sans",
+                            color: HexColor(messageList[index].messageColor),
+                            fontSize: 15.0
+                        ),
+                      ),
+                    ),
+                  ),
+//                  new Visibility(visible: messageList[index].repeatAuthor, child: new Padding(padding: EdgeInsets.all(4.0)))
+                ],
+              ),
+            ),
+          ],
         ),
       );
     }
@@ -336,64 +375,11 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
           children: <Widget>[
             new Expanded(
               child: new Container(
-                padding: EdgeInsets.all(8.0),
                 child: new ListView.builder(
                   itemCount: messageList.length,
                   controller: _scrollController,
                   itemBuilder: (BuildContext context, int index) {
-                    return new GestureDetector(
-                      onLongPress: () {
-                        showMessageDetails(index);
-                      },
-                      child: new Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10.0),
-                          padding: EdgeInsets.all(8.0),
-                          decoration: new BoxDecoration(
-                            border: new Border(
-                                left: new BorderSide(
-                                  color: HexColor(messageList[index].messageColor),
-                                  width: 3.0,
-                                )
-                            ),
-                          ),
-                          child: new Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              new Row(
-                                children: <Widget>[
-                                  new Text(
-                                    messageList[index].author,
-                                    style: TextStyle(
-                                        fontFamily: "Product Sans",
-                                        color: HexColor(messageList[index].messageColor),
-                                        fontSize: 15.0
-                                    ),
-                                  ),
-                                  new Padding(padding: EdgeInsets.all(4.0)),
-                                  new Visibility(
-                                    visible: getRoleVisibility(messageList[index].authorRole, messageList[index].author),
-                                    child: new Card(
-                                        color: HexColor(messageList[index].messageColor),
-                                        child: new Container(
-                                          padding: EdgeInsets.all(4.0),
-                                          child: new Text(
-                                            messageList[index].authorRole,
-                                            style: TextStyle(
-                                                fontFamily: "Product Sans",
-                                                color: Colors.white,
-                                                fontSize: 15.0
-                                            ),
-                                          ),
-                                        )
-                                    ),
-                                  )
-                                ],
-                              ),
-                              getMessageBody(index)
-                            ],
-                          )
-                      ),
-                    );
+                    return getMessageBody(index);
                   },
                 ),
               ),
@@ -460,6 +446,86 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
                     decoration: new BoxDecoration(
                         border: new Border(top: new BorderSide(color: mainColor, width: 0.5)), color: Colors.white),
                   )
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class UserInfoSheet extends StatefulWidget {
+
+  String userID;
+  String roleColor;
+
+  UserInfoSheet(String userID, String roleColor) {
+    this.userID = userID;
+  }
+
+  @override
+  _UserInfoSheetState createState() => _UserInfoSheetState(userID, roleColor);
+}
+
+class _UserInfoSheetState extends State<UserInfoSheet> {
+
+  String userID;
+  String roleColor;
+  DataSnapshot userSnapshot;
+
+  _UserInfoSheetState(String userID, String roleColor) {
+    this.userID = userID;
+    this.roleColor = roleColor;
+    FirebaseDatabase.instance.reference().child("users").child(userID).once().then((DataSnapshot snapshot) {
+      userSnapshot = snapshot;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new SafeArea(
+      child: Container(
+        padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+        color: currBackgroundColor,
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                new ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(150.0)),
+                  child: new CachedNetworkImage(
+                    imageUrl: userSnapshot.value["profilePicUrl"],
+                    height: 100.0,
+                  ),
+                ),
+                new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    new Text(
+                      userSnapshot.value["name"],
+                      style: TextStyle(fontSize: 25.0),
+                    ),
+                    new Text(
+                      userSnapshot.value["email"],
+                      style: TextStyle(fontSize: 15.0),
+                    )
+                  ],
+                )
+              ],
+            ),
+            new Container(
+              height: 100.0,
+//              color: HexColor(roleColor),
+              child: new Center(
+                child: new Text(
+                  userSnapshot.value["role"],
+                  style: TextStyle(fontSize: 20.0, color: Colors.white),
+                ),
               ),
             )
           ],
