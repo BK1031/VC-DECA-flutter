@@ -373,6 +373,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
       body: new SafeArea(
         child: Column(
           children: <Widget>[
+            new Padding(padding: EdgeInsets.all(4.0)),
             new Expanded(
               child: new Container(
                 child: new ListView.builder(

@@ -146,6 +146,7 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
 
   bool _validToken = false;
   bool _invalidVisible = false;
+  bool _finishedScan = false;
 
   _AddPermsDialogState() {
     refreshTokens().then((val) {
@@ -202,6 +203,7 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
         children: <Widget>[
           new Padding(padding: EdgeInsets.all(8.0)),
           new Visibility(visible: _invalidVisible, child: new Center(child: new Text("QR Code Not Valid", style: TextStyle(fontSize: 20.0, color: Colors.red),))),
+          new Visibility(visible: _finishedScan, child: new Center(child: new Text("Updated User Permissions", style: TextStyle(fontSize: 20.0, color: Colors.green),))),
           Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: new Text(
@@ -216,37 +218,53 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
           new Column(
             children: getJsonPerms(),
           ),
-          new ListTile(
-            leading: new FlatButton(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-              onPressed: () {
-                router.pop(context);
-              },
-              child: new Text("Cancel", style: TextStyle(fontFamily: "Product Sans", color: mainColor, fontSize: 18.0),),
-            ),
-            trailing: new Visibility(
-              visible: !_invalidVisible,
-              child: new RaisedButton(
+          new Visibility(
+            visible: !_finishedScan,
+            child: new ListTile(
+              leading: new FlatButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
                 onPressed: () {
-                  if (_validToken) {
-                    for (int i = 0; i < json["perms"].length; i++) {
-                      if (!userPerms.contains(json["perms"][i])) {
-                        userPerms.add(json["perms"][i]);
-                        databaseRef.child("users").child(userID).child("perms").push().set(json["perms"][i]);
-                      }
-                    }
-                    print("Updated Role: $role");
-                    print("Updated User Perms: ${userPerms.toString()}");
-                    databaseRef.child("qrTokens").child(json["token"]).set(null);
-                    router.pop(context);
-                  }
+                  router.pop(context);
                 },
-                color: mainColor,
-                child: new Text("Confirm", style: TextStyle(fontFamily: "Product Sans", color: Colors.white, fontSize: 18.0),),
+                child: new Text("Cancel", style: TextStyle(fontFamily: "Product Sans", color: mainColor, fontSize: 18.0),),
+              ),
+              trailing: new Visibility(
+                visible: !_invalidVisible,
+                child: new RaisedButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                  onPressed: () {
+                    if (_validToken) {
+                      for (int i = 0; i < json["perms"].length; i++) {
+                        if (!userPerms.contains(json["perms"][i])) {
+                          userPerms.add(json["perms"][i]);
+                          databaseRef.child("users").child(userID).child("perms").push().set(json["perms"][i]);
+                        }
+                      }
+                      role = json["role"];
+                      databaseRef.child("users").child(userID).child("role").set(role);
+                      print("Updated Role: $role");
+                      print("Updated User Perms: ${userPerms.toString()}");
+                      databaseRef.child("qrTokens").child(json["token"]).set(null);
+                      setState(() {
+                        _finishedScan = true;
+                      });
+                    }
+                  },
+                  color: mainColor,
+                  child: new Text("Confirm", style: TextStyle(fontFamily: "Product Sans", color: Colors.white, fontSize: 18.0),),
+                ),
               ),
             ),
           ),
+          new Visibility(
+            visible: _finishedScan,
+            child: new ListTile(
+              title: new Text("Done", style: TextStyle(fontFamily: "Product Sans", color: mainColor), textAlign: TextAlign.center,),
+              onTap: () {
+                router.pop(context);
+              },
+            ),
+          )
         ],
       ),
     );
