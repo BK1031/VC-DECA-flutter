@@ -52,4 +52,4 @@ If you would like to contribute to this repository or provide feedback, check ou
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 **[MIT license](http://opensource.org/licenses/mit-license.php)**  
-Copyright 2015 © <a href="http://github.com/equinox-initiative" target="_blank">Equinox Initiative</a>
+Copyright 2019 © <a href="http://github.com/equinox-initiative" target="_blank">Equinox Initiative</a>

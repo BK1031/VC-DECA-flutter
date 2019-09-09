@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bk1031.vc_deca_flutter">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -38,4 +39,5 @@
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
+
 </manifest>
