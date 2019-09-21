@@ -65,7 +65,8 @@ class _OnlineDetailsPageState extends State<OnlineDetailsPage> {
                         elevation: 6.0,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
                         color: currCardColor,
-                        child: new Container(
+                        child: new AnimatedContainer(
+                          duration: const Duration(milliseconds: 100),
                           padding: EdgeInsets.all(16.0),
                           child: new Column(
                             children: <Widget>[
@@ -73,9 +74,10 @@ class _OnlineDetailsPageState extends State<OnlineDetailsPage> {
                                   selectedEvent.eventName,
                                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0)
                               ),
-                              new Container(
+                              new AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
                                 width: double.infinity,
-                                height: 100.0,
+                                height: (guidelinesUrl != "") ? 100.0 : 10.0,
                                 child: new Row(
                                   children: <Widget>[
                                     new Expanded(

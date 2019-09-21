@@ -30,12 +30,8 @@ class _ConferenceWinnersPageState extends State<ConferenceWinnersPage> {
           });
         });
       });
-      print(winnerList);
     }
     catch (error) {
-      setState(() {
-        winnerList.clear();
-      });
       print("Failed to pull conference winners! - $error");
     }
   }

@@ -62,6 +62,10 @@ class _ConferencesPageState extends State<ConferencesPage> {
               itemBuilder: (BuildContext context, int index) {
                 return new GestureDetector(
                   onTap: () {
+                    if (selectedConference != conferenceList[index]) {
+                      winnerList.clear();
+                      agendaList.clear();
+                    }
                     selectedConference = conferenceList[index];
                     router.navigateTo(context, 'conference/details', transition: TransitionType.native);
                   },

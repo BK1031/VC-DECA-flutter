@@ -18,7 +18,7 @@ class Version {
   }
 
   int getVersionCode() {
-    return major*10^6 + minor*10^3 + patch;
+    return major*1000000 + minor*1000 + patch;
   }
 
   int getBuild() {

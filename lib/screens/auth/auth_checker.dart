@@ -27,25 +27,6 @@ class _AuthCheckerState extends State<AuthChecker> {
       await AuthFunctions.getUserData().then((bool retrievedData) async {
         if (retrievedData) {
           print("Retrieved User Data");
-          // Get Session Info
-          databaseRef.child("stableVersion").once().then((DataSnapshot snapshot) {
-            var stable = snapshot.value;
-            print("Current Version: $appVersion");
-            print("Stable Version: $stable");
-            if (appVersion.getVersionCode() < int.parse(snapshot.value)) {
-              print("OUTDATED APP!");
-              appStatus = " [OUTDATED]";
-            }
-            else if (appVersion.getVersionCode() > int.parse(snapshot.value)) {
-              print("BETA APP!");
-              appStatus = " Beta ${appVersion.getBuild()}";
-            }
-            databaseRef.child("users").child(userID).update({
-              "appVersion": "${appVersion.toString()}$appStatus",
-              "deviceName": Platform.localHostname,
-              "platform": Platform.operatingSystem
-            });
-          });
           router.navigateTo(context, '/home', transition: TransitionType.fadeIn, clearStack: true);
         }
         else {

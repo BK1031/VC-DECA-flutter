@@ -32,12 +32,8 @@ class _ConferenceSchedulePageState extends State<ConferenceSchedulePage> {
           });
         });
       });
-      print(agendaList);
     }
     catch (error) {
-      setState(() {
-        agendaList.clear();
-      });
       print("Failed to pull conference agenda! - $error");
     }
   }

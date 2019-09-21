@@ -18,23 +18,18 @@ class _ConferenceMediaPageState extends State<ConferenceMediaPage> {
   final databaseRef = FirebaseDatabase.instance.reference();
   final storageRef = FirebaseStorage.instance.ref();
 
-  bool _visible = true;
+  List<String> _tiles = <String>[];
 
-  _ConferenceMediaPageState() {
+  @override
+  void initState() {
+    super.initState();
     databaseRef.child("conferences").child(selectedConference.shortName).child("media").onChildAdded.listen((Event event) {
       print(event.snapshot.value);
       setState(() {
         _tiles.add(event.snapshot.value);
       });
     });
-    if (userPerms.contains('CONFERENCE_MEDIA_UPLOAD') || userPerms.contains('ADMIN')) {
-      setState(() {
-        _visible = true;
-      });
-    }
   }
-
-  List<String> _tiles = <String>[];
 
 //  Future<void> newImage() async {
 //    var now = DateTime.now();

@@ -97,6 +97,25 @@ class _TabBarControllerState extends State<TabBarController> {
     databaseRef.child("perms").onChildAdded.listen((Event event) {
       permsList.add(event.snapshot.value);
     });
+    // Get Session Info
+    databaseRef.child("stableVersion").once().then((DataSnapshot snapshot) {
+      var stable = snapshot.value;
+      print("Current Version: $appVersion");
+      print("Stable Version: $stable");
+      if (appVersion.getVersionCode() < int.parse(snapshot.value)) {
+        print("OUTDATED APP!");
+        appStatus = " [OUTDATED]";
+      }
+      else if (appVersion.getVersionCode() > int.parse(snapshot.value)) {
+        print("BETA APP!");
+        appStatus = " Beta ${appVersion.getBuild()}";
+      }
+      databaseRef.child("users").child(userID).update({
+        "appVersion": "${appVersion.toString()}$appStatus",
+        "deviceName": Platform.localHostname,
+        "platform": Platform.operatingSystem
+      });
+    });
     // Get PermsList for Current User
     databaseRef.child("users").child(userID).child("perms").onChildAdded.listen((Event event) {
       setState(() {
