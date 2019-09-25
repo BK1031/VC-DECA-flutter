@@ -18,45 +18,18 @@ class AnnouncementPage extends StatefulWidget {
 class _AnnouncementPageState extends State<AnnouncementPage> with RouteAware {
 
   final databaseRef = FirebaseDatabase.instance.reference();
-
-  bool _visible = false;
-
-  _AnnouncementPageState() {
-    if (userPerms.contains("ALERT_CREATE") || userPerms.contains('ADMIN')) {
-      _visible = true;
-    }
-    refreshAnnouncements();
-  }
+  List<Announcement> announcementList = new List();
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context));
-  }
-
-  @override
-  void didPopNext() {
-    refreshAnnouncements();
-  }
-  
-  refreshAnnouncements() async {
-    try {
-      await http.get(getDbUrl("alerts")).then((response) {
-        announcementList.clear();
-        Map responseJson = jsonDecode(response.body);
-        responseJson.keys.forEach((key) {
-          setState(() {
-            if (responseJson[key]["topic"].toString().contains(role.toUpperCase()) || responseJson[key]["topic"].toString().contains("ALL_DEVICES") || userPerms.contains('ADMIN')) {
-              announcementList.add(new Announcement.fromJson(responseJson[key], key));
-            }
-          });
-        });
+  void initState() {
+    super.initState();
+    databaseRef.child("alerts").onChildAdded.listen((Event event) {
+      setState(() {
+        if (event.snapshot.value["topic"].toString().contains(role.toUpperCase()) || event.snapshot.value["topic"].toString().contains("ALL_DEVICES") || userPerms.contains('ADMIN')) {
+          announcementList.add(new Announcement.fromSnapshot(event.snapshot));
+        }
       });
-      print(announcementList);
-    }
-    catch (error) {
-      print("Failed to pull announcements! - $error");
-    }
+    });
   }
 
   @override
@@ -68,7 +41,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> with RouteAware {
       ),
       backgroundColor: currBackgroundColor,
       floatingActionButton: new Visibility(
-        visible: _visible,
+        visible: (userPerms.contains("ALERT_CREATE") || userPerms.contains('ADMIN')),
         child: new FloatingActionButton(
           child: new Icon(Icons.add),
           backgroundColor: mainColor,

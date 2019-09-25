@@ -826,7 +826,7 @@ class _SendImageDialogState extends State<SendImageDialog> {
       _uploading = true;
     });
     print("UPLOADING");
-    StorageUploadTask imageUploadTask = storageRef.child("chat").child(selectedChat).child("${new DateFormat('MM/dd/yyyy hh:mm aaa').format(new DateTime.now())}.png").putFile(image);
+    StorageUploadTask imageUploadTask = storageRef.child("chat").child(selectedChat).child("${new DateTime.now()}.png").putFile(image);
     imageUploadTask.events.listen((event) {
       print("UPLOADING: ${event.snapshot.bytesTransferred.toDouble() / event.snapshot.totalByteCount.toDouble()}");
       setState(() {

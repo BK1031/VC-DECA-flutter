@@ -17,7 +17,9 @@ class _EventsPageState extends State<EventsPage> {
 
   List<String> eventList = new List();
 
-  _EventsPageState() {
+  @override
+  void initState() {
+    super.initState();
     databaseRef.child("events").onChildAdded.listen((Event event) {
       setState(() {
         eventList.add(event.snapshot.key);

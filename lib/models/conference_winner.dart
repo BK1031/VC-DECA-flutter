@@ -1,3 +1,5 @@
+import 'package:firebase_database/firebase_database.dart';
+
 class ConferenceWinner {
   String key;
   String name;
@@ -6,9 +8,9 @@ class ConferenceWinner {
 
   ConferenceWinner(this.name, this.event, this.award);
 
-  ConferenceWinner.fromJson(Map<String, dynamic> json, String key)
-      : key = key,
-        name = json["name"],
-        event = json["event"],
-        award = json["award"];
+  ConferenceWinner.fromSnaphost(DataSnapshot snapshot)
+      : key = snapshot.key,
+        name = snapshot.value["name"],
+        event = snapshot.value["event"],
+        award = snapshot.value["award"];
 }

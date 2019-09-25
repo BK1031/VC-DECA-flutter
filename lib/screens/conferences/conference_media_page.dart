@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
@@ -31,20 +32,20 @@ class _ConferenceMediaPageState extends State<ConferenceMediaPage> {
     });
   }
 
-//  Future<void> newImage() async {
-//    var now = DateTime.now();
-//    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-//    if (image != null) {
-//      print("UPLOADING");
-//      StorageUploadTask uploadTask = storageRef.child("conferences").child(selectedYear).child("$now.png").putFile(image);
-//      uploadTask.events.listen((event) {
-//        print("UPLOADING: ${event.snapshot.bytesTransferred.toDouble() / event.snapshot.totalByteCount.toDouble()}");
-//      });
-//      var dowurl = await (await uploadTask.onComplete).ref.getDownloadURL();
-//      var url = dowurl.toString();
-//      databaseRef.child("conferences").child(selectedYear).child("media").push().set(url);
-//    }
-//  }
+  Future<void> newImage() async {
+    var now = DateTime.now();
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      print("UPLOADING");
+      StorageUploadTask uploadTask = storageRef.child("conferences").child(selectedConference.shortName).child("$now.png").putFile(image);
+      uploadTask.events.listen((event) {
+        print("UPLOADING: ${event.snapshot.bytesTransferred.toDouble() / event.snapshot.totalByteCount.toDouble()}");
+      });
+      var dowurl = await (await uploadTask.onComplete).ref.getDownloadURL();
+      var url = dowurl.toString();
+      databaseRef.child("conferences").child(selectedConference.shortName).child("media").push().set(url);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,9 @@ class _ConferenceMediaPageState extends State<ConferenceMediaPage> {
         visible: (userPerms.contains('CONFERENCE_MEDIA_UPLOAD') || userPerms.contains('ADMIN')),
         child: new FloatingActionButton(
           child: new Icon(Icons.add),
-          onPressed: () {},
+          onPressed: () {
+            newImage();
+          },
         ),
       ),
       body: new Container(

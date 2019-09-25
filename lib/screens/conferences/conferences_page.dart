@@ -20,31 +20,18 @@ class ConferencesPage extends StatefulWidget {
 class _ConferencesPageState extends State<ConferencesPage> {
   
   final databaseRef = FirebaseDatabase.instance.reference();
+  List<Conference> conferenceList = new List();
 
   @override
   void initState() {
     super.initState();
-    refreshConferences();
+    databaseRef.child("conferences").onChildAdded.listen((Event event) {
+      setState(() {
+        conferenceList.add(new Conference.fromSnapshot(event.snapshot));
+      });
+    });
   }
 
-  refreshConferences() async {
-    try {
-      await http.get(getDbUrl("conferences")).then((response) {
-        conferenceList.clear();
-        Map responseJson = jsonDecode(response.body);
-        responseJson.keys.forEach((key) {
-          setState(() {
-            conferenceList.add(new Conference.fromJson(responseJson[key], key));
-          });
-        });
-      });
-      print(conferenceList);
-    }
-    catch (error) {
-      print("Failed to pull conferences! - $error");
-    }
-  }
-  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,10 +49,6 @@ class _ConferencesPageState extends State<ConferencesPage> {
               itemBuilder: (BuildContext context, int index) {
                 return new GestureDetector(
                   onTap: () {
-                    if (selectedConference != conferenceList[index]) {
-                      winnerList.clear();
-                      agendaList.clear();
-                    }
                     selectedConference = conferenceList[index];
                     router.navigateTo(context, 'conference/details', transition: TransitionType.native);
                   },

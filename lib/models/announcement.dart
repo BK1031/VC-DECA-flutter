@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 
 class Announcement {
   String key;
@@ -8,12 +9,12 @@ class Announcement {
 
   Announcement(this.title, this.date, this.body);
 
-  Announcement.fromJson(Map<String, dynamic> json, String key)
-      : key = key,
-        title = json["title"].toString(),
-        author = json["author"].toString(),
-        date = json["date"].toString(),
-        body = json["body"].toString();
+  Announcement.fromSnapshot(DataSnapshot snapshot)
+      : key = snapshot.key,
+        title = snapshot.value["title"].toString(),
+        author = snapshot.value["author"].toString(),
+        date = snapshot.value["date"].toString(),
+        body = snapshot.value["body"].toString();
 
   @override
   String toString() {

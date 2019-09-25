@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/models/conference_winner.dart';
@@ -13,27 +14,17 @@ class ConferenceWinnersPage extends StatefulWidget {
 
 class _ConferenceWinnersPageState extends State<ConferenceWinnersPage> {
 
+  final databaseRef = FirebaseDatabase.instance.reference();
+  List<ConferenceWinner> winnerList = new List();
+
   @override
   void initState() {
     super.initState();
-    refreshAgenda();
-  }
-
-  refreshAgenda() async {
-    try {
-      await http.get(getDbUrl("conferences/${selectedConference.shortName}/winners")).then((response) {
-        winnerList.clear();
-        Map responseJson = jsonDecode(response.body);
-        responseJson.keys.forEach((key) {
-          setState(() {
-            winnerList.add(new ConferenceWinner.fromJson(responseJson[key], key));
-          });
-        });
+    databaseRef.child("conferences").child(selectedConference.shortName).child("winners").onChildAdded.listen((Event event) {
+      setState(() {
+        winnerList.add(new ConferenceWinner.fromSnaphost(event.snapshot));
       });
-    }
-    catch (error) {
-      print("Failed to pull conference winners! - $error");
-    }
+    });
   }
 
   @override

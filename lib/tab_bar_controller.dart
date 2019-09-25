@@ -57,9 +57,52 @@ class _TabBarControllerState extends State<TabBarController> {
     });
   }
 
+  void updateRequiredDialog() {
+    if (Platform.isIOS) {
+      showCupertinoDialog(context: context, builder: (context) {
+        return CupertinoAlertDialog(
+          title: new Text("Update Required\n"),
+          content: new Text("It looks like you are using an outdated version of the VC DECA App. Please update your app from the App Store."),
+          actions: <Widget>[
+            new CupertinoDialogAction(
+              child: new Text("OK"),
+              onPressed: () {
+                exit(0);
+              },
+            ),
+          ],
+        );
+      });
+    }
+    else if (Platform.isAndroid) {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: new Text("Update Required", style: TextStyle(color: currTextColor),),
+              backgroundColor: currBackgroundColor,
+              content: new Text(
+                "It looks like you are using an outdated version of the VC DECA App. Please update your app from the Play Store."
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text("GOT IT"),
+                  textColor: mainColor,
+                  onPressed: () {
+                    exit(0);
+                  },
+                ),
+              ],
+            );
+          }
+      );
+    }
+  }
+
   void firebaseCloudMessagingListeners() {
     if (Platform.isIOS) iOS_Permission();
-    _firebaseMessaging.getToken().then((token){
+    _firebaseMessaging.getToken().then((token) {
       print("FCM Token: " + token);
       databaseRef.child("users").child(userID).update({"fcmToken": token});
     });
@@ -101,10 +144,20 @@ class _TabBarControllerState extends State<TabBarController> {
     databaseRef.child("stableVersion").once().then((DataSnapshot snapshot) {
       var stable = snapshot.value;
       print("Current Version: $appVersion");
+      print("Current Version: ${appVersion.getVersionCode()}");
       print("Stable Version: $stable");
       if (appVersion.getVersionCode() < int.parse(snapshot.value)) {
         print("OUTDATED APP!");
         appStatus = " [OUTDATED]";
+        if (int.parse(snapshot.value) - appVersion.getVersionCode() >= 1000) {
+          // Minor Build Outdated
+          databaseRef.child("forceUpdate").once().then((DataSnapshot snapshot) {
+            if (snapshot.value) {
+              print("Force this boi to update");
+              updateRequiredDialog();
+            }
+          });
+        }
       }
       else if (appVersion.getVersionCode() > int.parse(snapshot.value)) {
         print("BETA APP!");

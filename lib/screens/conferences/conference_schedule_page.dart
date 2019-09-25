@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/models/conference_agenda_item.dart';
@@ -15,27 +16,17 @@ class ConferenceSchedulePage extends StatefulWidget {
 
 class _ConferenceSchedulePageState extends State<ConferenceSchedulePage> {
 
+  List<ConferenceAgendaItem> agendaList = new List();
+  final databaseRef = FirebaseDatabase.instance.reference();
+
   @override
   void initState() {
     super.initState();
-    refreshAgenda();
-  }
-
-  refreshAgenda() async {
-    try {
-      await http.get(getDbUrl("conferences/${selectedConference.shortName}/agenda")).then((response) {
-        agendaList.clear();
-        Map responseJson = jsonDecode(response.body);
-        responseJson.keys.forEach((key) {
-          setState(() {
-            agendaList.add(new ConferenceAgendaItem.fromJson(responseJson[key], key));
-          });
-        });
+    databaseRef.child("conferences").child(selectedConference.shortName).child("agenda").onChildAdded.listen((Event event) {
+      setState(() {
+        agendaList.add(new ConferenceAgendaItem.fromSnapshot(event.snapshot));
       });
-    }
-    catch (error) {
-      print("Failed to pull conference agenda! - $error");
-    }
+    });
   }
 
   @override

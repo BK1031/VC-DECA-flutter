@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluro/fluro.dart';
 import 'package:vc_deca_flutter/models/announcement.dart';
 import 'package:vc_deca_flutter/models/conference.dart';
@@ -11,16 +12,7 @@ Version appVersion = new Version("2.1.0+1");
 String appStatus = "";
 String appFull = "Version ${appVersion.toString()}";
 
-String getDbUrl(String ref) {
-  return "https://vc-deca.firebaseio.com/$ref/.json";
-}
-
 List<String> permsList = new List();
-
-List<Announcement> announcementList = new List();
-List<Conference> conferenceList = new List();
-List<ConferenceWinner> winnerList = new List();
-List<ConferenceAgendaItem> agendaList = new List();
 
 String appLegal = """
 MIT License

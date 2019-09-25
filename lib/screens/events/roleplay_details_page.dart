@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/user_info.dart';
@@ -13,6 +14,8 @@ class RoleplayDetailsPage extends StatefulWidget {
 
 class _RoleplayDetailsPageState extends State<RoleplayDetailsPage> {
 
+  final databaseRef = FirebaseDatabase.instance.reference();
+
   String participants = "";
   String prepTime = "";
   String presentationTime = "";
@@ -23,26 +26,16 @@ class _RoleplayDetailsPageState extends State<RoleplayDetailsPage> {
   @override
   void initState() {
     super.initState();
-    refreshAnnouncementCount();
-  }
-
-  void refreshAnnouncementCount() async {
-    try {
-      await http.get(getDbUrl("events/$selectedType/$selectedCluster/${selectedEvent.eventShort}")).then((response) {
-        var responseJson = jsonDecode(response.body);
-        setState(() {
-          participants = responseJson['participants'].toString();
-          prepTime = responseJson['prepTime'].toString();
-          presentationTime = responseJson['interviewTime'].toString();
-          guidelinesUrl = responseJson['guidelines'].toString();
-          sampleUrl = responseJson['sample'].toString();
-          examUrl = responseJson['sampleExam'].toString();
-        });
+    databaseRef.child("events").child(selectedType).child(selectedCluster).child(selectedEvent.eventShort).once().then((DataSnapshot snapshot) {
+      setState(() {
+        participants = snapshot.value['participants'].toString();
+        prepTime = snapshot.value['prepTime'].toString();
+        presentationTime = snapshot.value['interviewTime'].toString();
+        guidelinesUrl = snapshot.value['guidelines'].toString();
+        sampleUrl = snapshot.value['sample'].toString();
+        examUrl = snapshot.value['sampleExam'].toString();
       });
-    }
-    catch (error) {
-      print("Failed to pull announcement count! - $error");
-    }
+    });
   }
 
   @override

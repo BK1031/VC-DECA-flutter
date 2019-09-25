@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 
 class Conference {
   String shortName;
@@ -12,27 +13,21 @@ class Conference {
   String siteUrl;
   String location;
   String address;
-  double lat;
-  double long;
 
   Conference(this.shortName, this.fullName, this.desc, this.date, this.imageUrl,
-      this.mapUrl, this.hotelMapUrl, this.eventsUrl, this.siteUrl, this.location, this.address,
-      this.lat, this.long);
+      this.mapUrl, this.hotelMapUrl, this.eventsUrl, this.siteUrl, this.location, this.address);
 
-  Conference.fromJson(Map<String, dynamic> json, String key)
-  : shortName = key,
-    fullName = json["full"],
-    desc = json["desc"],
-    date = json["date"],
-    imageUrl = json["imageUrl"],
-    mapUrl = json["mapUrl"],
-    hotelMapUrl = json["hotelMap"],
-    eventsUrl = json["eventsUrl"],
-    siteUrl = json["site"],
-    alertsUrl = json["alerts"],
-    location = json["location"],
-    address = json["address"],
-    lat = json["lat"],
-    long = json["long"];
-
+  Conference.fromSnapshot(DataSnapshot snapshot)
+  : shortName = snapshot.key,
+    fullName = snapshot.value["full"],
+    desc = snapshot.value["desc"],
+    date = snapshot.value["date"],
+    imageUrl = snapshot.value["imageUrl"],
+    mapUrl = snapshot.value["mapUrl"],
+    hotelMapUrl = snapshot.value["hotelMap"],
+    eventsUrl = snapshot.value["eventsUrl"],
+    siteUrl = snapshot.value["site"],
+    alertsUrl = snapshot.value["alerts"],
+    location = snapshot.value["location"],
+    address = snapshot.value["address"];
 }

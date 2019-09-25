@@ -164,7 +164,7 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
   Future refreshTokens() async {
     tokens.clear();
     try {
-      await http.get(getDbUrl("qrTokens")).then((response) {
+      await http.get("https://vc-deca.firebaseio.com/qrTokens/.json").then((response) {
         Map responseJson = jsonDecode(response.body);
         responseJson.keys.forEach((key) {
           setState(() {
@@ -244,7 +244,9 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
                       databaseRef.child("users").child(userID).child("role").set(role);
                       print("Updated Role: $role");
                       print("Updated User Perms: ${userPerms.toString()}");
-                      databaseRef.child("qrTokens").child(json["token"]).set(null);
+                      if (!json["token"].toString().contains("muli")) {
+                        databaseRef.child("qrTokens").child(json["token"]).set(null);
+                      }
                       setState(() {
                         _finishedScan = true;
                       });

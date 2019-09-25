@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/user_info.dart';
@@ -14,28 +15,20 @@ class OnlineDetailsPage extends StatefulWidget {
 
 class _OnlineDetailsPageState extends State<OnlineDetailsPage> {
 
+  final databaseRef = FirebaseDatabase.instance.reference();
+
   String participants = "";
   String guidelinesUrl = "";
 
   @override
   void initState() {
     super.initState();
-    refreshAnnouncementCount();
-  }
-
-  void refreshAnnouncementCount() async {
-    try {
-      await http.get(getDbUrl("events/$selectedType/$selectedCluster/${selectedEvent.eventShort}")).then((response) {
-        var responseJson = jsonDecode(response.body);
-        setState(() {
-          participants = responseJson['participants'].toString();
-          guidelinesUrl = responseJson['guidelines'].toString();
-        });
+    databaseRef.child("events").child(selectedType).child(selectedCluster).child(selectedEvent.eventShort).once().then((DataSnapshot snapshot) {
+      setState(() {
+        participants = snapshot.value['participants'].toString();
+        guidelinesUrl = snapshot.value['guidelines'].toString();
       });
-    }
-    catch (error) {
-      print("Failed to pull announcement count! - $error");
-    }
+    });
   }
 
   @override
@@ -65,8 +58,7 @@ class _OnlineDetailsPageState extends State<OnlineDetailsPage> {
                         elevation: 6.0,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
                         color: currCardColor,
-                        child: new AnimatedContainer(
-                          duration: const Duration(milliseconds: 100),
+                        child: new Container(
                           padding: EdgeInsets.all(16.0),
                           child: new Column(
                             children: <Widget>[
@@ -74,10 +66,9 @@ class _OnlineDetailsPageState extends State<OnlineDetailsPage> {
                                   selectedEvent.eventName,
                                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0)
                               ),
-                              new AnimatedContainer(
-                                duration: const Duration(milliseconds: 200),
+                              new Container(
                                 width: double.infinity,
-                                height: (guidelinesUrl != "") ? 100.0 : 10.0,
+                                height: 100.0,
                                 child: new Row(
                                   children: <Widget>[
                                     new Expanded(

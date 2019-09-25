@@ -26,8 +26,6 @@ import 'package:fluro/fluro.dart';
 import 'package:vc_deca_flutter/tab_bar_controller.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
 
-final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
-
 List<CameraDescription> cameras;
 
 Future<Null> main() async {
@@ -137,7 +135,6 @@ Future<Null> main() async {
     title: "VC DECA",
     home: NetworkChecker(),
     onGenerateRoute: router.generator,
-    navigatorObservers: [routeObserver],
     debugShowCheckedModeBanner: false,
     theme: mainTheme,
   ));

@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 
 class ConferenceAgendaItem {
   String key;
@@ -11,12 +12,12 @@ class ConferenceAgendaItem {
   ConferenceAgendaItem(this.title, this.desc, this.date, this.time,
       this.endTime, this.location);
 
-  ConferenceAgendaItem.fromJson(Map<String, dynamic> json, String key)
-      : key = key,
-        title = json["title"],
-        desc = json["desc"],
-        date = json["date"],
-        time = json["time"],
-        endTime = json["endTime"],
-        location = json["location"];
+  ConferenceAgendaItem.fromSnapshot(DataSnapshot snapshot)
+      : key = snapshot.key,
+        title = snapshot.value["title"],
+        desc = snapshot.value["desc"],
+        date = snapshot.value["date"],
+        time = snapshot.value["time"],
+        endTime = snapshot.value["endTime"],
+        location = snapshot.value["location"];
 }
