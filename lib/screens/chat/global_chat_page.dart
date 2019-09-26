@@ -392,7 +392,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
           children: <Widget>[
             new Container(
               padding: EdgeInsets.only(right: 8.0, left: 8.0),
-              child: new GestureDetector(
+              child: new InkWell(
                 onTap: () {
                   showUserSheet(messageList[index].authorID, roleColors[messageList[index].authorRole]);
                 },
@@ -412,7 +412,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Container(
-                    child: new GestureDetector(
+                    child: new InkWell(
                       onLongPress: () {
                         showMessageDetails(index);
                       },
@@ -433,7 +433,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
                   ),
                   new Visibility(visible: !messageList[index].repeatAuthor, child: new Padding(padding: EdgeInsets.all(2.0)),),
                   new Container(
-                    child: new GestureDetector(
+                    child: new InkWell(
                       onLongPress: () {
                         showMessageDetails(index);
                       },
@@ -471,7 +471,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
           children: <Widget>[
             new Container(
               padding: EdgeInsets.only(right: 8.0, left: 8.0),
-              child: new GestureDetector(
+              child: new InkWell(
                 onTap: () {
                   showUserSheet(messageList[index].authorID, roleColors[messageList[index].authorRole]);
                 },
@@ -491,7 +491,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Container(
-                    child: new GestureDetector(
+                    child: new InkWell(
                       onLongPress: () {
                         showMessageDetails(index);
                       },
@@ -512,7 +512,7 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
                   ),
                   new Visibility(visible: !messageList[index].repeatAuthor, child: new Padding(padding: EdgeInsets.all(2.0)),),
                   new Container(
-                    child: new GestureDetector(
+                    child: new InkWell(
                       onLongPress: () {
                         showMessageDetails(index);
                       },
@@ -696,101 +696,121 @@ class _UserInfoSheetState extends State<UserInfoSheet> {
   Widget build(BuildContext context) {
     return new SafeArea(
       child: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.only(right: 16.0, top: 16.0, left: 16.0),
         color: currBackgroundColor,
-        child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            new ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(150.0)),
-              child: new CachedNetworkImage(
-                imageUrl: userSnapshot.value["profilePicUrl"],
-                height: 100.0,
+        child: new SingleChildScrollView(
+          child: new Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              new ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(150.0)),
+                child: new CachedNetworkImage(
+                  imageUrl: userSnapshot.value["profilePicUrl"],
+                  height: 100.0,
+                ),
               ),
-            ),
-            new Padding(padding: EdgeInsets.all(8.0)),
-            new Text(
-              userSnapshot.value["name"],
-              style: TextStyle(fontSize: 25.0),
-            ),
-            new Padding(padding: EdgeInsets.all(4.0)),
-            new Text(
-              userSnapshot.value["email"],
-              style: TextStyle(fontSize: 15.0),
-            ),
-            new Padding(padding: EdgeInsets.all(8.0)),
-            new Row(
-              children: <Widget>[
-                new Visibility(
-                  visible: (userSnapshot.value.toString().contains("DEV")),
-                  child: new Card(
+              new Padding(padding: EdgeInsets.all(8.0)),
+              new Text(
+                userSnapshot.value["name"],
+                style: TextStyle(fontSize: 25.0),
+              ),
+              new Padding(padding: EdgeInsets.all(4.0)),
+              new Text(
+                userSnapshot.value["email"],
+                style: TextStyle(fontSize: 17.0),
+              ),
+              new Padding(padding: EdgeInsets.all(8.0)),
+              new Wrap(
+                children: <Widget>[
+                  new Visibility(
+                    visible: (userSnapshot.value.toString().contains("DEV")),
+                    child: new Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                      color: mainColor,
+                      elevation: 6.0,
+                      child: new Container(
+                        padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 4.0, top: 4.0),
+                        child: new Center(
+                          child: new Text(
+                            "Developer",
+                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  new Visibility(
+                    visible: (userSnapshot.value["title"] != ""),
+                    child: new Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                      color: (userSnapshot.value["chatColor"] != "") ? HexColor(userSnapshot.value["chatColor"]) : HexColor(roleColor),
+                      elevation: 6.0,
+                      child: new Container(
+                        padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 4.0, top: 4.0),
+                        child: new Center(
+                          child: new Text(
+                            userSnapshot.value["title"],
+                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  new Card(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                    color: mainColor,
+                    color: HexColor(roleColor),
                     elevation: 6.0,
                     child: new Container(
                       padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 4.0, top: 4.0),
                       child: new Center(
                         child: new Text(
-                          "Developer",
+                          userSnapshot.value["role"],
                           style: TextStyle(fontSize: 20.0, color: Colors.white),
                         ),
                       ),
                     ),
                   ),
-                ),
-                new Visibility(
-                  visible: (userSnapshot.value["title"] != ""),
-                  child: new Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                    color: (userSnapshot.value["chatColor"] != "") ? HexColor(userSnapshot.value["chatColor"]) : HexColor(roleColor),
-                    elevation: 6.0,
-                    child: new Container(
-                      padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 4.0, top: 4.0),
-                      child: new Center(
-                        child: new Text(
-                          userSnapshot.value["title"],
-                          style: TextStyle(fontSize: 20.0, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                new Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                  color: HexColor(roleColor),
+                ],
+              ),
+              new Padding(padding: EdgeInsets.all(8.0)),
+              new Visibility(
+                visible: (userPerms.contains("ADMIN") || userPerms.contains("DEV")),
+                child: new Card(
                   elevation: 6.0,
-                  child: new Container(
-                    padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 4.0, top: 4.0),
-                    child: new Center(
-                      child: new Text(
-                        userSnapshot.value["role"],
-                        style: TextStyle(fontSize: 20.0, color: Colors.white),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                  color: currCardColor,
+                  child: Column(
+                    children: <Widget>[
+                      new Visibility(
+                        visible: (userPerms.contains("ADMIN")),
+                        child: new ListTile(
+                          leading: new Icon(Icons.settings),
+                          title: new Text("Manage"),
+                          trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
+                          onTap: () {
+                            // TODO: Add user management stuff
+                          },
+                        ),
                       ),
-                    ),
+                      new Visibility(
+                        visible: (userPerms.contains("DEV")),
+                        child: new ListTile(
+                          leading: new Icon(Icons.person),
+                          title: new Text("User Details"),
+                          trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
+                          onTap: () {
+                            // TODO: Add user details stuff
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            new Padding(padding: EdgeInsets.all(8.0)),
-            new Visibility(
-              visible: (userPerms.contains("ADMIN")),
-              child: new Card(
-                elevation: 6.0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                color: currCardColor,
-                child: Column(
-                  children: <Widget>[
-                    new ListTile(
-                      leading: new Icon(Icons.settings),
-                      title: new Text("Manage"),
-                      trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
-                    )
-                  ],
-                ),
               ),
-            ),
-          ],
+              new Visibility(visible: (userPerms.contains("ADMIN") || userPerms.contains("DEV")), child: new Padding(padding: EdgeInsets.all(8.0))),
+            ],
+          ),
         ),
       ),
     );

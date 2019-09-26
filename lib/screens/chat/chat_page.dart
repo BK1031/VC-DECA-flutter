@@ -292,7 +292,7 @@ class _ChatPageState extends State<ChatPage> {
         children: <Widget>[
           new Visibility(
             visible: (userPerms.contains("CHAT_VIEW") || userPerms.contains("ADMIN")),
-            child: new GestureDetector(
+            child: new InkWell(
               onTap: () {
                 toChat("global");
               },
@@ -308,7 +308,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           new Padding(padding: EdgeInsets.all(4.0)),
-          new GestureDetector(
+          new InkWell(
             onTap: () {
               toMentorChat();
             },
@@ -324,7 +324,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           new Padding(padding: EdgeInsets.all(4.0)),
-          new GestureDetector(
+          new InkWell(
             onTap: () {
               toChapChat();
             },
@@ -342,7 +342,7 @@ class _ChatPageState extends State<ChatPage> {
           new Visibility(visible: (userPerms.contains("OFFICER_CHAT_VIEW") || userPerms.contains("ADMIN")), child: new Padding(padding: EdgeInsets.all(4.0))),
           new Visibility(
             visible: (userPerms.contains("OFFICER_CHAT_VIEW") || userPerms.contains("ADMIN")),
-            child: new GestureDetector(
+            child: new InkWell(
               onTap: () {
                 toChat("officer");
               },
@@ -360,7 +360,7 @@ class _ChatPageState extends State<ChatPage> {
           new Visibility(visible: (userPerms.contains("LEADER_CHAT_VIEW") || userPerms.contains("ADMIN")), child: new Padding(padding: EdgeInsets.all(4.0))),
           new Visibility(
             visible: (userPerms.contains("LEADER_CHAT_VIEW") || userPerms.contains("ADMIN")),
-            child: new GestureDetector(
+            child: new InkWell(
               onTap: () {
                 toChat("leader");
               },
@@ -378,7 +378,7 @@ class _ChatPageState extends State<ChatPage> {
           new Visibility(visible: (userPerms.contains("DEV") || userPerms.contains("ADMIN")), child: new Padding(padding: EdgeInsets.all(4.0))),
           new Visibility(
             visible: (userPerms.contains("DEV") || userPerms.contains("ADMIN")),
-            child: new GestureDetector(
+            child: new InkWell(
               onTap: () {
                 toChat("dev");
               },

@@ -120,6 +120,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     trailing: new Text(role, style: TextStyle(fontSize: 16.0, fontFamily: "Product Sans")),
                   ),
                   new ListTile(
+                    title: new Text("Mentor Group", style: TextStyle(fontFamily: "Product Sans",)),
+                    trailing: new Text(mentorGroupID, style: TextStyle(fontSize: 16.0, fontFamily: "Product Sans")),
+                  ),
+                  new ListTile(
                     title: new Text("Chaperone Group", style: TextStyle(fontFamily: "Product Sans",)),
                     trailing: new Text(chapGroupID, style: TextStyle(fontSize: 16.0, fontFamily: "Product Sans")),
                   ),

@@ -47,17 +47,18 @@ class _ConferencesPageState extends State<ConferencesPage> {
             child: new ListView.builder(
               itemCount: conferenceList.length,
               itemBuilder: (BuildContext context, int index) {
-                return new GestureDetector(
-                  onTap: () {
-                    selectedConference = conferenceList[index];
-                    router.navigateTo(context, 'conference/details', transition: TransitionType.native);
-                  },
-                  child: new Padding(
-                    padding: new EdgeInsets.only(bottom: 4.0),
-                    child: new Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                      color: Colors.white,
-                      elevation: 6.0,
+                return new Padding(
+                  padding: new EdgeInsets.only(bottom: 4.0),
+                  child: new Card(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                    color: Colors.white,
+                    elevation: 6.0,
+                    child: new InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      onTap: () {
+                        selectedConference = conferenceList[index];
+                        router.navigateTo(context, 'conference/details', transition: TransitionType.native);
+                      },
                       child: new Stack(
                         fit: StackFit.passthrough,
                         children: <Widget>[

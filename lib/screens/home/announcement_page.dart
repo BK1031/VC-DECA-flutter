@@ -63,74 +63,75 @@ class _AnnouncementPageState extends State<AnnouncementPage> with RouteAware {
               child: ListView.builder(
                 itemCount: announcementList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                      onTap: () {
-                        selectedAnnouncement = announcementList[index];
-                        print(selectedAnnouncement);
-                        router.navigateTo(context, '/home/announcements/details', transition: TransitionType.native);
-                      },
-                      child: new Column(
-                        children: <Widget>[
-                          new Card(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                            color: currCardColor,
-                            elevation: 6.0,
-                            child: new Container(
-                              padding: EdgeInsets.all(16.0),
-                              child: new Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  new Container(
-                                      child: new Icon(
-                                        Icons.notifications_active,
-                                        color: mainColor,
-                                      )
-                                  ),
-                                  new Padding(padding: EdgeInsets.all(4.0)),
-                                  new Column(
-                                    children: <Widget>[
-                                      new Container(
-                                        width: MediaQuery.of(context).size.width - 150,
-                                        child: new Text(
-                                          announcementList[index].title,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            fontSize: 18.0,
-                                            fontFamily: "Product Sans",
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                  return new Column(
+                    children: <Widget>[
+                      new Card(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                        color: currCardColor,
+                        elevation: 6.0,
+                        child: new InkWell(
+                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                          onTap: () {
+                            selectedAnnouncement = announcementList[index];
+                            print(selectedAnnouncement);
+                            router.navigateTo(context, '/home/announcements/details', transition: TransitionType.native);
+                          },
+                          child: new Container(
+                            padding: EdgeInsets.all(16.0),
+                            child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                new Container(
+                                    child: new Icon(
+                                      Icons.notifications_active,
+                                      color: mainColor,
+                                    )
+                                ),
+                                new Padding(padding: EdgeInsets.all(4.0)),
+                                new Column(
+                                  children: <Widget>[
+                                    new Container(
+                                      width: MediaQuery.of(context).size.width - 150,
+                                      child: new Text(
+                                        announcementList[index].title,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontFamily: "Product Sans",
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      new Padding(padding: EdgeInsets.all(4.0)),
-                                      new Container(
-                                        width: MediaQuery.of(context).size.width - 150,
-                                        child: new Text(
-                                          announcementList[index].body,
-                                          textAlign: TextAlign.start,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 15.0,
-                                            fontFamily: "Product Sans",
-                                          ),
+                                    ),
+                                    new Padding(padding: EdgeInsets.all(4.0)),
+                                    new Container(
+                                      width: MediaQuery.of(context).size.width - 150,
+                                      child: new Text(
+                                        announcementList[index].body,
+                                        textAlign: TextAlign.start,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 15.0,
+                                          fontFamily: "Product Sans",
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  new Padding(padding: EdgeInsets.all(4.0)),
-                                  new Container(
-                                      child: new Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: mainColor,
-                                      )
-                                  ),
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                ),
+                                new Padding(padding: EdgeInsets.all(4.0)),
+                                new Container(
+                                    child: new Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: mainColor,
+                                    )
+                                ),
+                              ],
                             ),
                           ),
-                          new Padding(padding: EdgeInsets.all(4.0))
-                        ],
-                      )
+                        ),
+                      ),
+                      new Padding(padding: EdgeInsets.all(4.0))
+                    ],
                   );
                 },
               ),

@@ -62,12 +62,15 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 new Expanded(
                   flex: 5,
-                  child: new GestureDetector(
-                    onTap: toMyEvents,
-                    child: new Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                      color: Colors.white,
-                      elevation: 6.0,
+                  child: new Card(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                    color: Colors.white,
+                    elevation: 6.0,
+                    child: new InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      onTap: () {
+                        toMyEvents();
+                      },
                       child: new Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
@@ -84,14 +87,15 @@ class _HomePageState extends State<HomePage> {
                 new Padding(padding: EdgeInsets.all(4.0)),
                 new Expanded(
                   flex: 3,
-                  child: new GestureDetector(
-                    onTap: () {
-                      router.navigateTo(context, '/home/announcements', transition: TransitionType.native);
-                    },
-                    child: new Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                      color: Colors.white,
-                      elevation: 6.0,
+                  child: new Card(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                    color: Colors.white,
+                    elevation: 6.0,
+                    child: new InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      onTap: () {
+                        router.navigateTo(context, '/home/announcements', transition: TransitionType.native);
+                      },
                       child: new Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
@@ -121,14 +125,15 @@ class _HomePageState extends State<HomePage> {
                   flex: 3,
                   child: new Visibility(
                     visible: (userPerms.contains('NOTIFICATION_SEND') || userPerms.contains('ADMIN')),
-                    child: new GestureDetector(
-                      onTap: () {
-                        router.navigateTo(context, '/home/notification-manager', transition: TransitionType.native);
-                      },
-                      child: new Card(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                        color: Colors.white,
-                        elevation: 6.0,
+                    child: new Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                      color: Colors.white,
+                      elevation: 6.0,
+                      child: new InkWell(
+                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                        onTap: () {
+                          router.navigateTo(context, '/home/notification-manager', transition: TransitionType.native);
+                        },
                         child: new Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
@@ -148,20 +153,21 @@ class _HomePageState extends State<HomePage> {
                   flex: 5,
                   child: new Visibility(
                     visible: (userPerms.contains('ADMIN')),
-                    child: new GestureDetector(
-                      onTap: () {
-                        // TODO: Implement Role Manager
-                      },
-                      child: new Card(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                        color: Colors.white,
-                        elevation: 6.0,
+                    child: new Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                      color: Colors.white,
+                      elevation: 6.0,
+                      child: new InkWell(
+                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                        onTap: () {
+                          // TODO: Implement role management
+                        },
                         child: new Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             new Icon(Icons.supervised_user_circle, size: 35.0,),
                             new Text(
-                              "Role Manager",
+                              "Manage Users",
                               style: TextStyle(fontSize: 13.0),
                             )
                           ],

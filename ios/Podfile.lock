@@ -121,7 +121,7 @@ PODS:
   - GTMSessionFetcher/Core (1.2.2)
   - image_cropper (0.0.1):
     - Flutter
-    - TOCropViewController (~> 2.3.8)
+    - TOCropViewController (~> 2.5.0)
   - image_picker (0.0.1):
     - Flutter
   - leveldb-library (1.22)
@@ -132,11 +132,13 @@ PODS:
   - nanopb/encode (0.3.901)
   - path_provider (0.0.1):
     - Flutter
+  - permission_handler (2.2.0):
+    - Flutter
   - Protobuf (3.9.0)
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
-  - TOCropViewController (2.3.8)
+  - TOCropViewController (2.5.1)
   - url_launcher (0.0.1):
     - Flutter
   - webview_flutter (0.0.1):
@@ -154,6 +156,7 @@ DEPENDENCIES:
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
@@ -206,6 +209,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher:
@@ -240,14 +245,15 @@ SPEC CHECKSUMS:
   GoogleDataTransportCCTSupport: 51134d81fca795c60cc247d1cb6af63c3d67b8d8
   GoogleUtilities: e7dc37039b19df7fe543479d3e4a02ac8d11bb69
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
-  image_cropper: 189eec25d148f56694f670438e9458323ba2880a
+  image_cropper: f25bdfbf1ef970c9a0a0f78306fb6a0aaac7229e
   image_picker: a211f28b95a560433c00f5cd3773f4710a20404d
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
+  permission_handler: 0fc6d6641c09e4bfd5541dd39b0f44c7e369aa6b
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
   sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
-  TOCropViewController: 0a075f02c253e88095143bbac7b013fc6fba5090
+  TOCropViewController: 00dc36c4e4a0f4a45efa91adbf22df8a4fae01d3
   url_launcher: 0067ddb8f10d36786672aa0722a21717dba3a298
   webview_flutter: 1aa7604e6cdb451a9b7ed2c37d5454c0b440246b
 

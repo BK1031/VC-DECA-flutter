@@ -59,18 +59,19 @@ class _EventsPageState extends State<EventsPage> {
               children: List.generate(eventList.length, (int index) {
                 return new Container(
                   padding: EdgeInsets.all(8.0),
-                  child: new GestureDetector(
-                    onTap: () {
-                      selectedType = eventList[index];
-                      print(selectedType);
-                      router.navigateTo(context, '/event/cluster', transition: TransitionType.native);
-                    },
-                    child: new Card(
+                  child: new Card(
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      onTap: () {
+                        selectedType = eventList[index];
+                        print(selectedType);
+                        router.navigateTo(context, '/event/cluster', transition: TransitionType.native);
+                      },
                       child: getLeadingPic(eventList[index]),
-                      elevation: 6.0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                      color: currCardColor,
                     ),
+                    elevation: 6.0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                    color: currCardColor,
                   ),
                 );
               }),

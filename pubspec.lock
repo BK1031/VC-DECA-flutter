@@ -81,10 +81,12 @@ packages:
   fast_qr_reader_view:
     dependency: "direct main"
     description:
-      name: fast_qr_reader_view
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.5"
+      path: "."
+      ref: HEAD
+      resolved-ref: "05d629020b19b426c5d8f20a88d5a810ff304d7b"
+      url: "git://github.com/facundomedica/fast_qr_reader_view.git"
+    source: git
+    version: "0.1.6"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -126,7 +128,7 @@ packages:
       name: fluro
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.0"
+    version: "1.5.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -164,7 +166,7 @@ packages:
       name: flutter_webview_plugin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.2"
+    version: "0.3.8"
   http:
     dependency: "direct main"
     description:
@@ -192,14 +194,14 @@ packages:
       name: image_cropper
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.2"
   image_picker:
     dependency: "direct main"
     description:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.12"
+    version: "0.4.12+1"
   intl:
     dependency: "direct main"
     description:
@@ -213,7 +215,7 @@ packages:
       name: intro_views_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.6.0"
+    version: "2.7.0"
   linkify:
     dependency: transitive
     description:
@@ -256,6 +258,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0+1"
+  permission_handler:
+    dependency: "direct main"
+    description:
+      name: permission_handler
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.0"
   petitparser:
     dependency: transitive
     description:
@@ -283,7 +292,7 @@ packages:
       name: progress_indicators
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.2"
+    version: "0.1.4"
   qr:
     dependency: "direct main"
     description:
@@ -386,7 +395,7 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.0+1"
+    version: "4.2.0+3"
   uuid:
     dependency: transitive
     description:
