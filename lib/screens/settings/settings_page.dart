@@ -238,8 +238,21 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: new Text("Dark Mode", style: TextStyle(fontFamily: "Product Sans",)),
                       value: darkMode,
                       onChanged: (bool value) {
+                        // Toggle Dark Mode
                         setState(() {
                           darkMode = value;
+                          if (darkMode) {
+                            currTextColor = lightTextColor;
+                            currBackgroundColor = lightBackgroundColor;
+                            currCardColor = lightCardColor;
+                            currDividerColor = lightDividerColor;
+                          }
+                          else {
+                            currTextColor = darkTextColor;
+                            currBackgroundColor = darkBackgroundColor;
+                            currCardColor = darkCardColor;
+                            currDividerColor = darkDividerColor;
+                          }
                           FirebaseDatabase.instance.reference().child("users").child(userID).update({"darkMode": darkMode});
                         });
                       },
