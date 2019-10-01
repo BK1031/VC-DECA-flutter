@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -137,8 +138,41 @@ class _TabBarControllerState extends State<TabBarController> {
     firebaseCloudMessagingListeners();
     _pageController = new PageController();
     // Get PermsList from Firebase
-    databaseRef.child("perms").onChildAdded.listen((Event event) {
-      permsList.add(event.snapshot.value);
+    databaseRef.child("perms").once().then((DataSnapshot snapshot) {
+      Map permsJson = snapshot.value;
+      permsJson.keys.forEach((key) {
+        permsList.add(permsJson[key].toString());
+      });
+      print("Retrieved All Perms: ${permsList.toString()}");
+    });
+    // Get PermsList for Current User
+    databaseRef.child("users").child(userID).child("perms").once().then((DataSnapshot snapshot) {
+      Map permsJson = snapshot.value;
+      permsJson.keys.forEach((key) {
+        userPerms.add(permsJson[key].toString());
+      });
+      print("User Perms: ${userPerms.toString()}");
+      // Subscribe to topics
+      if (userPerms.contains("CHAT_VIEW")) {
+        FirebaseMessaging().subscribeToTopic("GLOBAL_CHAT");
+        print("Subscribed to GLOBAL_CHAT");
+      }
+      if (userPerms.contains("OFFICER_CHAT_VIEW")) {
+        FirebaseMessaging().subscribeToTopic("OFFICER_CHAT");
+        print("Subscribed to OFFICER_CHAT");
+      }
+      if (userPerms.contains("LEADER_CHAT_VIEW")) {
+        FirebaseMessaging().subscribeToTopic("LEADER_CHAT");
+        print("Subscribed to LEADER_CHAT");
+      }
+      if (userPerms.contains("DEV")) {
+        FirebaseMessaging().subscribeToTopic("DEV");
+        print("Subscribed to DEV");
+      }
+      if (userPerms.contains("ADMIN")) {
+        FirebaseMessaging().subscribeToTopic("ADMIN");
+        print("Subscribed to ADMIN");
+      }
     });
     // Get Session Info
     databaseRef.child("stableVersion").once().then((DataSnapshot snapshot) {
@@ -169,33 +203,11 @@ class _TabBarControllerState extends State<TabBarController> {
         "platform": Platform.operatingSystem
       });
     });
-    // Get PermsList for Current User
-    databaseRef.child("users").child(userID).child("perms").onChildAdded.listen((Event event) {
-      setState(() {
-        userPerms.add(event.snapshot.value);
-      });
-    });
     // Subscribe to Topics
     FirebaseMessaging().subscribeToTopic("ALL_DEVICES");
     print("Subscribed to ALL_DEVICES");
-    FirebaseMessaging().subscribeToTopic(role.toUpperCase());
-    print("Subscribed to ${role.toUpperCase()}");
-    if (userPerms.contains("CHAT_VIEW")) {
-      FirebaseMessaging().subscribeToTopic("GLOBAL_CHAT");
-      print("Subscribed to GLOBAL_CHAT");
-    }
-    if (userPerms.contains("OFFICER_CHAT_VIEW")) {
-      FirebaseMessaging().subscribeToTopic("OFFICER_CHAT");
-      print("Subscribed to OFFICER_CHAT");
-    }
-    if (userPerms.contains("LEADER_CHAT_VIEW")) {
-      FirebaseMessaging().subscribeToTopic("LEADER_CHAT");
-      print("Subscribed to LEADER_CHAT");
-    }
-    if (userPerms.contains("DEV")) {
-      FirebaseMessaging().subscribeToTopic("DEV");
-      print("Subscribed to DEV");
-    }
+    FirebaseMessaging().subscribeToTopic(role.toUpperCase().split(" ").join("_"));
+    print("Subscribed to ${role.toUpperCase().split(" ").join("_")}");
     if (chapGroupID != "Not in a Group") {
       FirebaseMessaging().subscribeToTopic(chapGroupID);
       print("Subscribed to $chapGroupID");

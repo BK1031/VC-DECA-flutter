@@ -32,7 +32,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   @override
   void initState() {
     super.initState();
-    print(userPerms);
     if (userPerms.contains('DEV') || userPerms.contains('ADMIN')) {
       userPerms.forEach((perm) {
         permCardList.add(
