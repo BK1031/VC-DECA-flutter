@@ -41,8 +41,8 @@ android {
         applicationId "com.bk1031.vc_deca_flutter"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 2001000
-        versionName "2.1.0"
+        versionCode 2003000
+        versionName "2.3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
