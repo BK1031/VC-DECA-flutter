@@ -37,7 +37,6 @@ dependencies:
   qr: ^1.2.0
   qr_flutter: ^3.0.1
   rubber: ^0.3.2
-  permission_handler: 2.2.0
   fast_qr_reader_view:
     git:
       url: git://github.com/facundomedica/fast_qr_reader_view.git

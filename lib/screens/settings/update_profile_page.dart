@@ -32,6 +32,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   @override
   void initState() {
     super.initState();
+    print(userPerms);
     userPerms.forEach((perm) {
       permCardList.add(
           new ListTile(
@@ -54,11 +55,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     if (image != null) {
       var croppedImage = await ImageCropper.cropImage(
         sourcePath: image.path,
-        ratioX: 1.0,
-        ratioY: 1.0,
         maxHeight: 512,
         maxWidth: 512,
-        toolbarColor: mainColor,
       );
       if (croppedImage != null) {
         setState(() {

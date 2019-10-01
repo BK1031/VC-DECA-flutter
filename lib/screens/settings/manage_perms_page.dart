@@ -180,20 +180,6 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
     }
   }
 
-  List<Widget> getJsonPerms() {
-    List<Widget> returnList = [];
-    List permList = json["perms"];
-    permList.forEach((perm) {
-      returnList.add(
-        new ListTile(
-          title: new Text(perm, style: TextStyle(color: (!userPerms.contains(perm)) ? Colors.green : Colors.black),
-          ),
-        )
-      );
-    });
-    return returnList;
-  }
-
   @override
   Widget build(BuildContext context) {
     return new SafeArea(
@@ -215,8 +201,15 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
               ),
             ),
           ),
-          new Column(
-            children: getJsonPerms(),
+          new Expanded(
+            child: new ListView.builder(
+              itemCount: json["perms"].length,
+              itemBuilder: (BuildContext context, int index) {
+                return new ListTile(
+                  title: new Text(json["perms"][index]),
+                );
+              },
+            ),
           ),
           new Visibility(
             visible: !_finishedScan,
@@ -244,7 +237,7 @@ class _AddPermsDialogState extends State<AddPermsDialog> {
                       databaseRef.child("users").child(userID).child("role").set(role);
                       print("Updated Role: $role");
                       print("Updated User Perms: ${userPerms.toString()}");
-                      if (!json["token"].toString().contains("muli")) {
+                      if (!json["token"].toString().contains("multi")) {
                         databaseRef.child("qrTokens").child(json["token"]).set(null);
                       }
                       setState(() {
