@@ -624,10 +624,10 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
                                   controller: myController,
                                   textInputAction: TextInputAction.newline,
                                   textCapitalization: TextCapitalization.sentences,
-                                  style: TextStyle(fontFamily: "Product Sans", color: Colors.black, fontSize: 15.0),
+                                  style: TextStyle(fontFamily: "Product Sans", color: currTextColor, fontSize: 15.0),
                                   decoration: InputDecoration.collapsed(
                                       hintText: 'Type your message...',
-                                      hintStyle: TextStyle(fontFamily: "Product Sans")
+                                      hintStyle: TextStyle(fontFamily: "Product Sans", color: darkMode ? Colors.grey : Colors.black54)
                                   ),
                                   focusNode: myFocusNode,
                                   onChanged: textChanged,

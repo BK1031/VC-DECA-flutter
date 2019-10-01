@@ -262,17 +262,17 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
                       ),
                       new ListTile(
                         title: new Text("Committee Members"),
-                        trailing: getTrailingCheck('COMMITTEE MEMBER'),
+                        trailing: getTrailingCheck('COMMITTEE_MEMBER'),
                         onTap: () {
                           setState(() {
-                            if (!topic.contains('COMMITTEE MEMBER')) {
-                              topic.add('COMMITTEE MEMBER');
+                            if (!topic.contains('COMMITTEE_MEMBER')) {
+                              topic.add('COMMITTEE_MEMBER');
                               if (topic.contains('ALL_DEVICES')) {
                                 topic.remove('ALL_DEVICES');
                               }
                             }
                             else {
-                              topic.remove('COMMITTEE MEMBER');
+                              topic.remove('COMMITTEE_MEMBER');
                             }
                           });
                           print(topic);
@@ -280,17 +280,17 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
                       ),
                       new ListTile(
                         title: new Text("Cluster Mentors"),
-                        trailing: getTrailingCheck('CLUSTER MENTOR'),
+                        trailing: getTrailingCheck('CLUSTER_MENTOR'),
                         onTap: () {
                           setState(() {
-                            if (!topic.contains('CLUSTER MENTOR')) {
-                              topic.add('CLUSTER MENTOR');
+                            if (!topic.contains('CLUSTER_MENTOR')) {
+                              topic.add('CLUSTER_MENTOR');
                               if (topic.contains('ALL_DEVICES')) {
                                 topic.remove('ALL_DEVICES');
                               }
                             }
                             else {
-                              topic.remove('CLUSTER MENTOR');
+                              topic.remove('CLUSTER_MENTOR');
                             }
                           });
                           print(topic);

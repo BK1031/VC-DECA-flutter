@@ -8,6 +8,7 @@ import 'package:progress_indicators/progress_indicators.dart';
 import 'package:vc_deca_flutter/screens/auth/auth_functions.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
+import 'package:vc_deca_flutter/utils/theme.dart';
 
 class AuthChecker extends StatefulWidget {
   @override
@@ -27,6 +28,18 @@ class _AuthCheckerState extends State<AuthChecker> {
       await AuthFunctions.getUserData().then((bool retrievedData) async {
         if (retrievedData) {
           print("Retrieved User Data");
+          if (darkMode) {
+            currTextColor = darkTextColor;
+            currBackgroundColor = darkBackgroundColor;
+            currCardColor = darkCardColor;
+            currDividerColor = darkDividerColor;
+          }
+          else {
+            currTextColor = lightTextColor;
+            currBackgroundColor = lightBackgroundColor;
+            currCardColor = lightCardColor;
+            currDividerColor = lightDividerColor;
+          }
           router.navigateTo(context, '/home', transition: TransitionType.fadeIn, clearStack: true);
         }
         else {

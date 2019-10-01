@@ -25,7 +25,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> with RouteAware {
     super.initState();
     databaseRef.child("alerts").onChildAdded.listen((Event event) {
       setState(() {
-        if (event.snapshot.value["topic"].toString().contains(role.toUpperCase()) || event.snapshot.value["topic"].toString().contains("ALL_DEVICES") || userPerms.contains('ADMIN')) {
+        if (event.snapshot.value["topic"].toString().contains(role.toUpperCase().split(" ").join("_")) || event.snapshot.value["topic"].toString().contains("ALL_DEVICES") || userPerms.contains('ADMIN')) {
           announcementList.add(new Announcement.fromSnapshot(event.snapshot));
         }
       });

@@ -33,13 +33,22 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   void initState() {
     super.initState();
     print(userPerms);
-    userPerms.forEach((perm) {
+    if (userPerms.contains('DEV') || userPerms.contains('ADMIN')) {
+      userPerms.forEach((perm) {
+        permCardList.add(
+            new ListTile(
+              title: new Text(perm, style: TextStyle(color: currTextColor)),
+            )
+        );
+      });
+    }
+    else {
       permCardList.add(
           new ListTile(
-            title: new Text(perm),
+            title: new Text("Hidden", style: TextStyle(color: currTextColor),),
           )
       );
-    });
+    }
     permCardList.add(
         new ListTile(
           title: new Text("Update Permissions", style: TextStyle(fontFamily: "Product Sans", color: mainColor), textAlign: TextAlign.center,),
@@ -134,7 +143,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                       new Padding(padding: EdgeInsets.all(4.0)),
                       new Text(
                         "(Click to edit)",
-                        style: TextStyle(fontFamily: "Product Sans", fontSize: 15.0),
+                        style: TextStyle(fontFamily: "Product Sans", fontSize: 15.0, color: currTextColor),
                       ),
                     ],
                   ),

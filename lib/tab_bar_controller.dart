@@ -174,36 +174,36 @@ class _TabBarControllerState extends State<TabBarController> {
       setState(() {
         userPerms.add(event.snapshot.value);
       });
-      // Subscribe to Topics
-      FirebaseMessaging().subscribeToTopic("ALL_DEVICES");
-      print("Subscribed to ALL_DEVICES");
-      FirebaseMessaging().subscribeToTopic(role.toUpperCase());
-      print("Subscribed to ${role.toUpperCase()}");
-      if (userPerms.contains("CHAT_VIEW")) {
-        FirebaseMessaging().subscribeToTopic("GLOBAL_CHAT");
-        print("Subscribed to GLOBAL_CHAT");
-      }
-      if (userPerms.contains("OFFICER_CHAT_VIEW")) {
-        FirebaseMessaging().subscribeToTopic("OFFICER_CHAT");
-        print("Subscribed to OFFICER_CHAT");
-      }
-      if (userPerms.contains("LEADER_CHAT_VIEW")) {
-        FirebaseMessaging().subscribeToTopic("LEADER_CHAT");
-        print("Subscribed to LEADER_CHAT");
-      }
-      if (userPerms.contains("DEV")) {
-        FirebaseMessaging().subscribeToTopic("DEV");
-        print("Subscribed to DEV");
-      }
-      if (chapGroupID != "Not in a Group") {
-        FirebaseMessaging().subscribeToTopic(chapGroupID);
-        print("Subscribed to $chapGroupID");
-      }
-      if (mentorGroupID != "Not in a Group") {
-        FirebaseMessaging().subscribeToTopic(mentorGroupID);
-        print("Subscribed to $mentorGroupID");
-      }
     });
+    // Subscribe to Topics
+    FirebaseMessaging().subscribeToTopic("ALL_DEVICES");
+    print("Subscribed to ALL_DEVICES");
+    FirebaseMessaging().subscribeToTopic(role.toUpperCase());
+    print("Subscribed to ${role.toUpperCase()}");
+    if (userPerms.contains("CHAT_VIEW")) {
+      FirebaseMessaging().subscribeToTopic("GLOBAL_CHAT");
+      print("Subscribed to GLOBAL_CHAT");
+    }
+    if (userPerms.contains("OFFICER_CHAT_VIEW")) {
+      FirebaseMessaging().subscribeToTopic("OFFICER_CHAT");
+      print("Subscribed to OFFICER_CHAT");
+    }
+    if (userPerms.contains("LEADER_CHAT_VIEW")) {
+      FirebaseMessaging().subscribeToTopic("LEADER_CHAT");
+      print("Subscribed to LEADER_CHAT");
+    }
+    if (userPerms.contains("DEV")) {
+      FirebaseMessaging().subscribeToTopic("DEV");
+      print("Subscribed to DEV");
+    }
+    if (chapGroupID != "Not in a Group") {
+      FirebaseMessaging().subscribeToTopic(chapGroupID);
+      print("Subscribed to $chapGroupID");
+    }
+    if (mentorGroupID != "Not in a Group") {
+      FirebaseMessaging().subscribeToTopic(mentorGroupID);
+      print("Subscribed to $mentorGroupID");
+    }
   }
 
   @override
