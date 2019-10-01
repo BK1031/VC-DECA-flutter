@@ -52,7 +52,7 @@ class _EventsPageState extends State<EventsPage> {
       padding: EdgeInsets.all(16.0),
       child: new Column(
         children: <Widget>[
-          new Text("Select an event type below."),
+          new Text("Select an event type below.", style: TextStyle(color: currTextColor)),
           new Expanded(
             child: new GridView.count(
               crossAxisCount: 2,

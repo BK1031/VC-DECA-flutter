@@ -112,24 +112,24 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: new Text(name.toUpperCase(), style: TextStyle(color: mainColor, fontSize: 18, fontFamily: "Product Sans", fontWeight: FontWeight.bold),),
                   ),
                   new ListTile(
-                    title: new Text("Email", style: TextStyle(fontFamily: "Product Sans"),),
-                    trailing: new Text(email, style: TextStyle(fontSize: 16.0, fontFamily: "Product Sans")),
+                    title: new Text("Email", style: TextStyle(fontFamily: "Product Sans", color: currTextColor),),
+                    trailing: new Text(email, style: TextStyle(fontSize: 16.0, fontFamily: "Product Sans", color: currTextColor)),
                   ),
                   new ListTile(
-                    title: new Text("Role", style: TextStyle(fontFamily: "Product Sans",)),
-                    trailing: new Text(role, style: TextStyle(fontSize: 16.0, fontFamily: "Product Sans")),
+                    title: new Text("Role", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
+                    trailing: new Text(role, style: TextStyle(fontSize: 16.0, fontFamily: "Product Sans", color: currTextColor)),
                   ),
                   new ListTile(
-                    title: new Text("Mentor Group", style: TextStyle(fontFamily: "Product Sans",)),
-                    trailing: new Text(mentorGroupID, style: TextStyle(fontSize: 16.0, fontFamily: "Product Sans")),
+                    title: new Text("Mentor Group", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
+                    trailing: new Text(mentorGroupID, style: TextStyle(fontSize: 16.0, fontFamily: "Product Sans", color: currTextColor)),
                   ),
                   new ListTile(
-                    title: new Text("Chaperone Group", style: TextStyle(fontFamily: "Product Sans",)),
-                    trailing: new Text(chapGroupID, style: TextStyle(fontSize: 16.0, fontFamily: "Product Sans")),
+                    title: new Text("Chaperone Group", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
+                    trailing: new Text(chapGroupID, style: TextStyle(fontSize: 16.0, fontFamily: "Product Sans", color: currTextColor)),
                   ),
                   new ListTile(
-                    title: new Text("User ID", style: TextStyle(fontFamily: "Product Sans",)),
-                    trailing: new Text(userID, style: TextStyle(fontSize: 14.0, fontFamily: "Product Sans")),
+                    title: new Text("User ID", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
+                    trailing: new Text(userID, style: TextStyle(fontSize: 14.0, fontFamily: "Product Sans", color: currTextColor)),
                   ),
                   new ListTile(
                     title: new Text("Update Profile", style: TextStyle(fontFamily: "Product Sans", color: mainColor), textAlign: TextAlign.center,),
@@ -152,14 +152,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: new Text("General".toUpperCase(), style: TextStyle(color: mainColor, fontSize: 18, fontFamily: "Product Sans", fontWeight: FontWeight.bold),),
                   ),
                   new ListTile(
-                    title: new Text("About", style: TextStyle(fontFamily: "Product Sans",)),
+                    title: new Text("About", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
                     trailing: new Icon(Icons.arrow_forward_ios, color: mainColor),
                     onTap: () {
                       router.navigateTo(context, '/settings/about', transition: TransitionType.native);
                     },
                   ),
                   new ListTile(
-                    title: new Text("Help", style: TextStyle(fontFamily: "Product Sans",)),
+                    title: new Text("Help", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
                     trailing: new Icon(Icons.arrow_forward_ios, color: mainColor),
                     onTap: () async {
                       const url = 'https://github.com/BK1031/VC-DECA-flutter/wiki/Help';
@@ -171,7 +171,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                   ),
                   new ListTile(
-                      title: new Text("Legal", style: TextStyle(fontFamily: "Product Sans",)),
+                      title: new Text("Legal", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
                       trailing: new Icon(Icons.arrow_forward_ios, color: mainColor),
                       onTap: () {
                         showLicensePage(
@@ -192,7 +192,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   new ListTile(
                     title: new Text("\nDelete Account\n", style: TextStyle(color: Colors.red, fontFamily: "Product Sans"),),
-                    subtitle: new Text("Deleting your VC DECA Account will remove all the data linked to your account as well. You will be required to create a new account in order to sign in again.\n", style: TextStyle(fontSize: 12.0, fontFamily: "Product Sans")),
+                    subtitle: new Text("Deleting your VC DECA Account will remove all the data linked to your account as well. You will be required to create a new account in order to sign in again.\n", style: TextStyle(fontSize: 12.0, fontFamily: "Product Sans", color: Colors.grey)),
                   )
                 ],
               ),
@@ -211,7 +211,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   new SwitchListTile.adaptive(
                     activeColor: mainColor,
                     activeTrackColor: mainColor,
-                    title: new Text("Push Notifications", style: TextStyle(fontFamily: "Product Sans",)),
+                    title: new Text("Push Notifications", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
                     value: notifications,
                     onChanged: (bool value) {
                       setState(() {
@@ -222,7 +222,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   new SwitchListTile.adaptive(
                     activeColor: mainColor,
                     activeTrackColor: mainColor,
-                    title: new Text("Chat Notifications", style: TextStyle(fontFamily: "Product Sans",)),
+                    title: new Text("Chat Notifications", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
                     value: chatNotifications,
                     onChanged: (bool value) {
                       setState(() {
@@ -235,23 +235,23 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: new SwitchListTile.adaptive(
                       activeColor: mainColor,
                       activeTrackColor: mainColor,
-                      title: new Text("Dark Mode", style: TextStyle(fontFamily: "Product Sans",)),
+                      title: new Text("Dark Mode", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
                       value: darkMode,
                       onChanged: (bool value) {
                         // Toggle Dark Mode
                         setState(() {
                           darkMode = value;
                           if (darkMode) {
-                            currTextColor = lightTextColor;
-                            currBackgroundColor = lightBackgroundColor;
-                            currCardColor = lightCardColor;
-                            currDividerColor = lightDividerColor;
-                          }
-                          else {
                             currTextColor = darkTextColor;
                             currBackgroundColor = darkBackgroundColor;
                             currCardColor = darkCardColor;
                             currDividerColor = darkDividerColor;
+                          }
+                          else {
+                            currTextColor = lightTextColor;
+                            currBackgroundColor = lightBackgroundColor;
+                            currCardColor = lightCardColor;
+                            currDividerColor = lightDividerColor;
                           }
                           FirebaseDatabase.instance.reference().child("users").child(userID).update({"darkMode": darkMode});
                         });
@@ -270,10 +270,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: <Widget>[
                   new Container(
                     padding: EdgeInsets.only(top: 16.0),
-                    child: new Text("Preferences".toUpperCase(), style: TextStyle(color: mainColor, fontSize: 18, fontFamily: "Product Sans", fontWeight: FontWeight.bold),),
+                    child: new Text("Feedback".toUpperCase(), style: TextStyle(color: mainColor, fontSize: 18, fontFamily: "Product Sans", fontWeight: FontWeight.bold),),
                   ),
                   new ListTile(
-                    title: new Text("Provide Feedback", style: TextStyle(fontFamily: "Product Sans",)),
+                    title: new Text("Provide Feedback", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
                     trailing: new Icon(Icons.arrow_forward_ios, color: mainColor),
                     onTap: () async {
                       const url = 'https://github.com/BK1031/VC-DECA-flutter/issues';
@@ -285,7 +285,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                   ),
                   new ListTile(
-                    title: new Text("Report a Bug", style: TextStyle(fontFamily: "Product Sans",)),
+                    title: new Text("Report a Bug", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
                     trailing: new Icon(Icons.arrow_forward_ios, color: mainColor),
                     onTap: () async {
                       const url = 'https://github.com/BK1031/VC-DECA-flutter/issues';
@@ -315,15 +315,15 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: new Text("developer".toUpperCase(), style: TextStyle(color: mainColor, fontSize: 18, fontFamily: "Product Sans", fontWeight: FontWeight.bold),),
                         ),
                         new ListTile(
-                          leading: new Icon(Icons.developer_mode),
-                          title: new Text("Test Firebase Upload", style: TextStyle(fontFamily: "Product Sans",)),
+                          leading: new Icon(Icons.developer_mode, color: darkMode ? Colors.grey : Colors.black54,),
+                          title: new Text("Test Firebase Upload", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
                           onTap: () {
                             FirebaseDatabase.instance.reference().child("testing").push().set("$name - $role");
                           },
                         ),
                         new ListTile(
-                          leading: new Icon(Icons.event_note),
-                          title: new Text("Add New Conference", style: TextStyle(fontFamily: "Product Sans",)),
+                          leading: new Icon(Icons.event_note, color: darkMode ? Colors.grey : Colors.black54),
+                          title: new Text("Add New Conference", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
                           onTap: () {
                           },
                         ),

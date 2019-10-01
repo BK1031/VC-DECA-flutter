@@ -30,6 +30,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget buttonChild = new Text("Create Account");
 
+  bool warriorlifeRequired = false;
+
   void accountErrorDialog(String error) {
     // flutter defined function
     showDialog(
@@ -77,7 +79,10 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       );
     });
-    if (_firstName == "" || _lastName == "") {
+    if (!_email.contains("warriorlife.net") && warriorlifeRequired) {
+      accountErrorDialog("You must use a warriorlife email address to create an account at this time");
+    }
+    else if (_firstName == "" || _lastName == "") {
       print("Name cannot be empty");
       accountErrorDialog("Name cannot be empty");
     }
@@ -132,6 +137,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void confirmField(input) {
     _confirm = input;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    databaseRef.child("forceWarriorlife").once().then((DataSnapshot snapshot) {
+      warriorlifeRequired = snapshot.value;
+    });
   }
 
   @override

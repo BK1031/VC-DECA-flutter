@@ -22,6 +22,33 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   String uploadStatus = "";
   bool _visible = true;
 
+  List<Widget> permCardList = [
+    new Container(
+      padding: EdgeInsets.only(top: 16.0),
+      child: new Text("permissions".toUpperCase(), style: TextStyle(color: mainColor, fontSize: 18, fontFamily: "Product Sans", fontWeight: FontWeight.bold),),
+    )
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    userPerms.forEach((perm) {
+      permCardList.add(
+          new ListTile(
+            title: new Text(perm),
+          )
+      );
+    });
+    permCardList.add(
+        new ListTile(
+          title: new Text("Update Permissions", style: TextStyle(fontFamily: "Product Sans", color: mainColor), textAlign: TextAlign.center,),
+          onTap: () {
+            router.navigateTo(context, '/settings/update-profile/manage-perms', transition: TransitionType.native);
+          },
+        )
+    );
+  }
+
   Future<void> updateProfile() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -56,31 +83,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         });
       }
     }
-  }
-
-  List<Widget> getPermissionCard() {
-    List<Widget> returnList = [
-      new Container(
-        padding: EdgeInsets.only(top: 16.0),
-        child: new Text("permissions".toUpperCase(), style: TextStyle(color: mainColor, fontSize: 18, fontFamily: "Product Sans", fontWeight: FontWeight.bold),),
-      )
-    ];
-    userPerms.forEach((perm) {
-      returnList.add(
-        new ListTile(
-          title: new Text(perm),
-        )
-      );
-    });
-    returnList.add(
-      new ListTile(
-        title: new Text("Update Permissions", style: TextStyle(fontFamily: "Product Sans", color: mainColor), textAlign: TextAlign.center,),
-        onTap: () {
-          router.navigateTo(context, '/settings/update-profile/manage-perms', transition: TransitionType.native);
-        },
-      )
-    );
-    return returnList;
   }
 
   @override
@@ -146,7 +148,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
                 color: currCardColor,
                 child: Column(
-                  children: getPermissionCard()
+                  children: permCardList
                 ),
               ),
               new Padding(padding: EdgeInsets.all(16.0)),

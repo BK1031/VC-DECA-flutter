@@ -30,7 +30,12 @@ List<CameraDescription> cameras;
 
 Future<Null> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ErrorWidget.builder = (FlutterErrorDetails details) => Container();
+  ErrorWidget.builder = (FlutterErrorDetails details) => Container(
+    height: 100.0,
+    child: new Center(
+      child: new Text(details.exceptionAsString()),
+    ),
+  );
   try {
     cameras = await availableCameras();
   } on QRReaderException catch (e) {

@@ -284,57 +284,241 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  void mentorGroupOptions() {
+    if (mentorGroupID != "Not in a Group") {
+      if (Platform.isIOS) {
+        showCupertinoModalPopup(context: context, builder: (context) {
+          return new CupertinoActionSheet(
+            title: new Text("Mentor Group Options"),
+            actions: <Widget>[
+              new Visibility(
+                visible: (userPerms.contains('DEV') || userPerms.contains('ADMIN')),
+                child: new CupertinoActionSheetAction(
+                  child: new Text("Join Another Group"),
+                  onPressed: () {
+                    // TODO: maybe cool for admin bois
+                  },
+                ),
+              ),
+              new CupertinoActionSheetAction(
+                child: new Text("Leave"),
+                isDestructiveAction: true,
+                onPressed: () {
+                  setState(() {
+                    mentorGroupID = "Not in a Group";
+                  });
+                  FirebaseDatabase.instance.reference().child("users").child(userID)
+                      .child("mentorGroup")
+                      .set(mentorGroupID);
+                  router.pop(context);
+                },
+              ),
+            ],
+            cancelButton: new CupertinoActionSheetAction(
+              child: new Text("Cancel"),
+              isDefaultAction: true,
+              onPressed: () {
+                router.pop(context);
+              },
+            ),
+          );
+        });
+      }
+      else if (Platform.isAndroid) {
+        showModalBottomSheet(context: context, builder: (BuildContext context) {
+          return new SafeArea(
+            child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                new ListTile(
+                  title: new Text('Mentor Group Options'),
+                ),
+                new Visibility(
+                  visible: (userPerms.contains('DEV') || userPerms.contains('ADMIN')),
+                  child: new ListTile(
+                      leading: new Icon(Icons.add),
+                      title: new Text('Join Another Group'),
+                      onTap: () {
+                        // TODO: maybe cool for admin bois
+                      }
+                  ),
+                ),
+                new ListTile(
+                    leading: new Icon(Icons.exit_to_app),
+                    title: new Text('Leave'),
+                    onTap: () {
+                      setState(() {
+                        mentorGroupID = "Not in a Group";
+                      });
+                      FirebaseDatabase.instance.reference().child("users")
+                          .child(userID).child("mentorGroup")
+                          .set(mentorGroupID);
+                      router.pop(context);
+                    }
+                ),
+                new ListTile(
+                  leading: new Icon(Icons.clear),
+                  title: new Text('Cancel'),
+                  onTap: () {
+                    router.pop(context);
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+      }
+    }
+  }
+
+  void chapGroupOptions() {
+    if (chapGroupID != "Not in a Group") {
+      if (Platform.isIOS) {
+        showCupertinoModalPopup(context: context, builder: (context) {
+          return new CupertinoActionSheet(
+            title: new Text("Chaperone Group Options"),
+            actions: <Widget>[
+              new Visibility(
+                visible: (userPerms.contains('DEV') || userPerms.contains('ADMIN')),
+                child: new CupertinoActionSheetAction(
+                  child: new Text("Join Another Group"),
+                  onPressed: () {
+                    // TODO: maybe cool for admin bois
+                  },
+                ),
+              ),
+              new CupertinoActionSheetAction(
+                child: new Text("Leave"),
+                isDestructiveAction: true,
+                onPressed: () {
+                  setState(() {
+                    chapGroupID = "Not in a Group";
+                  });
+                  FirebaseDatabase.instance.reference().child("users").child(userID)
+                      .child("chapGroup")
+                      .set(chapGroupID);
+                  router.pop(context);
+                },
+              ),
+            ],
+            cancelButton: new CupertinoActionSheetAction(
+              child: new Text("Cancel"),
+              isDefaultAction: true,
+              onPressed: () {
+                router.pop(context);
+              },
+            ),
+          );
+        });
+      }
+      else if (Platform.isAndroid) {
+        showModalBottomSheet(context: context, builder: (BuildContext context) {
+          return new SafeArea(
+            child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                new ListTile(
+                  title: new Text('Chaperone Group Options'),
+                ),
+                new Visibility(
+                  visible: (userPerms.contains('DEV') || userPerms.contains('ADMIN')),
+                  child: new ListTile(
+                      leading: new Icon(Icons.add),
+                      title: new Text('Join Another Group'),
+                      onTap: () {
+                        // TODO: maybe cool for admin bois
+                      }
+                  ),
+                ),
+                new ListTile(
+                    leading: new Icon(Icons.exit_to_app),
+                    title: new Text('Leave'),
+                    onTap: () {
+                      setState(() {
+                        chapGroupID = "Not in a Group";
+                      });
+                      FirebaseDatabase.instance.reference().child("users")
+                          .child(userID).child("chapGroup")
+                          .set(chapGroupID);
+                      router.pop(context);
+                    }
+                ),
+                new ListTile(
+                  leading: new Icon(Icons.clear),
+                  title: new Text('Cancel'),
+                  onTap: () {
+                    router.pop(context);
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SingleChildScrollView(
+      physics: AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.all(16.0),
       child: new Column(
         children: <Widget>[
           new Visibility(
             visible: (userPerms.contains("CHAT_VIEW") || userPerms.contains("ADMIN")),
-            child: new InkWell(
-              onTap: () {
-                toChat("global");
-              },
-              child: new Card(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                color: Colors.white,
-                elevation: 6.0,
+            child: new Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+              color: currCardColor,
+              elevation: 6.0,
+              child: new InkWell(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                onTap: () {
+                  toChat("global");
+                },
                 child: ListTile(
-                  title: new Text("General Chat", style: TextStyle(fontSize: 15.0),),
+                  title: new Text("General Chat", style: TextStyle(fontSize: 15.0, color: currTextColor),),
                   trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
                 ),
               ),
             ),
           ),
           new Padding(padding: EdgeInsets.all(4.0)),
-          new InkWell(
-            onTap: () {
-              toMentorChat();
-            },
-            child: new Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-              color: Colors.white,
-              elevation: 6.0,
+          new Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+            color: currCardColor,
+            elevation: 6.0,
+            child: new InkWell(
+              borderRadius: BorderRadius.all(Radius.circular(16.0)),
+              onTap: () {
+                toMentorChat();
+              },
+              onLongPress: () {
+                mentorGroupOptions();
+              },
               child: ListTile(
-                title: new Text("Mentor Group", style: TextStyle(fontSize: 15.0),),
-                subtitle: new Text(mentorGroupID),
+                title: new Text("Mentor Group", style: TextStyle(fontSize: 15.0, color: currTextColor),),
+                subtitle: new Text(mentorGroupID, style: TextStyle(color: Colors.grey)),
                 trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
               ),
             ),
           ),
           new Padding(padding: EdgeInsets.all(4.0)),
-          new InkWell(
-            onTap: () {
-              toChapChat();
-            },
-            child: new Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-              color: Colors.white,
-              elevation: 6.0,
+          new Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+            color: currCardColor,
+            elevation: 6.0,
+            child: new InkWell(
+              borderRadius: BorderRadius.all(Radius.circular(16.0)),
+              onTap: () {
+                toChapChat();
+              },
+              onLongPress: () {
+                chapGroupOptions();
+              },
               child: ListTile(
-                title: new Text("Chaperone Group", style: TextStyle(fontSize: 15.0),),
-                subtitle: new Text(chapGroupID),
+                title: new Text("Chaperone Group", style: TextStyle(fontSize: 15.0, color: currTextColor),),
+                subtitle: new Text(chapGroupID, style: TextStyle(color: Colors.grey)),
                 trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
               ),
             ),
@@ -342,16 +526,17 @@ class _ChatPageState extends State<ChatPage> {
           new Visibility(visible: (userPerms.contains("OFFICER_CHAT_VIEW") || userPerms.contains("ADMIN")), child: new Padding(padding: EdgeInsets.all(4.0))),
           new Visibility(
             visible: (userPerms.contains("OFFICER_CHAT_VIEW") || userPerms.contains("ADMIN")),
-            child: new InkWell(
-              onTap: () {
-                toChat("officer");
-              },
-              child: new Card(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                color: Colors.white,
-                elevation: 6.0,
+            child: new Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+              color: currCardColor,
+              elevation: 6.0,
+              child: new InkWell(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                onTap: () {
+                  toChat("officer");
+                },
                 child: ListTile(
-                  title: new Text("Officer Chat", style: TextStyle(fontSize: 15.0),),
+                  title: new Text("Officer Chat", style: TextStyle(fontSize: 15.0, color: currTextColor),),
                   trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
                 ),
               ),
@@ -360,16 +545,17 @@ class _ChatPageState extends State<ChatPage> {
           new Visibility(visible: (userPerms.contains("LEADER_CHAT_VIEW") || userPerms.contains("ADMIN")), child: new Padding(padding: EdgeInsets.all(4.0))),
           new Visibility(
             visible: (userPerms.contains("LEADER_CHAT_VIEW") || userPerms.contains("ADMIN")),
-            child: new InkWell(
-              onTap: () {
-                toChat("leader");
-              },
-              child: new Card(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                color: Colors.white,
-                elevation: 6.0,
+            child: new Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+              color: currCardColor,
+              elevation: 6.0,
+              child: new InkWell(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                onTap: () {
+                  toChat("leader");
+                },
                 child: ListTile(
-                  title: new Text("Leader Chat", style: TextStyle(fontSize: 15.0),),
+                  title: new Text("Leader Chat", style: TextStyle(fontSize: 15.0, color: currTextColor),),
                   trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
                 ),
               ),
@@ -378,16 +564,17 @@ class _ChatPageState extends State<ChatPage> {
           new Visibility(visible: (userPerms.contains("DEV") || userPerms.contains("ADMIN")), child: new Padding(padding: EdgeInsets.all(4.0))),
           new Visibility(
             visible: (userPerms.contains("DEV") || userPerms.contains("ADMIN")),
-            child: new InkWell(
-              onTap: () {
-                toChat("dev");
-              },
-              child: new Card(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                color: Colors.white,
-                elevation: 6.0,
+            child: new Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
+              color: currCardColor,
+              elevation: 6.0,
+              child: new InkWell(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                onTap: () {
+                  toChat("dev");
+                },
                 child: ListTile(
-                  title: new Text("Developer Environment", style: TextStyle(fontSize: 15.0),),
+                  title: new Text("Developer Environment", style: TextStyle(fontSize: 15.0, color: currTextColor),),
                   trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
                 ),
               ),

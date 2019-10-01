@@ -8,6 +8,10 @@ import 'package:vc_deca_flutter/models/announcement.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:http/http.dart' as http;
+import 'package:vc_deca_flutter/utils/theme.dart';
+import 'package:vc_deca_flutter/utils/theme.dart';
+import 'package:vc_deca_flutter/utils/theme.dart';
+import 'package:vc_deca_flutter/utils/theme.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -64,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                   flex: 5,
                   child: new Card(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                    color: Colors.white,
+                    color: currCardColor,
                     elevation: 6.0,
                     child: new InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -74,10 +78,10 @@ class _HomePageState extends State<HomePage> {
                       child: new Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          new Icon(Icons.event, size: 35.0,),
+                          new Icon(Icons.event, size: 35.0, color: darkMode ? Colors.grey : Colors.black54),
                           new Text(
                             "My Events",
-                            style: TextStyle(fontSize: 13.0),
+                            style: TextStyle(fontSize: 13.0, color: currTextColor),
                           )
                         ],
                       ),
@@ -89,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                   flex: 3,
                   child: new Card(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                    color: Colors.white,
+                    color: currCardColor,
                     elevation: 6.0,
                     child: new InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -101,11 +105,11 @@ class _HomePageState extends State<HomePage> {
                         children: <Widget>[
                           new Text(
                             announcementList.length.toString(),
-                            style: TextStyle(fontSize: 35.0),
+                            style: TextStyle(fontSize: 35.0, color: darkMode ? Colors.grey : Colors.black54),
                           ),
                           new Text(
                             "Announcements",
-                            style: TextStyle(fontSize: 13.0),
+                            style: TextStyle(fontSize: 13.0, color: currTextColor),
                           )
                         ],
                       ),
@@ -127,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                     visible: (userPerms.contains('NOTIFICATION_SEND') || userPerms.contains('ADMIN')),
                     child: new Card(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                      color: Colors.white,
+                      color: currCardColor,
                       elevation: 6.0,
                       child: new InkWell(
                         borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -137,10 +141,10 @@ class _HomePageState extends State<HomePage> {
                         child: new Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            new Icon(Icons.notifications_active, size: 35.0,),
+                            new Icon(Icons.notifications_active, size: 35.0, color: darkMode ? Colors.grey : Colors.black54,),
                             new Text(
                               "Send Notification",
-                              style: TextStyle(fontSize: 13.0),
+                              style: TextStyle(fontSize: 13.0, color: currTextColor),
                             )
                           ],
                         ),
@@ -155,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                     visible: (userPerms.contains('ADMIN')),
                     child: new Card(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                      color: Colors.white,
+                      color: currCardColor,
                       elevation: 6.0,
                       child: new InkWell(
                         borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -165,10 +169,10 @@ class _HomePageState extends State<HomePage> {
                         child: new Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            new Icon(Icons.supervised_user_circle, size: 35.0,),
+                            new Icon(Icons.supervised_user_circle, size: 35.0, color: darkMode ? Colors.grey : Colors.black54),
                             new Text(
                               "Manage Users",
-                              style: TextStyle(fontSize: 13.0),
+                              style: TextStyle(fontSize: 13.0, color: currTextColor),
                             )
                           ],
                         ),

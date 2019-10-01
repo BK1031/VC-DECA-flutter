@@ -236,6 +236,8 @@ class _TabBarControllerState extends State<TabBarController> {
       bottomNavigationBar: new BottomNavigationBar(
         onTap: tabTapped,
         fixedColor: mainColor,
+        unselectedItemColor: darkMode ? Colors.grey : Colors.black54,
+        backgroundColor: currCardColor,
         currentIndex: _currentTab,
         type: BottomNavigationBarType.fixed,
         iconSize: 25.0,

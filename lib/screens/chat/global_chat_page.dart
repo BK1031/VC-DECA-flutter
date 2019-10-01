@@ -713,12 +713,12 @@ class _UserInfoSheetState extends State<UserInfoSheet> {
               new Padding(padding: EdgeInsets.all(8.0)),
               new Text(
                 userSnapshot.value["name"],
-                style: TextStyle(fontSize: 25.0),
+                style: TextStyle(fontSize: 25.0, color: currTextColor),
               ),
               new Padding(padding: EdgeInsets.all(4.0)),
               new Text(
                 userSnapshot.value["email"],
-                style: TextStyle(fontSize: 17.0),
+                style: TextStyle(fontSize: 17.0, color: currTextColor),
               ),
               new Padding(padding: EdgeInsets.all(8.0)),
               new Wrap(
@@ -785,8 +785,8 @@ class _UserInfoSheetState extends State<UserInfoSheet> {
                       new Visibility(
                         visible: (userPerms.contains("ADMIN")),
                         child: new ListTile(
-                          leading: new Icon(Icons.settings),
-                          title: new Text("Manage"),
+                          leading: new Icon(Icons.settings, color: darkMode ? Colors.grey : Colors.black54),
+                          title: new Text("Manage", style: TextStyle(color: currTextColor),),
                           trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
                           onTap: () {
                             // TODO: Add user management stuff
@@ -796,8 +796,8 @@ class _UserInfoSheetState extends State<UserInfoSheet> {
                       new Visibility(
                         visible: (userPerms.contains("DEV")),
                         child: new ListTile(
-                          leading: new Icon(Icons.person),
-                          title: new Text("User Details"),
+                          leading: new Icon(Icons.person, color: darkMode ? Colors.grey : Colors.black54),
+                          title: new Text("User Details", style: TextStyle(color: currTextColor),),
                           trailing: Icon(Icons.arrow_forward_ios, color: mainColor,),
                           onTap: () {
                             // TODO: Add user details stuff

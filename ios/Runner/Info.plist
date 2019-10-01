@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -33,12 +33,26 @@
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Apple music access required to share your library</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Calendar access required to save your upcoming events to your phone</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera access required to take and upload photos</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Contacts access required to invite your contacts to the app</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location access required to allow advisors to see your location during conferences</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location access required to allow advisors to see your location during conferences</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microphone access required to take and upload videos</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Motion access required to allow advisors to see your movement during conferences</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photo library access required to upload photos</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Ok i dont even know how im gonna bs this lmao, wong move alert</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
