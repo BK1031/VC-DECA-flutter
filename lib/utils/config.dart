@@ -8,7 +8,7 @@ import 'package:vc_deca_flutter/models/version.dart';
 
 final router = new Router();
 
-Version appVersion = new Version("2.3.1+1");
+Version appVersion = new Version("2.3.2+1");
 String appStatus = "";
 String appFull = "Version ${appVersion.toString()}";
 

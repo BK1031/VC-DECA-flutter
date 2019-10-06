@@ -155,22 +155,27 @@ class _TabBarControllerState extends State<TabBarController> {
       // Subscribe to topics
       if (userPerms.contains("CHAT_VIEW")) {
         FirebaseMessaging().subscribeToTopic("GLOBAL_CHAT");
+        databaseRef.child("fcmTopics").update({"GLOBAL_CHAT": "GLOBAL_CHAT"});
         print("Subscribed to GLOBAL_CHAT");
       }
       if (userPerms.contains("OFFICER_CHAT_VIEW")) {
         FirebaseMessaging().subscribeToTopic("OFFICER_CHAT");
+        databaseRef.child("fcmTopics").update({"OFFICER_CHAT": "OFFICER_CHAT"});
         print("Subscribed to OFFICER_CHAT");
       }
       if (userPerms.contains("LEADER_CHAT_VIEW")) {
         FirebaseMessaging().subscribeToTopic("LEADER_CHAT");
+        databaseRef.child("fcmTopics").update({"LEADER_CHAT": "LEADER_CHAT"});
         print("Subscribed to LEADER_CHAT");
       }
       if (userPerms.contains("DEV")) {
         FirebaseMessaging().subscribeToTopic("DEV");
+        databaseRef.child("fcmTopics").update({"DEV": "DEV"});
         print("Subscribed to DEV");
       }
       if (userPerms.contains("ADMIN")) {
         FirebaseMessaging().subscribeToTopic("ADMIN");
+        databaseRef.child("fcmTopics").update({"ADMIN": "ADMIN"});
         print("Subscribed to ADMIN");
       }
     });
@@ -205,15 +210,19 @@ class _TabBarControllerState extends State<TabBarController> {
     });
     // Subscribe to Topics
     FirebaseMessaging().subscribeToTopic("ALL_DEVICES");
+    databaseRef.child("fcmTopics").update({"ALL_DEVICES": "ALL_DEVICES"});
     print("Subscribed to ALL_DEVICES");
     FirebaseMessaging().subscribeToTopic(role.toUpperCase().split(" ").join("_"));
+    databaseRef.child("fcmTopics").update({role.toUpperCase().split(" ").join("_"): role.toUpperCase().split(" ").join("_")});
     print("Subscribed to ${role.toUpperCase().split(" ").join("_")}");
     if (chapGroupID != "Not in a Group") {
       FirebaseMessaging().subscribeToTopic(chapGroupID);
+      databaseRef.child("fcmTopics").update({chapGroupID: chapGroupID});
       print("Subscribed to $chapGroupID");
     }
     if (mentorGroupID != "Not in a Group") {
       FirebaseMessaging().subscribeToTopic(mentorGroupID);
+      databaseRef.child("fcmTopics").update({mentorGroupID: mentorGroupID});
       print("Subscribed to $mentorGroupID");
     }
   }
@@ -222,6 +231,7 @@ class _TabBarControllerState extends State<TabBarController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
+        backgroundColor: darkMode ? (darkAppBar ? currCardColor : mainColor) : mainColor,
         title: new Text(
           _title,
           style: TextStyle(

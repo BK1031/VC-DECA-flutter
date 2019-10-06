@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vc_deca_flutter/screens/auth/auth_functions.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
@@ -15,14 +16,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-
-  bool _devVisible = false;
-
-  _SettingsPageState() {
-    if (userPerms.contains("DEV")) {
-      _devVisible = true;
-    }
-  }
 
   void handleSignOut() async {
     if (Platform.isIOS) {
@@ -231,7 +224,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                   ),
                   new Visibility(
-                    visible: _devVisible,
+                    visible: (userPerms.contains('DEV') || userPerms.contains('ADMIN')),
                     child: new SwitchListTile.adaptive(
                       activeColor: mainColor,
                       activeTrackColor: mainColor,
@@ -258,6 +251,27 @@ class _SettingsPageState extends State<SettingsPage> {
                       },
                     ),
                   ),
+                  new AnimatedContainer(
+                    duration: const Duration(milliseconds: 100),
+                    height: darkMode ? 60 : 0,
+                    child: new Visibility(
+                      visible: darkMode,
+                      child: new SwitchListTile.adaptive(
+                        activeColor: mainColor,
+                        activeTrackColor: mainColor,
+                        title: new Text("Dark AppBar", style: TextStyle(fontFamily: "Product Sans", color: currTextColor)),
+                        value: darkAppBar,
+                        onChanged: (bool value) async {
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          // Toggle Dark Mode
+                          await prefs.setBool('darkAppBar', value);
+                          setState(() {
+                            darkAppBar = value;
+                          });
+                        },
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -300,7 +314,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             new Visibility(
-              visible: _devVisible,
+              visible: (userPerms.contains('DEV') || userPerms.contains('ADMIN')),
               child: new Column(
                 children: <Widget>[
                   new Padding(padding: EdgeInsets.all(4.0)),

@@ -56,7 +56,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> with RouteAware {
           children: <Widget>[
             new Visibility(
               visible: (announcementList.length == 0),
-              child: new Text("Nothing to see here!\nCheck back later for announcements.", textAlign: TextAlign.center)
+              child: new Text("Nothing to see here!\nCheck back later for announcements.", textAlign: TextAlign.center, style: TextStyle(color: currTextColor),)
             ),
             new Padding(padding: EdgeInsets.only(bottom: 8.0)),
             new Expanded(
@@ -99,6 +99,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> with RouteAware {
                                           fontSize: 18.0,
                                           fontFamily: "Product Sans",
                                           fontWeight: FontWeight.bold,
+                                          color: currTextColor
                                         ),
                                       ),
                                     ),
@@ -113,6 +114,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> with RouteAware {
                                         style: TextStyle(
                                           fontSize: 15.0,
                                           fontFamily: "Product Sans",
+                                            color: currTextColor
                                         ),
                                       ),
                                     ),

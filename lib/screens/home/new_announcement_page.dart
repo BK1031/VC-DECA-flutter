@@ -48,8 +48,10 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
                   children: <Widget>[
                     new TextField(
                       decoration: InputDecoration(
-                          labelText: "Title"
+                        labelText: "Title",
+                        labelStyle: TextStyle(color: darkMode ? Colors.grey : Colors.black54)
                       ),
+                      style: TextStyle(color: currTextColor),
                       autocorrect: true,
                       onChanged: (input) {
                         setState(() {
@@ -59,8 +61,10 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage> {
                     ),
                     new TextField(
                       decoration: InputDecoration(
-                          labelText: "Details"
+                        labelText: "Details",
+                        labelStyle: TextStyle(color: darkMode ? Colors.grey : Colors.black54)
                       ),
+                      style: TextStyle(color: currTextColor),
                       maxLines: null,
                       autocorrect: true,
                       onChanged: (input) {
@@ -155,7 +159,7 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      color: currCardColor,
+      color: currBackgroundColor,
       child: new SafeArea(
         child: new Column(
           mainAxisSize: MainAxisSize.min,
@@ -165,17 +169,20 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
               padding: EdgeInsets.only(right: 16.0, left: 16.0, top: 16.0),
               child: new Text(
                 alertTitle,
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: currTextColor),
               ),
             ),
             new ListTile(
-              leading: new Icon(Icons.visibility),
-              title: new Text("Visibility"),
-              trailing: new Text("All Members"),
+              leading: new Icon(Icons.visibility, color: darkMode ? Colors.grey : Colors.black54),
+              title: new Text("Visibility", style: TextStyle(color: currTextColor)),
+              trailing: new Text(
+                topic.toString().substring(2, topic.toString().length-1),
+                style: TextStyle(color: darkMode ? Colors.grey : Colors.black54)
+              ),
               onTap: () {
                 setState(() {
                   if (visibiltiyBoxHeight == 0.0) {
-                    visibiltiyBoxHeight = 195;
+                    visibiltiyBoxHeight = 150;
                   }
                   else {
                     visibiltiyBoxHeight = 0.0;
@@ -192,7 +199,7 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
                     padding: EdgeInsets.only(right: 16.0, left: 16.0),
                     children: <Widget>[
                       new ListTile(
-                        title: new Text("All Members"),
+                        title: new Text("All Members", style: TextStyle(color: currTextColor)),
                         trailing: getTrailingCheck('ALL_DEVICES'),
                         onTap: () {
                           setState(() {
@@ -207,7 +214,7 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
                         },
                       ),
                       new ListTile(
-                        title: new Text("Advisors"),
+                        title: new Text("Advisors", style: TextStyle(color: currTextColor)),
                         trailing: getTrailingCheck('ADVISOR'),
                         onTap: () {
                           setState(() {
@@ -225,7 +232,7 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
                         },
                       ),
                       new ListTile(
-                        title: new Text("Chaperones"),
+                        title: new Text("Chaperones", style: TextStyle(color: currTextColor)),
                         trailing: getTrailingCheck('CHAPERONE'),
                         onTap: () {
                           setState(() {
@@ -243,7 +250,7 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
                         },
                       ),
                       new ListTile(
-                        title: new Text("Officers"),
+                        title: new Text("Officers", style: TextStyle(color: currTextColor),),
                         trailing: getTrailingCheck('OFFICER'),
                         onTap: () {
                           setState(() {
@@ -261,7 +268,7 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
                         },
                       ),
                       new ListTile(
-                        title: new Text("Committee Members"),
+                        title: new Text("Committee Members", style: TextStyle(color: currTextColor)),
                         trailing: getTrailingCheck('COMMITTEE_MEMBER'),
                         onTap: () {
                           setState(() {
@@ -279,7 +286,7 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
                         },
                       ),
                       new ListTile(
-                        title: new Text("Cluster Mentors"),
+                        title: new Text("Cluster Mentors", style: TextStyle(color: currTextColor)),
                         trailing: getTrailingCheck('CLUSTER_MENTOR'),
                         onTap: () {
                           setState(() {
@@ -297,7 +304,7 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
                         },
                       ),
                       new ListTile(
-                        title: new Text("Members"),
+                        title: new Text("Members", style: TextStyle(color: currTextColor)),
                         trailing: getTrailingCheck('MEMBER'),
                         onTap: () {
                           setState(() {
@@ -319,8 +326,8 @@ class _ConfirmSheetState extends State<ConfirmSheet> {
                 )
             ),
             new ListTile(
-              leading: sendNotif ? new Icon(Icons.notifications_active) : new Icon(Icons.notifications_off),
-              title: new Text("Send Notification"),
+              leading: sendNotif ? new Icon(Icons.notifications_active, color: darkMode ? Colors.grey : Colors.black54) : new Icon(Icons.notifications_off, color: darkMode ? Colors.grey : Colors.black54),
+              title: new Text("Send Notification", style: TextStyle(color: currTextColor)),
               trailing: new Switch.adaptive(
                 value: sendNotif,
                 activeColor: mainColor,

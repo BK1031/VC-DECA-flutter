@@ -79,10 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       );
     });
-    if (!_email.contains("warriorlife.net") && warriorlifeRequired) {
-      accountErrorDialog("You must use a warriorlife email address to create an account at this time");
-    }
-    else if (_firstName == "" || _lastName == "") {
+    if (_firstName == "" || _lastName == "") {
       print("Name cannot be empty");
       accountErrorDialog("Name cannot be empty");
     }
@@ -93,6 +90,10 @@ class _RegisterPageState extends State<RegisterPage> {
     else if (_email == "") {
       print("Email cannot be empty");
       accountErrorDialog("Email cannot be empty");
+    }
+    else if (!_email.contains("warriorlife.net") && warriorlifeRequired) {
+      print("Email must be warriorlife");
+      accountErrorDialog("You must use a warriorlife email address to create an account at this time");
     }
     else {
       try {
@@ -111,7 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
       }
       catch (error) {
         print("Error: ${error.toString()}");
-        accountErrorDialog(error.toString());
+        accountErrorDialog(error.message);
       }
     }
     setState(() {
@@ -268,8 +269,8 @@ class _EmailVerificationAlertState extends State<EmailVerificationAlert> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100.0,
       child: new Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           new Text(
             mainText,
@@ -332,6 +333,7 @@ class _EmailVerificationAlertState extends State<EmailVerificationAlert> {
                     print("-----------------------------------------");
                     print("");
 
+                    await Future.delayed(const Duration(milliseconds: 100));
                     router.navigateTo(context,'/home', transition: TransitionType.fadeIn, clearStack: true);
                   }
                   else {

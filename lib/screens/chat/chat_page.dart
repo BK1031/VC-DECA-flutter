@@ -14,6 +14,13 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  
+  final databaseRef = FirebaseDatabase.instance.reference();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void toChat(String chatRef) {
     selectedChat = chatRef;
@@ -35,9 +42,48 @@ class _ChatPageState extends State<ChatPage> {
   void toMentorChat() {
     String groupCode = "";
     if (mentorGroupID != "Not in a Group") {
-      selectedChat = mentorGroupID;
-      chatTitle = "Mentor Group";
-      router.navigateTo(context, '/chat/global', transition: TransitionType.native);
+      if (userPerms.contains('MENTOR_GROUP_OVERRIDE') || userPerms.contains('ADMIN')) {
+        chatTitle = "Mentor Group";
+        showCupertinoDialog(context: context, builder: (context) {
+          return CupertinoAlertDialog(
+            title: new Text("Select Group"),
+            actions: <Widget>[
+              new CupertinoDialogAction(
+                child: new Text(mentorGroupID),
+                isDefaultAction: true,
+                onPressed: () {
+                  selectedChat = mentorGroupID;
+                  router.navigateTo(context, '/chat/global', transition: TransitionType.native);
+                },
+              ),
+              new CupertinoDialogAction(
+                child: new Text("EXAMPLE1"),
+              ),
+              new CupertinoDialogAction(
+                child: new Text("EXAMPLE2"),
+              ),
+              new CupertinoDialogAction(
+                child: new Text("EXAMPLE3"),
+              ),
+              new CupertinoDialogAction(
+                child: new Text("EXAMPLE4"),
+              ),
+              new CupertinoDialogAction(
+                child: new Text("Cancel"),
+                isDefaultAction: true,
+                onPressed: () {
+                  router.pop(context);
+                },
+              ),
+            ],
+          );
+        });
+      }
+      else {
+        selectedChat = mentorGroupID;
+        chatTitle = "Mentor Group";
+        router.navigateTo(context, '/chat/global', transition: TransitionType.native);
+      }
     }
     else {
       if (Platform.isIOS) {

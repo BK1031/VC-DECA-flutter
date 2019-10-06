@@ -4,6 +4,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
@@ -102,7 +104,6 @@ class _AnnouncementDetailsPageState extends State<AnnouncementDetailsPage> {
           padding: EdgeInsets.all(16.0),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.height,
-          color: Colors.white,
           child: new SingleChildScrollView(
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,6 +114,7 @@ class _AnnouncementDetailsPageState extends State<AnnouncementDetailsPage> {
                     fontFamily: "Product Sans",
                     fontWeight: FontWeight.bold,
                     fontSize: 25.0,
+                    color: currTextColor
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -129,9 +131,16 @@ class _AnnouncementDetailsPageState extends State<AnnouncementDetailsPage> {
                 ),
                 new Padding(padding: EdgeInsets.all(4.0)),
                 new Linkify(
-                  style: TextStyle(fontSize: 18.0),
+                  style: TextStyle(fontSize: 18.0, color: currTextColor),
                   linkStyle: TextStyle(fontSize: 18.0, color: mainColor),
                   text: selectedAnnouncement.body,
+                  onOpen: (url) async {
+                    if (await canLaunch(url.url)) {
+                      await launch(url.url);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
                 )
               ],
             ),

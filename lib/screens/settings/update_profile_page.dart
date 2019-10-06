@@ -65,6 +65,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         sourcePath: image.path,
         maxHeight: 512,
         maxWidth: 512,
+
       );
       if (croppedImage != null) {
         setState(() {
@@ -128,8 +129,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                         child: new Text("profile picture".toUpperCase(), style: TextStyle(color: mainColor, fontSize: 18, fontFamily: "Product Sans", fontWeight: FontWeight.bold),),
                       ),
                       new Padding(padding: EdgeInsets.all(8.0)),
-                      new GestureDetector(
-                        child: new ClipOval(
+                      new ClipOval(
+                        child: new InkWell(
+                          onTap: updateProfile,
                           child: new CachedNetworkImage(
                             imageUrl: profilePic,
                             width: 200.0,
@@ -137,7 +139,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                             fit: BoxFit.fill,
                           ),
                         ),
-                        onTap: updateProfile,
                       ),
                       new Padding(padding: EdgeInsets.all(4.0)),
                       new Text(

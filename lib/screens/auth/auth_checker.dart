@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:progress_indicators/progress_indicators.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vc_deca_flutter/screens/auth/auth_functions.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
@@ -21,6 +23,13 @@ class _AuthCheckerState extends State<AuthChecker> {
 
   Future checkAuth() async {
     var user = await FirebaseAuth.instance.currentUser();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('darkAppBar')) {
+      darkAppBar = prefs.getBool('darkAppBar');
+    }
+    else {
+      await prefs.setBool('darkAppBar', false);
+    }
     if (user != null) {
       // User logged
       print("User Logged");
@@ -40,6 +49,14 @@ class _AuthCheckerState extends State<AuthChecker> {
             currCardColor = lightCardColor;
             currDividerColor = lightDividerColor;
           }
+          await databaseRef.child("fcmTopics").once().then((DataSnapshot snapshot) {
+            Map topicsJson = snapshot.value;
+            topicsJson.keys.forEach((key) {
+              FirebaseMessaging().unsubscribeFromTopic(key);
+            });
+          });
+          // A nice delay to make sure everything doesn't go to shit
+          await Future.delayed(const Duration(milliseconds: 300));
           router.navigateTo(context, '/home', transition: TransitionType.fadeIn, clearStack: true);
         }
         else {

@@ -106,7 +106,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             router.navigateTo(context,'/register', transition: TransitionType.fadeIn, clearStack: true);
           },
           columnMainAxisAlignment: MainAxisAlignment.start,
-          showSkipButton: false,
+          showSkipButton: true,
           pageButtonTextStyles: TextStyle(
             color: Colors.white,
             fontSize: 18.0,

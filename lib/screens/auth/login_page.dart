@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
     }
     catch (error) {
       print("Error: ${error.toString()}");
-      accountErrorDialog(error.toString());
+      accountErrorDialog(error.message);
     }
     setState(() {
       buttonChild = new Text("Login");

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 bool darkMode = false;
+bool darkAppBar = false;
 // Main DECA Color
 Color mainColor = const Color(0xFF0073CE);
 // Color for Selected Event
