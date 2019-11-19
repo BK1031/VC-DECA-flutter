@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/screens/auth/auth_checker.dart';
 import 'package:vc_deca_flutter/screens/auth/login_page.dart';
 import 'package:vc_deca_flutter/screens/auth/register_page.dart';
+import 'package:vc_deca_flutter/screens/chat/chat_members_page.dart';
 import 'package:vc_deca_flutter/screens/chat/global_chat_page.dart';
 import 'package:vc_deca_flutter/screens/conferences/conference_media_view_page.dart';
 import 'package:vc_deca_flutter/screens/conferences/conference_view_page.dart';
@@ -32,10 +33,13 @@ Future<Null> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   ErrorWidget.builder = (FlutterErrorDetails details) => Container(
     height: 100.0,
-    child: new Center(
-      child: new Text(details.exceptionAsString()),
+    child: new Material(
+      child: new Center(
+        child: new Text(details.exceptionAsString()),
+      ),
     ),
   );
+
   try {
     cameras = await availableCameras();
   } on QRReaderException catch (e) {
@@ -125,6 +129,10 @@ Future<Null> main() async {
     return new GlobalChatPage();
   }));
 
+  router.define('/chat/members', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new ChatMembersPage();
+  }));
+
   // SETTINGS ROUTES
   router.define('/settings/about', handler: new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new AboutPage();
@@ -140,6 +148,7 @@ Future<Null> main() async {
     title: "VC DECA",
     home: NetworkChecker(),
     onGenerateRoute: router.generator,
+    navigatorObservers: <NavigatorObserver>[routeObserver],
     debugShowCheckedModeBanner: false,
     theme: mainTheme,
   ));

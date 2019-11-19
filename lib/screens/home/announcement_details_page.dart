@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
@@ -19,7 +20,17 @@ class _AnnouncementDetailsPageState extends State<AnnouncementDetailsPage> {
 
   bool _canDelete = false;
 
+  Future<void> markRead() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> copy = prefs.getStringList("viewedAlerts");
+    if (!copy.contains(selectedAnnouncement.key)) {
+      copy.add(selectedAnnouncement.key);
+    }
+    prefs.setStringList("viewedAlerts", copy);
+  }
+
   _AnnouncementDetailsPageState() {
+    markRead();
     if (userPerms.contains('ALERT_DELETE') || userPerms.contains('ADMIN')) {
       _canDelete = true;
     }

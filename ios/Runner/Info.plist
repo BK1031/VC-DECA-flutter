@@ -36,9 +36,9 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Apple music access required to share your library</string>
 	<key>NSCalendarsUsageDescription</key>
-	<string>Calendar access required to save your upcoming events to your phone</string>
+	<string>Calendar access required to save your upcoming meetings and events to your phone</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Camera access required to take and upload photos</string>
+	<string>Camera access required to add conference photos, update your profile picture, or scan permission codes</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Contacts access required to invite your contacts to the app</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -50,7 +50,7 @@
 	<key>NSMotionUsageDescription</key>
 	<string>Motion access required to allow advisors to see your movement during conferences</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photo library access required to upload photos</string>
+	<string>Photo Library access required to add conference photos, update your profile picture, or scan permission codes</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Ok i dont even know how im gonna bs this lmao, wong move alert</string>
 	<key>UIBackgroundModes</key>

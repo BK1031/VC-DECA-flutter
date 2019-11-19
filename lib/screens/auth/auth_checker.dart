@@ -30,6 +30,9 @@ class _AuthCheckerState extends State<AuthChecker> {
     else {
       await prefs.setBool('darkAppBar', false);
     }
+    if (!prefs.containsKey("viewedAlerts")) {
+      await prefs.setStringList('viewedAlerts', []);
+    }
     if (user != null) {
       // User logged
       print("User Logged");

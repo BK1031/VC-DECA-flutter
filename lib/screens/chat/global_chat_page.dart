@@ -566,6 +566,14 @@ class _GlobalChatPageState extends State<GlobalChatPage> {
       appBar: AppBar(
         backgroundColor: mainColor,
         title: new Text(chatTitle),
+        actions: <Widget>[
+          new IconButton(
+            icon: new Icon(Icons.more_vert),
+            onPressed: () {
+              router.navigateTo(context, '/chat/members', transition: TransitionType.native);
+            },
+          )
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       backgroundColor: currBackgroundColor,

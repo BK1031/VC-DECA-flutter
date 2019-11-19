@@ -31,6 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget buttonChild = new Text("Create Account");
 
   bool warriorlifeRequired = false;
+  bool emailVerify = true;
 
   void accountErrorDialog(String error) {
     // flutter defined function
@@ -106,9 +107,42 @@ class _RegisterPageState extends State<RegisterPage> {
         userID = user.user.uid;
         role = "Member";
 
-        await user.user.sendEmailVerification();
+        if (emailVerify) {
+          await user.user.sendEmailVerification();
+          emailVerificationDialog();
+        }
 
-        emailVerificationDialog();
+        // Create account w/o verifying email
+        // Define Initial Database Values
+        databaseRef.child("users").child(userID).update({
+          "name": name,
+          "email": email,
+          "role": role,
+          "title": "",
+          "userID": userID,
+          "chapGroup": "Not in a Group",
+          "mentorGroup": "Not in a Group",
+          "darkMode": darkMode,
+          "chatColor": customChatColor,
+          "profilePicUrl": profilePic,
+          "staticLocation": false
+        });
+
+        // Set Default User Perms
+        databaseRef.child("users").child(userID).child("perms").push().set("CHAT_VIEW");
+        databaseRef.child("users").child(userID).child("perms").push().set("CHAT_SEND");
+
+        print("");
+        print("------------ USER DEBUG INFO ------------");
+        print("NAME: $name");
+        print("EMAIL: $email");
+        print("ROLE: $role");
+        print("USERID: $userID");
+        print("-----------------------------------------");
+        print("");
+
+        await Future.delayed(const Duration(milliseconds: 100));
+        router.navigateTo(context,'/home', transition: TransitionType.fadeIn, clearStack: true);
       }
       catch (error) {
         print("Error: ${error.toString()}");
@@ -145,6 +179,9 @@ class _RegisterPageState extends State<RegisterPage> {
     super.initState();
     databaseRef.child("forceWarriorlife").once().then((DataSnapshot snapshot) {
       warriorlifeRequired = snapshot.value;
+    });
+    databaseRef.child("forceEmailVerify").once().then((DataSnapshot snapshot) {
+      emailVerify = snapshot.value;
     });
   }
 

@@ -33,6 +33,16 @@ class _HomePageState extends State<HomePage> {
         }
       });
     });
+    databaseRef.child("alerts").onChildRemoved.listen((Event event) {
+      setState(() {
+        if (event.snapshot.value["topic"].toString().contains(role.toUpperCase().split(" ").join("_")) || event.snapshot.value["topic"].toString().contains("ALL_DEVICES") || userPerms.contains('ADMIN')) {
+          var oldEntry = announcementList.singleWhere((entry) {
+            return entry.key == event.snapshot.key;
+          });
+          announcementList.removeAt(announcementList.indexOf(oldEntry));
+        }
+      });
+    });
   }
 
   void toMyEvents() {

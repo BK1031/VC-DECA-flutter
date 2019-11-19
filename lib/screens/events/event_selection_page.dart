@@ -33,7 +33,7 @@ class _EventSelectionPageState extends State<EventSelectionPage> {
         backgroundColor: eventColor,
       ),
       body: Container(
-        color: Colors.white,
+        color: currBackgroundColor,
         padding: EdgeInsets.all(16.0),
         child: new Column(
           children: <Widget>[

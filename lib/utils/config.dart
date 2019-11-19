@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/material.dart';
 import 'package:vc_deca_flutter/models/announcement.dart';
 import 'package:vc_deca_flutter/models/conference.dart';
 import 'package:vc_deca_flutter/models/conference_agenda_item.dart';
@@ -7,8 +8,9 @@ import 'package:vc_deca_flutter/models/conference_winner.dart';
 import 'package:vc_deca_flutter/models/version.dart';
 
 final router = new Router();
+final RouteObserver<PageRoute> routeObserver = new RouteObserver<PageRoute>();
 
-Version appVersion = new Version("2.3.2+1");
+Version appVersion = new Version("2.3.3+1");
 String appStatus = "";
 String appFull = "Version ${appVersion.toString()}";
 

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -8,6 +7,7 @@ import 'package:vc_deca_flutter/models/announcement.dart';
 import 'package:vc_deca_flutter/user_info.dart';
 import 'package:vc_deca_flutter/utils/config.dart';
 import 'package:vc_deca_flutter/utils/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class AnnouncementPage extends StatefulWidget {
@@ -20,9 +20,19 @@ class _AnnouncementPageState extends State<AnnouncementPage> with RouteAware {
   final databaseRef = FirebaseDatabase.instance.reference();
   List<Announcement> announcementList = new List();
 
+  List<String> viewedAlerts = new List();
+
+  Future<void> getPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      viewedAlerts = prefs.getStringList("viewedAlerts");
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    getPrefs();
     databaseRef.child("alerts").onChildAdded.listen((Event event) {
       setState(() {
         if (event.snapshot.value["topic"].toString().contains(role.toUpperCase().split(" ").join("_")) || event.snapshot.value["topic"].toString().contains("ALL_DEVICES") || userPerms.contains('ADMIN')) {
@@ -30,6 +40,33 @@ class _AnnouncementPageState extends State<AnnouncementPage> with RouteAware {
         }
       });
     });
+    databaseRef.child("alerts").onChildRemoved.listen((Event event) {
+      setState(() {
+        if (event.snapshot.value["topic"].toString().contains(role.toUpperCase().split(" ").join("_")) || event.snapshot.value["topic"].toString().contains("ALL_DEVICES") || userPerms.contains('ADMIN')) {
+          var oldEntry = announcementList.singleWhere((entry) {
+            return entry.key == event.snapshot.key;
+          });
+          announcementList.removeAt(announcementList.indexOf(oldEntry));
+        }
+      });
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  void didPopNext() {
+    debugPrint("didPopNext ${runtimeType}");
+    getPrefs();
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 
   @override
@@ -84,7 +121,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> with RouteAware {
                                 new Container(
                                     child: new Icon(
                                       Icons.notifications_active,
-                                      color: mainColor,
+                                      color: viewedAlerts.contains(announcementList[index].key) ? (darkMode ? Colors.grey : Colors.black54) : mainColor,
                                     )
                                 ),
                                 new Padding(padding: EdgeInsets.all(4.0)),
