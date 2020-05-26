@@ -2,6 +2,8 @@
 
 # VC DECA App
 
+### UPDATE: The VC DECA App is now a part of [myDECA](https://github.com/equinox-initiative/mydeca-flutter)! We are excited to launch this new platform for DECA chapter management. Visit https://deca.bk1031.dev for more information.
+
 [![Build Status](https://travis-ci.org/Equinox-Initiative/VC-DECA-flutter.svg?branch=master)](https://travis-ci.org/Equinox-Initiative/VC-DECA-flutter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
